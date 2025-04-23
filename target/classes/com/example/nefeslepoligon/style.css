@@ -1,0 +1,22 @@
+.message-container {
+    -fx-padding: 8px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #DCF8C6;
+}
+
+.message-sender {
+    -fx-font-size: 0.8em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #666;
+}
+
+.message-text {
+    -fx-font-size: 1em;
+    -fx-text-fill: #333;
+    -fx-wrap-text: true;
+}
+
+.message-time {
+    -fx-font-size: 0.7em;
+    -fx-text-fill: #888;
+}
