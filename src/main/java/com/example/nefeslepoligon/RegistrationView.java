@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,6 +16,8 @@ public class RegistrationView {
     private TextField tokenField;
     private TextField lastNameField;
     private TextField emailField;
+    private PasswordField passwordField;
+    private PasswordField passwordFieldTest;
     private Button registerButton;
     private Label messageLabel;
 
@@ -36,6 +39,10 @@ public class RegistrationView {
         lastNameField.setPromptText("Фамилия");
         emailField = new TextField();
         emailField.setPromptText("Электронная почта");
+        passwordField = new PasswordField();
+        passwordField.setPromptText("Пароль");
+        passwordFieldTest = new PasswordField();
+        passwordFieldTest.setPromptText("Подтверждение пароля");
 
         registerButton = new Button("Зарегистрироваться");
         messageLabel = new Label();
@@ -44,7 +51,7 @@ public class RegistrationView {
 
         registerButton.setOnAction(controller::handleRegistration);
 
-        vbox.getChildren().addAll(tokenField, lastNameField, emailField, registerButton, messageLabel);
+        vbox.getChildren().addAll(tokenField, lastNameField, emailField, passwordField, passwordFieldTest, registerButton, messageLabel);
 
         Scene scene = new Scene(vbox, 300, 300);
         stage.setScene(scene);
@@ -70,6 +77,10 @@ public class RegistrationView {
     public String getEmail() {
         return emailField.getText();
     }
+
+    public String getPassword() {return passwordField.getText();}
+
+    public String getPasswordTest() {return passwordFieldTest.getText();}
 
     public void setMessage(String message) {
         messageLabel.setText(message);
