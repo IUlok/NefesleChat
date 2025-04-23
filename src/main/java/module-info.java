@@ -1,4 +1,4 @@
-module com.example.nefeslepoligon {
+module com.example.NefesleChat {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -10,7 +10,11 @@ module com.example.nefeslepoligon {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires static lombok;
+    requires com.google.gson;
+    requires java.net.http;
 
-    opens com.example.nefeslepoligon to javafx.fxml;
-    exports com.example.nefeslepoligon;
+    opens com.example.NefesleChat to javafx.fxml;
+    exports com.example.NefesleChat;
+    opens com.example.NefesleChat.entity to com.google.gson;
 }

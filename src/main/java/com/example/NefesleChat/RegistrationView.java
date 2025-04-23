@@ -1,4 +1,4 @@
-package com.example.nefeslepoligon;
+package com.example.NefesleChat;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
