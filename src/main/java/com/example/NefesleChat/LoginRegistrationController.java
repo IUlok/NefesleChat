@@ -1,10 +1,14 @@
 package com.example.NefesleChat;
 
+import com.example.NefesleChat.entity.AuthForm;
 import javafx.event.ActionEvent;
+
+import java.net.http.HttpResponse;
 
 public class LoginRegistrationController {
 
     private LoginRegistrationView view;
+    private HttpUtil httpUtil = new HttpUtil();
     private DataModel dataModel;
 
     public LoginRegistrationController(LoginRegistrationView view, DataModel dataModel) {
@@ -13,21 +17,20 @@ public class LoginRegistrationController {
     }
 
     public void handleLogin(ActionEvent event) {
-        String username = view.getUsername();
+        String email = view.getEmail();
         String password = view.getPassword();
 
-        if (username != null && !username.isEmpty() && password != null && !password.isEmpty()) {
-            dataModel.setUsername(username); // Store username in DataModel
-            if(!dataModel.getAllUsers().contains(username)) {      //Если такого пользователя нет в списке
-                dataModel.addAllUsers(username); //Добавили добавление пользователя в dataModel
-                dataModel.addAllUsers("gavno");
+        if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
+            AuthForm authForm = new AuthForm(email, password);
+            HttpResponse<String> objectServerResponse  = httpUtil.authUser(authForm);
+            if (objectServerResponse.statusCode() == 200) {
+                System.out.println("Login successful for user: " + email);
+                view.getStage().close();
+                MainView mainView = new MainView(dataModel);
+                mainView.show();
+            } else {
+                view.setMessage("Ошибка! " + objectServerResponse.body());
             }
-
-            // Placeholder: If authentication is successful
-            System.out.println("Login successful for user: " + username);
-            view.getStage().close();
-            MainView mainView = new MainView(dataModel);
-            mainView.show();
 
         } else {
             view.setMessage("Пожалуйста, заполните все поля.");
@@ -35,6 +38,7 @@ public class LoginRegistrationController {
     }
 
     public void handleRegister(ActionEvent event) {
+        view.getStage().close();
         view.openRegistrationWindow();
         //TODO: Внесите запись о пользователе после регистрации
         // dataModel.addAllUsers(username); //Нужно добавлять после реги

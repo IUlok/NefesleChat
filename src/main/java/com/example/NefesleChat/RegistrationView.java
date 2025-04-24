@@ -19,6 +19,7 @@ public class RegistrationView {
     private PasswordField passwordField;
     private PasswordField passwordFieldTest;
     private Button registerButton;
+    private Button backButton;
     private Label messageLabel;
 
     public RegistrationView() {
@@ -45,13 +46,15 @@ public class RegistrationView {
         passwordFieldTest.setPromptText("Подтверждение пароля");
 
         registerButton = new Button("Зарегистрироваться");
+        backButton = new Button("Авторизация");
         messageLabel = new Label();
 
         RegistrationController controller = new RegistrationController(this);
 
         registerButton.setOnAction(controller::handleRegistration);
+        backButton.setOnAction(controller::handleAuth);
 
-        vbox.getChildren().addAll(tokenField, lastNameField, emailField, passwordField, passwordFieldTest, registerButton, messageLabel);
+        vbox.getChildren().addAll(tokenField, lastNameField, emailField, passwordField, passwordFieldTest, registerButton, messageLabel, backButton);
 
         Scene scene = new Scene(vbox, 300, 300);
         stage.setScene(scene);

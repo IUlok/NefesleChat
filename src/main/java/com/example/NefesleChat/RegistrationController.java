@@ -28,7 +28,10 @@ public class RegistrationController {
                 HttpResponse<String> objectServerResponse = httpUtil.regUser(registrationForm);
                 if(objectServerResponse.statusCode() == 200) {
                     view.setMessage("Регистрация прошла успешно!");
-                    view.close();  // Закрываем окно регистрации
+                    view.getStage().close();
+                    DataModel dataModel = new DataModel();
+                    LoginRegistrationView loginRegistrationView = new LoginRegistrationView(dataModel);
+                    loginRegistrationView.show();
                 }
                 else {
                     view.setMessage("Ошибка! " + objectServerResponse.body());
@@ -39,5 +42,12 @@ public class RegistrationController {
         } else {
             view.setMessage("Пожалуйста, заполните все поля.");
         }
+    }
+
+    public void handleAuth(ActionEvent event) {
+        view.getStage().close();
+        DataModel dataModel = new DataModel();
+        LoginRegistrationView loginRegistrationView = new LoginRegistrationView(dataModel);
+        loginRegistrationView.show();
     }
 }
