@@ -6,19 +6,25 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.FileInputStream;
-import java.net.URI;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 public class HttpUtil {
-    private final HttpClient client = HttpClient.newHttpClient();
-    private String serverUri;
+    private final HttpClient client;
+    private final String serverUri;
 
     public HttpUtil() {
         String propUri = "src/main/resources/application.properties";
         Properties properties = new Properties();
+
+        client = HttpClient.newBuilder()
+                .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
+                .build();
 
         try {
             properties.load(new FileInputStream(propUri));
@@ -37,9 +43,8 @@ public class HttpUtil {
                     .header("Content-type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(regJson))
                     .build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return response;
+            return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
