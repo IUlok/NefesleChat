@@ -7,8 +7,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        DataModel dataModel = new DataModel();
-        LoginRegistrationView loginRegistrationView = new LoginRegistrationView(dataModel);
+        LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
         loginRegistrationView.show();
     }
 

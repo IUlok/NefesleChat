@@ -9,11 +9,9 @@ public class LoginRegistrationController {
 
     private LoginRegistrationView view;
     private HttpUtil httpUtil = new HttpUtil();
-    private DataModel dataModel;
 
-    public LoginRegistrationController(LoginRegistrationView view, DataModel dataModel) {
+    public LoginRegistrationController(LoginRegistrationView view) {
         this.view = view;
-        this.dataModel = dataModel;
     }
 
     public void handleLogin(ActionEvent event) {
@@ -24,9 +22,15 @@ public class LoginRegistrationController {
             AuthForm authForm = new AuthForm(email, password);
             HttpResponse<String> objectServerResponse  = httpUtil.authUser(authForm);
             if (objectServerResponse.statusCode() == 200) {
-                System.out.println("Login successful for user: " + email);
+                view.setMessage("Успешный вход!");
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 view.getStage().close();
-                MainView mainView = new MainView(dataModel);
+                MainView mainView = new MainView();
                 mainView.show();
             } else {
                 view.setMessage("Ошибка! " + objectServerResponse.body());

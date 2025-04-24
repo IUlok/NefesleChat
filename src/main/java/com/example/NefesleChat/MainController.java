@@ -16,7 +16,7 @@ public class MainController {
 
     public void openChat(ActionEvent event) {
         System.out.println("Opening Chat");
-        //chatView = new ChatView(new DataModel());
+        //ChatView chatView = new ChatView();
         //chatView.show();
         //TODO Открытие окна с чатом
     }
@@ -29,7 +29,7 @@ public class MainController {
     public void logout(ActionEvent event) {
         System.out.println("Logging out");
         view.getPrimaryStage().close();
-        LoginRegistrationView loginRegistrationView = new LoginRegistrationView(new DataModel());
+        LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
         loginRegistrationView.show();
     }
 }

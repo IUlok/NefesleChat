@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainView {
@@ -20,13 +21,11 @@ public class MainView {
     private VBox chatArea;
     private TextField messageInput;
     private BorderPane root;
-    private DataModel dataModel;
     private ChatView chatView;
     private ScrollPane scrollPane;
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
 
-    public MainView(DataModel dataModel) {
-        this.dataModel = dataModel;
+    public MainView() {
         this.primaryStage = new Stage();
         userComboBox = new ComboBox<>();  // Создаем ComboBox в конструкторе
         updateUserComboBox();           // Заполняем ComboBox данными в конструкторе
@@ -86,8 +85,8 @@ public class MainView {
 
         Button sendButton = new Button("Отправить");
 
-        chatView = new ChatView(dataModel, this);
-        ChatController chatController = new ChatController(chatView, dataModel);
+        chatView = new ChatView( this);
+        ChatController chatController = new ChatController(chatView);
 
         sendButton.setOnAction(chatController::sendMessage);
         bottomPanel.getChildren().addAll(messageInput, sendButton);
@@ -96,7 +95,9 @@ public class MainView {
 
     // Method to update the ComboBox items
     private void updateUserComboBox() {
-        List<String> users = dataModel.getAllUsers();
+        List<String> users = new ArrayList<String>();
+        users.add("user1");
+        users.add("user2");
         ObservableList<String> observableUsers = FXCollections.observableArrayList(users);
         userComboBox.setItems(observableUsers);
 

@@ -29,8 +29,7 @@ public class RegistrationController {
                 if(objectServerResponse.statusCode() == 200) {
                     view.setMessage("Регистрация прошла успешно!");
                     view.getStage().close();
-                    DataModel dataModel = new DataModel();
-                    LoginRegistrationView loginRegistrationView = new LoginRegistrationView(dataModel);
+                    LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
                     loginRegistrationView.show();
                 }
                 else {
@@ -46,8 +45,7 @@ public class RegistrationController {
 
     public void handleAuth(ActionEvent event) {
         view.getStage().close();
-        DataModel dataModel = new DataModel();
-        LoginRegistrationView loginRegistrationView = new LoginRegistrationView(dataModel);
+        LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
         loginRegistrationView.show();
     }
 }
