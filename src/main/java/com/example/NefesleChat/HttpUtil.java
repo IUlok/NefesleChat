@@ -56,9 +56,6 @@ public class HttpUtil {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             jwtToken = retrieveJwtFromCookie();
-            CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
-            System.out.println(cookieManager.getCookieStore().getCookies());
-            System.out.println(cookieManager.getCookieStore().getURIs());
             return response;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -84,12 +81,9 @@ public class HttpUtil {
         for(HttpCookie cookie : cookieManager.getCookieStore().getCookies())
             if(cookie.getName().equals("JWT"))
                 return;
-        cookieManager.getCookieStore().add(URI.create(serverUri), new HttpCookie("JWT", jwtToken));
-        client = HttpClient.newBuilder()
-                .cookieHandler(cookieManager)
-                .build();
-        System.out.println(cookieManager.getCookieStore().getCookies());
-        System.out.println(cookieManager.getCookieStore().getURIs());
+        HttpCookie httpCookie = new HttpCookie("JWT", jwtToken);
+        httpCookie.setPath("/");
+        cookieManager.getCookieStore().add(URI.create(serverUri), httpCookie);
     }
 
     public static UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {
