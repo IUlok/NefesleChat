@@ -5,11 +5,9 @@ import javafx.event.ActionEvent;
 public class ChatController {
 
     private ChatView view;
-    private DataModel dataModel;
 
-    public ChatController(ChatView view, DataModel dataModel) {
+    public ChatController(ChatView view) {
         this.view = view;
-        this.dataModel = dataModel;
     }
 
     public void sendMessage(ActionEvent event) {
@@ -17,7 +15,7 @@ public class ChatController {
         if (message != null && !message.isEmpty()) {
             MainView mainView = view.getMainView();
             String selectedUser = mainView.getSelectedUser(); // Get selected user from ComboBox
-            view.addMessage(selectedUser, message, selectedUser.equals(dataModel.getUsername()));
+            view.addMessage(selectedUser, message, selectedUser.equals("user1"));
             view.getMessageInput().clear();
         }
     }

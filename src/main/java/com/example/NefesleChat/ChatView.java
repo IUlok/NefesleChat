@@ -9,13 +9,11 @@ import java.time.format.DateTimeFormatter;
 
 public class ChatView {
 
-    private DataModel dataModel;
     private MainView mainView;
     private VBox chatArea;
     private javafx.scene.control.TextField messageInput;
 
-    public ChatView(DataModel dataModel, MainView mainView) {
-        this.dataModel = dataModel;
+    public ChatView(MainView mainView) {
         this.mainView = mainView;
         initialize();
     }

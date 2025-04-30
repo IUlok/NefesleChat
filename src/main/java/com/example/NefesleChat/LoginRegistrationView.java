@@ -20,17 +20,15 @@ public class LoginRegistrationView {
     private Button loginButton;
     private Button registerButton;
     private Label messageLabel;
-    @Getter
-    private DataModel dataModel;
 
-    public LoginRegistrationView(DataModel dataModel) {
+    //@Getter
+    public LoginRegistrationView() {
         this.stage = new Stage();
-        this.dataModel = dataModel;
         initialize();
     }
 
     private void initialize() {
-        stage.setTitle("Авторизация / Регистрация");
+        stage.setTitle("Авторизация");
 
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
@@ -46,7 +44,7 @@ public class LoginRegistrationView {
 
         messageLabel = new Label();
 
-        LoginRegistrationController controller = new LoginRegistrationController(this, dataModel);
+        LoginRegistrationController controller = new LoginRegistrationController(this);
 
         loginButton.setOnAction(controller::handleLogin);
         registerButton.setOnAction(controller::handleRegister);
