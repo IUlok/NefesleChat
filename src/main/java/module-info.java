@@ -13,6 +13,7 @@ module com.example.NefesleChat {
     requires static lombok;
     requires com.google.gson;
     requires java.net.http;
+    requires java.desktop;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;

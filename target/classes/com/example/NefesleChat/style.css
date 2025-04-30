@@ -20,3 +20,43 @@
     -fx-font-size: 0.7em;
     -fx-text-fill: #888;
 }
+
+.top-panel {
+    -fx-background-color: #039156;
+}
+
+.menu-panel {
+    -fx-background-color: #039156;
+}
+
+.logo {
+    -fx-background-image: url("icons/logo.png");
+}
+
+.chat-button {
+    -fx-background-image: url("icons/chat.png");
+}
+
+.timeline-button {
+    -fx-background-image: url("icons/timeline.png");
+}
+
+.notes-button {
+    -fx-background-image: url("icons/notes.png");
+}
+
+.tasks-button {
+    -fx-background-image: url("icons/tasks.png");
+}
+
+.contacts-button {
+    -fx-background-image: url("icons/contacts.png");
+}
+
+.settings-button {
+    -fx-background-image: url("icons/settings.png");
+}
+
+.exit-button {
+    -fx-background-image: url("icons/exit.png");
+}
