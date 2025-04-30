@@ -5,6 +5,7 @@ import com.example.NefesleChat.entity.RegistrationForm;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.Getter;
 
 import java.io.FileInputStream;
 import java.net.*;
@@ -18,6 +19,10 @@ import java.util.Properties;
 public class HttpUtil {
     private final HttpClient client;
     private final String serverUri;
+    private final String serverPrefix;
+
+    @Getter
+    private String jwtToken;
 
     public HttpUtil() {
         String propUri = "src/main/resources/application.properties";
@@ -30,6 +35,7 @@ public class HttpUtil {
         try {
             properties.load(new FileInputStream(propUri));
             serverUri = properties.getProperty("server_uri");
+            serverPrefix = properties.getProperty("server_prefix");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -40,12 +46,14 @@ public class HttpUtil {
             String regJson = new Gson().toJson(regForm);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(serverUri + "/auth/register"))
+                    .uri(new URI(serverPrefix + "/auth/register"))
                     .header("Content-type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(regJson))
                     .build();
 
-            return client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jwtToken = retrieveJwtFromCookie();
+            return response;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -56,15 +64,38 @@ public class HttpUtil {
             String authJson = new Gson().toJson(authForm);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(new URI(serverUri + "/auth"))
+                    .uri(new URI(serverPrefix + "/auth"))
                     .header("Content-type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(authJson))
                     .build();
 
-            return client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e){
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            jwtToken = retrieveJwtFromCookie();
+            return response;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    public void restartSession(String jwtToken) {
+        this.jwtToken = jwtToken;
+        putJwtInCookie(jwtToken);
+    }
+
+    private String retrieveJwtFromCookie() {
+        CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
+        for(HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
+            if(cookie.getName().equals("JWT"))
+                return cookie.getValue();
+        }
+        return null;
+    }
+
+    private void putJwtInCookie(String jwtToken) {
+        CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
+        for(HttpCookie cookie : cookieManager.getCookieStore().getCookies())
+            if(cookie.getName().equals("JWT"))
+                return;
+        cookieManager.getCookieStore().add(URI.create(serverUri), new HttpCookie("JWT", jwtToken));
+    }
 }
