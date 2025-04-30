@@ -2,10 +2,13 @@ package com.example.NefesleChat;
 
 import com.example.NefesleChat.entity.AuthForm;
 import com.example.NefesleChat.entity.RegistrationForm;
+import com.example.NefesleChat.entity.UserDetailsDTO;
 import com.google.gson.Gson;
 import lombok.Getter;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.Reader;
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,29 +16,15 @@ import java.net.http.HttpResponse;
 import java.util.Properties;
 
 public class HttpUtil {
-    private final HttpClient client;
-    private final String serverUri;
-    private final String serverPrefix;
+    private static final HttpClient client = HttpClient.newBuilder()
+            .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
+            .build();
+    private static final String serverUri = "http://linedown.ru";
+    private static final String serverPrefix = "http://linedown.ru:3254/api";
+    private static final String myProfilePath = "/my-profile";
 
     @Getter
     private String jwtToken;
-
-    public HttpUtil() {
-        String propUri = "src/main/resources/application.properties";
-        Properties properties = new Properties();
-
-        client = HttpClient.newBuilder()
-                .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
-                .build();
-
-        try {
-            properties.load(new FileInputStream(propUri));
-            serverUri = properties.getProperty("server_uri");
-            serverPrefix = properties.getProperty("server_prefix");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public HttpResponse<String> regUser(RegistrationForm regForm) {
         try {
@@ -67,6 +56,8 @@ public class HttpUtil {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             jwtToken = retrieveJwtFromCookie();
+            CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
+            System.out.println(cookieManager.getCookieStore().getCookies());
             return response;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -93,5 +84,17 @@ public class HttpUtil {
             if(cookie.getName().equals("JWT"))
                 return;
         cookieManager.getCookieStore().add(URI.create(serverUri), new HttpCookie("JWT", jwtToken));
+        System.out.println(cookieManager.getCookieStore().getCookies());
+    }
+
+    public static UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + myProfilePath))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return new Gson().fromJson(response.body(), UserDetailsDTO.class);
     }
 }
