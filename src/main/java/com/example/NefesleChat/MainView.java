@@ -5,10 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -35,7 +32,7 @@ public class MainView {
         primaryStage.setTitle("Мессенджер");
 
         root = new BorderPane();
-        VBox topPanel = createMenu();
+        BorderPane topPanel = createMenu();
         root.setLeft(topPanel);
 
         //VBox messengerPanel = new VBox();
@@ -52,29 +49,45 @@ public class MainView {
         HBox bottomPanel = createBottomPanel();
         root.setBottom(bottomPanel);
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1280, 768);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    private VBox createMenu() {
-        VBox topPanel = new VBox(10);
-        topPanel.setPadding(new Insets(10));
-        topPanel.setAlignment(Pos.TOP_CENTER);
+    private BorderPane createMenu() {
+        BorderPane menuPanel = new BorderPane();
+        menuPanel.setPadding(new Insets(10));
+        //menuPanel.setAlignment(Pos.TOP_CENTER);
 
-        Button timelineButton = new Button("Расписание");
-        Button chatButton = new Button("Чат");
-        Button contactsButton = new Button("Контакты");
-        Button logoutButton = new Button("Выйти");
+        VBox topMenuPanel = new VBox(10);
+        VBox bottomMenuPanel = new VBox(10);
+
+        Label logo = new Label("Logo");
+        Label chatButton = new Label("Чат");
+        Label timelineButton = new Label("Расписание");
+        Label notesButton = new Label("Заметки");
+        Label tasksButton = new Label("Задачи");
+        Label contactsButton = new Label("Контакты");
+        Label settingsButton = new Label("Настройки");
+        Label logoutButton = new Label("Выйти");
         MainController mainController = new MainController(this);
-        timelineButton.setOnAction(mainController::openTimeline);
-        chatButton.setOnAction(mainController::openChat);
-        contactsButton.setOnAction(mainController::openContacts);
-        logoutButton.setOnAction(mainController::logout);
+        chatButton.setOnMouseClicked(mainController::openChat);
+        timelineButton.setOnMouseClicked(mainController::openTimeline);
+        notesButton.setOnMouseClicked(mainController::openNotes);
+        tasksButton.setOnMouseClicked(mainController::openTasks);
+        contactsButton.setOnMouseClicked(mainController::openContacts);
 
-        topPanel.getChildren().addAll(timelineButton, chatButton, contactsButton, logoutButton, userComboBox); // Добавляем ComboBox в меню один раз
-        return topPanel;
+        settingsButton.setOnMouseClicked(mainController::openSettings);
+        logoutButton.setOnMouseClicked(mainController::logout);
+
+        topMenuPanel.getChildren().addAll(logo, chatButton, timelineButton, notesButton, tasksButton, contactsButton, userComboBox);
+        bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);
+
+        //menuPanel.getChildren().addAll(topMenuPanel, bottomMenuPanel); // Добавляем ComboBox в меню один раз
+        menuPanel.setTop(topMenuPanel);
+        menuPanel.setBottom(bottomMenuPanel);
+        return menuPanel;
     }
 
     private HBox createBottomPanel() {

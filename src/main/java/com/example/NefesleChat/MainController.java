@@ -1,6 +1,7 @@
 package com.example.NefesleChat;
 
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.io.*;
 import java.net.URL;
@@ -12,24 +13,39 @@ public class MainController {
         this.view = view;
     }
 
-    public void openTimeline(ActionEvent event) {
-        System.out.println("Opening Timeline");
-        //TODO Открытие окна с расписанием
-    }
-
-    public void openChat(ActionEvent event) {
+    public void openChat(MouseEvent event) {
         System.out.println("Opening Chat");
         //ChatView chatView = new ChatView(view);
         //chatView.show();
         //TODO Открытие окна с чатом
     }
 
-    public void openContacts(ActionEvent event) {
+    public void openTimeline(MouseEvent event) {
+        System.out.println("Opening Timeline");
+        //TODO Открытие окна с расписанием
+    }
+
+    public void openNotes(MouseEvent event) {
+        System.out.println("Opening Timeline");
+        //TODO Открытие окна с расписанием
+    }
+
+    public void openTasks(MouseEvent event) {
+        System.out.println("Opening Timeline");
+        //TODO Открытие окна с расписанием
+    }
+
+    public void openContacts(MouseEvent event) {
         System.out.println("Opening Contacts");
         //TODO Открытие окна с контактами
     }
 
-    public void logout(ActionEvent event) {
+    public void openSettings(MouseEvent event) {
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.showSettings(view.getPrimaryStage());
+    }
+
+    public void logout(MouseEvent event) {
         URL resourceURL = getClass().getResource("/jwtToken");
         File jwtTokenFile = new File(resourceURL.getFile());
         try {
