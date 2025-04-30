@@ -55,7 +55,7 @@ public class MainView {
 
     private BorderPane createMenu() {
         BorderPane menuPanel = new BorderPane();
-        menuPanel.setPadding(new Insets(5));
+        menuPanel.setPadding(new Insets(7));
         menuPanel.getStyleClass().add("menu-panel");
 
         VBox topMenuPanel = new VBox(10);
@@ -64,7 +64,7 @@ public class MainView {
         bottomMenuPanel.setAlignment(Pos.CENTER);
 
         Label chatButton = new Label();
-        chatButton.setMinSize(27, 22);
+        chatButton.setMinSize(38, 38);
         chatButton.setOnMouseEntered(event -> chatButton.setCursor(Cursor.HAND));
         chatButton.setOnMouseExited(event -> chatButton.setCursor(Cursor.DEFAULT));
         chatButton.getStyleClass().add("chat-button");
@@ -74,12 +74,12 @@ public class MainView {
         timelineButton.setOnMouseExited(event -> timelineButton.setCursor(Cursor.DEFAULT));
         timelineButton.getStyleClass().add("timeline-button");
         Label notesButton = new Label();
-        notesButton.setMinSize(34, 34);
+        notesButton.setMinSize(28, 28);
         notesButton.setOnMouseEntered(event -> notesButton.setCursor(Cursor.HAND));
         notesButton.setOnMouseExited(event -> notesButton.setCursor(Cursor.DEFAULT));
         notesButton.getStyleClass().add("notes-button");
         Label tasksButton = new Label();
-        tasksButton.setMinSize(31, 31);
+        tasksButton.setMinSize(28, 28);
         tasksButton.setOnMouseEntered(event -> tasksButton.setCursor(Cursor.HAND));
         tasksButton.setOnMouseExited(event -> tasksButton.setCursor(Cursor.DEFAULT));
         tasksButton.getStyleClass().add("tasks-button");

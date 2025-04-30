@@ -35,6 +35,18 @@
 
 .chat-button {
     -fx-background-image: url("icons/chat.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.chat-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .timeline-button {
