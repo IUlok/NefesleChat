@@ -3,8 +3,6 @@ package com.example.NefesleChat;
 import com.example.NefesleChat.entity.AuthForm;
 import com.example.NefesleChat.entity.RegistrationForm;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 
 import java.io.FileInputStream;
@@ -12,8 +10,6 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 public class HttpUtil {

@@ -38,6 +38,8 @@ public class MainView {
         VBox topPanel = createMenu();
         root.setLeft(topPanel);
 
+        //VBox messengerPanel = new VBox();
+
         chatArea = new VBox();
         chatArea.setPadding(new Insets(10));
         chatArea.setSpacing(5);

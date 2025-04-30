@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 public class RegistrationController {
 
     private RegistrationView view;
-    private HttpUtil httpUtil = new HttpUtil();
+    private HttpUtil httpUtil = Main.getHttpUtil();
 
     public RegistrationController(RegistrationView view) {
         this.view = view;
@@ -28,9 +28,9 @@ public class RegistrationController {
                 HttpResponse<String> objectServerResponse = httpUtil.regUser(registrationForm);
                 if(objectServerResponse.statusCode() == 200) {
                     view.setMessage("Регистрация прошла успешно!");
-                    view.getStage().close();
-                    LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
-                    loginRegistrationView.show();
+                    //view.getStage().close();
+                    //LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
+                    //loginRegistrationView.show();
                 }
                 else {
                     view.setMessage("Ошибка! " + objectServerResponse.body());
