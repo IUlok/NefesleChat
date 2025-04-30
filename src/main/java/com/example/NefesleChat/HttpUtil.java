@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.util.Properties;
 
 public class HttpUtil {
-    private static final HttpClient client = HttpClient.newBuilder()
+    private static HttpClient client = HttpClient.newBuilder()
             .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
             .build();
     private static final String serverUri = "http://linedown.ru";
@@ -58,6 +58,7 @@ public class HttpUtil {
             jwtToken = retrieveJwtFromCookie();
             CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
             System.out.println(cookieManager.getCookieStore().getCookies());
+            System.out.println(cookieManager.getCookieStore().getURIs());
             return response;
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -84,7 +85,11 @@ public class HttpUtil {
             if(cookie.getName().equals("JWT"))
                 return;
         cookieManager.getCookieStore().add(URI.create(serverUri), new HttpCookie("JWT", jwtToken));
+        client = HttpClient.newBuilder()
+                .cookieHandler(cookieManager)
+                .build();
         System.out.println(cookieManager.getCookieStore().getCookies());
+        System.out.println(cookieManager.getCookieStore().getURIs());
     }
 
     public static UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {
