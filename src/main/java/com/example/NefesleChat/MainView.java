@@ -4,6 +4,7 @@ package com.example.NefesleChat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -40,44 +41,11 @@ public class MainView {
         BorderPane menuPanel = createMenu();
         HBox topPanel = createHeader();
 
-        GridPane messageBox = new GridPane(2, 0);
-        messageBox.setVgap(10);
-        messageBox.setHgap(10);
-
-        BorderPane chatPanel = new BorderPane();
-        GridPane dialogPanel = new GridPane();
-
-        GridPane.setHgrow(chatPanel, Priority.ALWAYS);
-        GridPane.setVgrow(chatPanel, Priority.ALWAYS);
-        GridPane.setHgrow(dialogPanel, Priority.ALWAYS);
-        GridPane.setVgrow(dialogPanel, Priority.ALWAYS);
-
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(25);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(75);
-        messageBox.getColumnConstraints().addAll(col1, col2);
-
-        messageBox.add(dialogPanel, 0, 0);
-        messageBox.add(chatPanel, 1, 0);
+        GridPane messageBox = createMessageBox();
 
         root.setLeft(menuPanel);
         root.setTop(topPanel);
-
         root.setCenter(messageBox);
-
-        chatArea = new VBox();
-        chatArea.setPadding(new Insets(10));
-        chatArea.setSpacing(5);
-
-        scrollPane = new ScrollPane(chatArea);
-        scrollPane.setFitToWidth(true);
-        chatPanel.setCenter(scrollPane);
-        scrollPane.vvalueProperty().bind(chatArea.heightProperty());
-
-        HBox bottomPanel = createBottomPanel();
-        chatPanel.setBottom(bottomPanel);
-        //root.add(chatPanel, 2, 0);
 
         Scene scene = new Scene(root, 1280, 768);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -87,33 +55,48 @@ public class MainView {
 
     private BorderPane createMenu() {
         BorderPane menuPanel = new BorderPane();
-        menuPanel.setPadding(new Insets(7));
+        menuPanel.setPadding(new Insets(5));
         menuPanel.getStyleClass().add("menu-panel");
-        //menuPanel.setAlignment(Pos.TOP_CENTER);
 
         VBox topMenuPanel = new VBox(10);
+        topMenuPanel.setAlignment(Pos.CENTER);
         VBox bottomMenuPanel = new VBox(10);
+        bottomMenuPanel.setAlignment(Pos.CENTER);
 
         Label chatButton = new Label();
         chatButton.setMinSize(27, 22);
+        chatButton.setOnMouseEntered(event -> chatButton.setCursor(Cursor.HAND));
+        chatButton.setOnMouseExited(event -> chatButton.setCursor(Cursor.DEFAULT));
         chatButton.getStyleClass().add("chat-button");
         Label timelineButton = new Label();
         timelineButton.setMinSize(28, 28);
+        timelineButton.setOnMouseEntered(event -> timelineButton.setCursor(Cursor.HAND));
+        timelineButton.setOnMouseExited(event -> timelineButton.setCursor(Cursor.DEFAULT));
         timelineButton.getStyleClass().add("timeline-button");
         Label notesButton = new Label();
         notesButton.setMinSize(34, 34);
+        notesButton.setOnMouseEntered(event -> notesButton.setCursor(Cursor.HAND));
+        notesButton.setOnMouseExited(event -> notesButton.setCursor(Cursor.DEFAULT));
         notesButton.getStyleClass().add("notes-button");
         Label tasksButton = new Label();
         tasksButton.setMinSize(31, 31);
+        tasksButton.setOnMouseEntered(event -> tasksButton.setCursor(Cursor.HAND));
+        tasksButton.setOnMouseExited(event -> tasksButton.setCursor(Cursor.DEFAULT));
         tasksButton.getStyleClass().add("tasks-button");
         Label contactsButton = new Label();
         contactsButton.setMinSize(28, 28);
+        contactsButton.setOnMouseEntered(event -> contactsButton.setCursor(Cursor.HAND));
+        contactsButton.setOnMouseExited(event -> contactsButton.setCursor(Cursor.DEFAULT));
         contactsButton.getStyleClass().add("contacts-button");
         Label settingsButton = new Label();
         settingsButton.setMinSize(28, 28);
+        settingsButton.setOnMouseEntered(event -> settingsButton.setCursor(Cursor.HAND));
+        settingsButton.setOnMouseExited(event -> settingsButton.setCursor(Cursor.DEFAULT));
         settingsButton.getStyleClass().add("settings-button");
         Label logoutButton = new Label();
         logoutButton.setMinSize(28, 28);
+        logoutButton.setOnMouseEntered(event -> logoutButton.setCursor(Cursor.HAND));
+        logoutButton.setOnMouseExited(event -> logoutButton.setCursor(Cursor.DEFAULT));
         logoutButton.getTransforms().add(new Translate(4, 0));
         logoutButton.getStyleClass().add("exit-button");
         MainController mainController = new MainController(this);
@@ -157,13 +140,55 @@ public class MainView {
         HBox.setHgrow(messageInput, Priority.ALWAYS);
 
         Button sendButton = new Button("Отправить");
+        sendButton.setOnMouseEntered(event -> sendButton.setCursor(Cursor.HAND));
+        sendButton.setOnMouseExited(event -> sendButton.setCursor(Cursor.DEFAULT));
 
         chatView = new ChatView( this);
         ChatController chatController = new ChatController(chatView);
 
+        messageInput.setOnKeyPressed(chatController::handleEnterKey);
         sendButton.setOnAction(chatController::sendMessage);
         bottomPanel.getChildren().addAll(messageInput, sendButton);
         return bottomPanel;
+    }
+
+    private GridPane createMessageBox() {
+        GridPane messageBox = new GridPane(2, 0);
+
+        messageBox.setVgap(10);
+        messageBox.setHgap(10);
+
+        BorderPane chatPanel = new BorderPane();
+        GridPane dialogPanel = new GridPane();
+
+        GridPane.setHgrow(chatPanel, Priority.ALWAYS);
+        GridPane.setVgrow(chatPanel, Priority.ALWAYS);
+        GridPane.setHgrow(dialogPanel, Priority.ALWAYS);
+        GridPane.setVgrow(dialogPanel, Priority.ALWAYS);
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(25);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(75);
+        messageBox.getColumnConstraints().addAll(col1, col2);
+
+        messageBox.add(dialogPanel, 0, 0);
+        messageBox.add(chatPanel, 1, 0);
+
+        chatArea = new VBox();
+        chatArea.setPadding(new Insets(10));
+        chatArea.setSpacing(5);
+
+        scrollPane = new ScrollPane(chatArea);
+        scrollPane.getStyleClass().add("scrollpane");
+        scrollPane.setFitToWidth(true);
+        chatPanel.setCenter(scrollPane);
+        scrollPane.vvalueProperty().bind(chatArea.heightProperty());
+
+        HBox bottomPanel = createBottomPanel();
+        chatPanel.setBottom(bottomPanel);
+
+        return messageBox;
     }
 
     // Method to update the ComboBox items

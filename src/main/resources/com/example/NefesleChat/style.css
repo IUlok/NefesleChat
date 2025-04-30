@@ -60,3 +60,13 @@
 .exit-button {
     -fx-background-image: url("icons/exit.png");
 }
+
+.scrollpane {
+    -fx-focus-color: #c8c8c8;
+    -fx-faint-focus-color: #c8c8c8;
+}
+
+.scrollpane:focused {
+    -fx-focus-color: #c8c8c8;
+    -fx-faint-focus-color: transparent;
+}

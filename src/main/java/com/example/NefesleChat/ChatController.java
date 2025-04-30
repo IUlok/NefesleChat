@@ -1,6 +1,9 @@
 package com.example.NefesleChat;
 
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyCode;
+
+import java.awt.event.KeyEvent;
 
 public class ChatController {
 
@@ -11,6 +14,16 @@ public class ChatController {
     }
 
     public void sendMessage(ActionEvent event) {
+        sendMessageUse();
+    }
+
+    public void handleEnterKey(javafx.scene.input.KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            sendMessageUse();
+        }
+    }
+
+    private void sendMessageUse() {
         String message = view.getMessageInput().getText();
         if (message != null && !message.isEmpty()) {
             MainView mainView = view.getMainView();
