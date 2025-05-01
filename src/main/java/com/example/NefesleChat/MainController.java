@@ -15,22 +15,32 @@ public class MainController {
 
     public void openChat(MouseEvent event) {
         //view.createMessageBox(); // Не работает нормально. нужно делать отдельные stage и классы
+
+        view.selectedChatButton();
     }
 
     public void openTimeline(MouseEvent event) {
         //view.createTimelineBox(); // Не работает нормально. нужно делать отдельные stage и классы
+
+        view.selectedTimelineButton();
     }
 
     public void openNotes(MouseEvent event) {
 
+
+        view.selectedNotesButton();
     }
 
     public void openTasks(MouseEvent event) {
 
+
+        view.selectedTasksButton();
     }
 
     public void openContacts(MouseEvent event) {
 
+
+        view.selectedContactsButton();
     }
 
     public void openSettings(MouseEvent event) {

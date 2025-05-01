@@ -27,6 +27,11 @@ public class MainView {
     private ScrollPane scrollPane;
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
     private GridPane workingBox;
+    private Label chatButton;
+    private Label contactsButton;
+    private Label timelineButton;
+    private Label notesButton;
+    private Label tasksButton;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -63,39 +68,39 @@ public class MainView {
         VBox bottomMenuPanel = new VBox(10);
         bottomMenuPanel.setAlignment(Pos.CENTER);
 
-        Label chatButton = new Label();
+        chatButton = new Label();
         chatButton.setMinSize(38, 38);
         chatButton.setOnMouseEntered(event -> chatButton.setCursor(Cursor.HAND));
         chatButton.setOnMouseExited(event -> chatButton.setCursor(Cursor.DEFAULT));
         chatButton.getStyleClass().add("chat-button");
 
 
-        Label timelineButton = new Label();
+        contactsButton = new Label();
+        contactsButton.setMinSize(38, 38);
+        contactsButton.setOnMouseEntered(event -> contactsButton.setCursor(Cursor.HAND));
+        contactsButton.setOnMouseExited(event -> contactsButton.setCursor(Cursor.DEFAULT));
+        contactsButton.getStyleClass().add("contacts-button");
+
+
+        timelineButton = new Label();
         timelineButton.setMinSize(38, 38);
         timelineButton.setOnMouseEntered(event -> timelineButton.setCursor(Cursor.HAND));
         timelineButton.setOnMouseExited(event -> timelineButton.setCursor(Cursor.DEFAULT));
         timelineButton.getStyleClass().add("timeline-button");
 
 
-        Label notesButton = new Label();
+        notesButton = new Label();
         notesButton.setMinSize(38, 38);
         notesButton.setOnMouseEntered(event -> notesButton.setCursor(Cursor.HAND));
         notesButton.setOnMouseExited(event -> notesButton.setCursor(Cursor.DEFAULT));
         notesButton.getStyleClass().add("notes-button");
 
 
-        Label tasksButton = new Label();
+        tasksButton = new Label();
         tasksButton.setMinSize(38, 38);
         tasksButton.setOnMouseEntered(event -> tasksButton.setCursor(Cursor.HAND));
         tasksButton.setOnMouseExited(event -> tasksButton.setCursor(Cursor.DEFAULT));
         tasksButton.getStyleClass().add("tasks-button");
-
-
-        Label contactsButton = new Label();
-        contactsButton.setMinSize(38, 38);
-        contactsButton.setOnMouseEntered(event -> contactsButton.setCursor(Cursor.HAND));
-        contactsButton.setOnMouseExited(event -> contactsButton.setCursor(Cursor.DEFAULT));
-        contactsButton.getStyleClass().add("contacts-button");
 
 
         Label settingsButton = new Label();
@@ -122,7 +127,7 @@ public class MainView {
         settingsButton.setOnMouseClicked(mainController::openSettings);
         logoutButton.setOnMouseClicked(mainController::logout);
 
-        topMenuPanel.getChildren().addAll(chatButton, timelineButton, notesButton, tasksButton, contactsButton);
+        topMenuPanel.getChildren().addAll(chatButton, contactsButton, timelineButton, notesButton, tasksButton);
         bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);
 
         menuPanel.setTop(topMenuPanel);
@@ -219,6 +224,76 @@ public class MainView {
         } else {
             userComboBox.setValue(null); // Clear selection if no users
         }
+    }
+
+    public void selectedChatButton() {
+        chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
+        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
+        notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
+        tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
+
+        chatButton.getStyleClass().add("chat-button1");
+        contactsButton.getStyleClass().add("contacts-button");
+        timelineButton.getStyleClass().add("timeline-button");
+        notesButton.getStyleClass().add("notes-button");
+        tasksButton.getStyleClass().add("tasks-button");
+    }
+
+    public void selectedContactsButton() {
+        chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
+        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
+        notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
+        tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
+
+        chatButton.getStyleClass().add("chat-button");
+        contactsButton.getStyleClass().add("contacts-button1");
+        timelineButton.getStyleClass().add("timeline-button");
+        notesButton.getStyleClass().add("notes-button");
+        tasksButton.getStyleClass().add("tasks-button");
+    }
+
+    public void selectedTimelineButton() {
+        chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
+        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
+        notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
+        tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
+
+        chatButton.getStyleClass().add("chat-button");
+        contactsButton.getStyleClass().add("contacts-button");
+        timelineButton.getStyleClass().add("timeline-button1");
+        notesButton.getStyleClass().add("notes-button");
+        tasksButton.getStyleClass().add("tasks-button");
+    }
+
+    public void selectedNotesButton() {
+        chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
+        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
+        notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
+        tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
+
+        chatButton.getStyleClass().add("chat-button");
+        contactsButton.getStyleClass().add("contacts-button");
+        timelineButton.getStyleClass().add("timeline-button");
+        notesButton.getStyleClass().add("notes-button1");
+        tasksButton.getStyleClass().add("tasks-button");
+    }
+
+    public void selectedTasksButton() {
+        chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
+        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
+        notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
+        tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
+
+        chatButton.getStyleClass().add("chat-button");
+        contactsButton.getStyleClass().add("contacts-button");
+        timelineButton.getStyleClass().add("timeline-button");
+        notesButton.getStyleClass().add("notes-button");
+        tasksButton.getStyleClass().add("tasks-button1");
     }
 
     public Stage getPrimaryStage() {

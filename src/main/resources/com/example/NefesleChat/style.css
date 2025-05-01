@@ -47,6 +47,19 @@
     -fx-background-radius: 10px;
 }
 
+.chat-button1 {
+    -fx-background-image: url("icons/chat.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
 .chat-button:hover {
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
@@ -61,6 +74,19 @@
     -fx-background-clip: content-box;
     -fx-background-origin: content-box;
     -fx-background-radius: 10px;
+}
+
+.timeline-button1 {
+    -fx-background-image: url("icons/timeline.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .timeline-button:hover {
@@ -79,6 +105,19 @@
     -fx-background-radius: 10px;
 }
 
+.notes-button1 {
+    -fx-background-image: url("icons/notes.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
 .notes-button:hover {
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
@@ -95,6 +134,19 @@
     -fx-background-radius: 10px;
 }
 
+.tasks-button1 {
+    -fx-background-image: url("icons/tasks.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
 .tasks-button:hover {
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
@@ -109,6 +161,19 @@
     -fx-background-clip: content-box;
     -fx-background-origin: content-box;
     -fx-background-radius: 10px;
+}
+
+.contacts-button1 {
+    -fx-background-image: url("icons/contacts.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .contacts-button:hover {
