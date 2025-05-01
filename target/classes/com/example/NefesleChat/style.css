@@ -151,7 +151,7 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
-.contacts-button {
+.users-button {
     -fx-background-image: url("icons/contacts.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -163,7 +163,7 @@
     -fx-background-radius: 10px;
 }
 
-.contacts-button1 {
+.users-button1 {
     -fx-background-image: url("icons/contacts.png");
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
@@ -176,7 +176,7 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
-.contacts-button:hover {
+.users-button:hover {
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 

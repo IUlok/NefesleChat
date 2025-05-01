@@ -1,6 +1,5 @@
 package com.example.NefesleChat;
 
-import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 
 import java.io.*;
@@ -37,10 +36,10 @@ public class MainController {
         view.selectedTasksButton();
     }
 
-    public void openContacts(MouseEvent event) {
+    public void openUsers(MouseEvent event) {
 
 
-        view.selectedContactsButton();
+        view.selectedUsersButton();
     }
 
     public void openSettings(MouseEvent event) {

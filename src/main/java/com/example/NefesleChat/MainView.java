@@ -28,7 +28,7 @@ public class MainView {
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
     private GridPane workingBox;
     private Label chatButton;
-    private Label contactsButton;
+    private Label usersButton;
     private Label timelineButton;
     private Label notesButton;
     private Label tasksButton;
@@ -75,11 +75,11 @@ public class MainView {
         chatButton.getStyleClass().add("chat-button");
 
 
-        contactsButton = new Label();
-        contactsButton.setMinSize(38, 38);
-        contactsButton.setOnMouseEntered(event -> contactsButton.setCursor(Cursor.HAND));
-        contactsButton.setOnMouseExited(event -> contactsButton.setCursor(Cursor.DEFAULT));
-        contactsButton.getStyleClass().add("contacts-button");
+        usersButton = new Label();
+        usersButton.setMinSize(38, 38);
+        usersButton.setOnMouseEntered(event -> usersButton.setCursor(Cursor.HAND));
+        usersButton.setOnMouseExited(event -> usersButton.setCursor(Cursor.DEFAULT));
+        usersButton.getStyleClass().add("users-button");
 
 
         timelineButton = new Label();
@@ -122,12 +122,12 @@ public class MainView {
         timelineButton.setOnMouseClicked(mainController::openTimeline);
         notesButton.setOnMouseClicked(mainController::openNotes);
         tasksButton.setOnMouseClicked(mainController::openTasks);
-        contactsButton.setOnMouseClicked(mainController::openContacts);
+        usersButton.setOnMouseClicked(mainController::openUsers);
 
         settingsButton.setOnMouseClicked(mainController::openSettings);
         logoutButton.setOnMouseClicked(mainController::logout);
 
-        topMenuPanel.getChildren().addAll(chatButton, contactsButton, timelineButton, notesButton, tasksButton);
+        topMenuPanel.getChildren().addAll(chatButton, usersButton, timelineButton, notesButton, tasksButton);
         bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);
 
         menuPanel.setTop(topMenuPanel);
@@ -228,27 +228,27 @@ public class MainView {
 
     public void selectedChatButton() {
         chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
-        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        usersButton.getStyleClass().removeAll("users-button", "users-button1");
         timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
         notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
         tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
 
         chatButton.getStyleClass().add("chat-button1");
-        contactsButton.getStyleClass().add("contacts-button");
+        usersButton.getStyleClass().add("users-button");
         timelineButton.getStyleClass().add("timeline-button");
         notesButton.getStyleClass().add("notes-button");
         tasksButton.getStyleClass().add("tasks-button");
     }
 
-    public void selectedContactsButton() {
+    public void selectedUsersButton() {
         chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
-        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        usersButton.getStyleClass().removeAll("users-button", "users-button1");
         timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
         notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
         tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
 
         chatButton.getStyleClass().add("chat-button");
-        contactsButton.getStyleClass().add("contacts-button1");
+        usersButton.getStyleClass().add("users-button1");
         timelineButton.getStyleClass().add("timeline-button");
         notesButton.getStyleClass().add("notes-button");
         tasksButton.getStyleClass().add("tasks-button");
@@ -256,13 +256,13 @@ public class MainView {
 
     public void selectedTimelineButton() {
         chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
-        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        usersButton.getStyleClass().removeAll("users-button", "users-button1");
         timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
         notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
         tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
 
         chatButton.getStyleClass().add("chat-button");
-        contactsButton.getStyleClass().add("contacts-button");
+        usersButton.getStyleClass().add("users-button");
         timelineButton.getStyleClass().add("timeline-button1");
         notesButton.getStyleClass().add("notes-button");
         tasksButton.getStyleClass().add("tasks-button");
@@ -270,13 +270,13 @@ public class MainView {
 
     public void selectedNotesButton() {
         chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
-        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        usersButton.getStyleClass().removeAll("users-button", "users-button1");
         timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
         notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
         tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
 
         chatButton.getStyleClass().add("chat-button");
-        contactsButton.getStyleClass().add("contacts-button");
+        usersButton.getStyleClass().add("users-button");
         timelineButton.getStyleClass().add("timeline-button");
         notesButton.getStyleClass().add("notes-button1");
         tasksButton.getStyleClass().add("tasks-button");
@@ -284,13 +284,13 @@ public class MainView {
 
     public void selectedTasksButton() {
         chatButton.getStyleClass().removeAll("chat-button", "chat-button1");
-        contactsButton.getStyleClass().removeAll("contacts-button", "contacts-button1");
+        usersButton.getStyleClass().removeAll("users-button", "users-button1");
         timelineButton.getStyleClass().removeAll("timeline-button", "timeline-button1");
         notesButton.getStyleClass().removeAll("notes-button", "notes-button1");
         tasksButton.getStyleClass().removeAll("tasks-button", "tasks-button1");
 
         chatButton.getStyleClass().add("chat-button");
-        contactsButton.getStyleClass().add("contacts-button");
+        usersButton.getStyleClass().add("users-button");
         timelineButton.getStyleClass().add("timeline-button");
         notesButton.getStyleClass().add("notes-button");
         tasksButton.getStyleClass().add("tasks-button1");
