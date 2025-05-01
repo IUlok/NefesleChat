@@ -14,30 +14,23 @@ public class MainController {
     }
 
     public void openChat(MouseEvent event) {
-        System.out.println("Переход в чат");
-        //ChatView chatView = new ChatView(view);
-        //chatView.show();
-        //TODO Открытие окна с чатом
+        //view.createMessageBox(); // Не работает нормально. нужно делать отдельные stage и классы
     }
 
     public void openTimeline(MouseEvent event) {
-        System.out.println("Переход в расписание");
-        //TODO Открытие окна с расписанием
+        //view.createTimelineBox(); // Не работает нормально. нужно делать отдельные stage и классы
     }
 
     public void openNotes(MouseEvent event) {
-        System.out.println("Переход в заметки");
-        //TODO Открытие окна с расписанием
+
     }
 
     public void openTasks(MouseEvent event) {
-        System.out.println("Переход в задачи");
-        //TODO Открытие окна с расписанием
+
     }
 
     public void openContacts(MouseEvent event) {
-        System.out.println("Переход в контакты");
-        //TODO Открытие окна с контактами
+
     }
 
     public void openSettings(MouseEvent event) {

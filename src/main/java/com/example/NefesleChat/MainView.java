@@ -12,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
@@ -27,6 +26,7 @@ public class MainView {
     private ChatView chatView;
     private ScrollPane scrollPane;
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
+    private GridPane workingBox;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -41,11 +41,11 @@ public class MainView {
         BorderPane menuPanel = createMenu();
         HBox topPanel = createHeader();
 
-        GridPane messageBox = createMessageBox();
+        createMessageBox();
 
         root.setLeft(menuPanel);
         root.setTop(topPanel);
-        root.setCenter(messageBox);
+        root.setCenter(workingBox);
 
         Scene scene = new Scene(root, 1280, 768);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -68,37 +68,50 @@ public class MainView {
         chatButton.setOnMouseEntered(event -> chatButton.setCursor(Cursor.HAND));
         chatButton.setOnMouseExited(event -> chatButton.setCursor(Cursor.DEFAULT));
         chatButton.getStyleClass().add("chat-button");
+
+
         Label timelineButton = new Label();
-        timelineButton.setMinSize(28, 28);
+        timelineButton.setMinSize(38, 38);
         timelineButton.setOnMouseEntered(event -> timelineButton.setCursor(Cursor.HAND));
         timelineButton.setOnMouseExited(event -> timelineButton.setCursor(Cursor.DEFAULT));
         timelineButton.getStyleClass().add("timeline-button");
+
+
         Label notesButton = new Label();
-        notesButton.setMinSize(28, 28);
+        notesButton.setMinSize(38, 38);
         notesButton.setOnMouseEntered(event -> notesButton.setCursor(Cursor.HAND));
         notesButton.setOnMouseExited(event -> notesButton.setCursor(Cursor.DEFAULT));
         notesButton.getStyleClass().add("notes-button");
+
+
         Label tasksButton = new Label();
-        tasksButton.setMinSize(28, 28);
+        tasksButton.setMinSize(38, 38);
         tasksButton.setOnMouseEntered(event -> tasksButton.setCursor(Cursor.HAND));
         tasksButton.setOnMouseExited(event -> tasksButton.setCursor(Cursor.DEFAULT));
         tasksButton.getStyleClass().add("tasks-button");
+
+
         Label contactsButton = new Label();
-        contactsButton.setMinSize(28, 28);
+        contactsButton.setMinSize(38, 38);
         contactsButton.setOnMouseEntered(event -> contactsButton.setCursor(Cursor.HAND));
         contactsButton.setOnMouseExited(event -> contactsButton.setCursor(Cursor.DEFAULT));
         contactsButton.getStyleClass().add("contacts-button");
+
+
         Label settingsButton = new Label();
-        settingsButton.setMinSize(28, 28);
+        settingsButton.setMinSize(38, 38);
         settingsButton.setOnMouseEntered(event -> settingsButton.setCursor(Cursor.HAND));
         settingsButton.setOnMouseExited(event -> settingsButton.setCursor(Cursor.DEFAULT));
         settingsButton.getStyleClass().add("settings-button");
+
+
         Label logoutButton = new Label();
-        logoutButton.setMinSize(28, 28);
+        logoutButton.setMinSize(38, 38);
         logoutButton.setOnMouseEntered(event -> logoutButton.setCursor(Cursor.HAND));
         logoutButton.setOnMouseExited(event -> logoutButton.setCursor(Cursor.DEFAULT));
-        logoutButton.getTransforms().add(new Translate(4, 0));
         logoutButton.getStyleClass().add("exit-button");
+
+
         MainController mainController = new MainController(this);
         chatButton.setOnMouseClicked(mainController::openChat);
         timelineButton.setOnMouseClicked(mainController::openTimeline);
@@ -112,7 +125,6 @@ public class MainView {
         topMenuPanel.getChildren().addAll(chatButton, timelineButton, notesButton, tasksButton, contactsButton);
         bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);
 
-        //menuPanel.getChildren().addAll(topMenuPanel, bottomMenuPanel); // Добавляем ComboBox в меню один раз
         menuPanel.setTop(topMenuPanel);
         menuPanel.setBottom(bottomMenuPanel);
         return menuPanel;
@@ -123,9 +135,9 @@ public class MainView {
         topPanel.setPadding(new Insets(5));
         topPanel.getStyleClass().add("top-panel");
         Label logo = new Label();
-        logo.setMinSize(34, 34);
+        logo.setMinSize(40, 40);
         logo.getStyleClass().add("logo");
-        MainController mainController = new MainController(this);
+        //MainController mainController = new MainController(this);
 
         topPanel.getChildren().addAll(logo, userComboBox);
         return topPanel;
@@ -152,11 +164,11 @@ public class MainView {
         return bottomPanel;
     }
 
-    private GridPane createMessageBox() {
-        GridPane messageBox = new GridPane(2, 0);
+    public void createMessageBox() {
+        workingBox = new GridPane(2, 0);
 
-        messageBox.setVgap(10);
-        messageBox.setHgap(10);
+        workingBox.setVgap(10);
+        workingBox.setHgap(10);
 
         BorderPane chatPanel = new BorderPane();
         GridPane dialogPanel = new GridPane();
@@ -170,10 +182,10 @@ public class MainView {
         col1.setPercentWidth(25);
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
-        messageBox.getColumnConstraints().addAll(col1, col2);
+        workingBox.getColumnConstraints().addAll(col1, col2);
 
-        messageBox.add(dialogPanel, 0, 0);
-        messageBox.add(chatPanel, 1, 0);
+        workingBox.add(dialogPanel, 0, 0);
+        workingBox.add(chatPanel, 1, 0);
 
         chatArea = new VBox();
         chatArea.setPadding(new Insets(10));
@@ -187,8 +199,11 @@ public class MainView {
 
         HBox bottomPanel = createBottomPanel();
         chatPanel.setBottom(bottomPanel);
+    }
 
-        return messageBox;
+    public void createTimelineBox() {
+        root.setCenter(null);
+        show();
     }
 
     // Method to update the ComboBox items

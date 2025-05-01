@@ -31,6 +31,8 @@
 
 .logo {
     -fx-background-image: url("icons/logo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 .chat-button {
@@ -51,26 +53,98 @@
 
 .timeline-button {
     -fx-background-image: url("icons/timeline.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.timeline-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .notes-button {
     -fx-background-image: url("icons/notes.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.notes-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .tasks-button {
     -fx-background-image: url("icons/tasks.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.tasks-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .contacts-button {
     -fx-background-image: url("icons/contacts.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.contacts-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .settings-button {
     -fx-background-image: url("icons/settings.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.settings-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .exit-button {
     -fx-background-image: url("icons/exit.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-clip: content-box;
+    -fx-background-origin: content-box;
+    -fx-background-radius: 10px;
+}
+
+.exit-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
 .scrollpane {
