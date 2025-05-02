@@ -35,7 +35,6 @@ public class ChatView {
         return mainView;
     }
 
-    // В ChatView.java
     public void addMessage(String sender, String message, boolean isMyMessage) {
         VBox messageContainer = createMessageContainer(sender, message, isMyMessage);
         chatArea.getChildren().add(messageContainer);

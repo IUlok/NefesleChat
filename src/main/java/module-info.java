@@ -14,6 +14,7 @@ module com.example.NefesleChat {
     requires com.google.gson;
     requires java.net.http;
     requires java.desktop;
+    requires java.logging;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;

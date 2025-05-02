@@ -13,13 +13,10 @@ public class MainController {
     }
 
     public void openChat(MouseEvent event) {
-        //view.createMessageBox(); // Не работает нормально. нужно делать отдельные stage и классы
-
-        view.selectedChatButton();
+        view.showChatBox();
     }
 
     public void openTimeline(MouseEvent event) {
-        //view.createTimelineBox(); // Не работает нормально. нужно делать отдельные stage и классы
 
         view.selectedTimelineButton();
     }
@@ -37,9 +34,7 @@ public class MainController {
     }
 
     public void openUsers(MouseEvent event) {
-
-
-        view.selectedUsersButton();
+        view.showUsersBox();
     }
 
     public void openSettings(MouseEvent event) {

@@ -3,17 +3,18 @@ package com.example.NefesleChat;
 import com.example.NefesleChat.entity.AuthForm;
 import com.example.NefesleChat.entity.RegistrationForm;
 import com.example.NefesleChat.entity.UserDetailsDTO;
+import com.example.NefesleChat.entity.UserInListDTO;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
+import java.lang.reflect.Type;
 import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Properties;
+import java.util.List;
 
 public class HttpUtil {
     private static HttpClient client = HttpClient.newBuilder()
@@ -22,6 +23,7 @@ public class HttpUtil {
     private static final String serverUri = "http://linedown.ru";
     private static final String serverPrefix = "http://linedown.ru:3254/api";
     private static final String myProfilePath = "/my-profile";
+    private static final String userListPath = "/users?last-name=";
 
     @Getter
     private String jwtToken;
@@ -95,5 +97,21 @@ public class HttpUtil {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return new Gson().fromJson(response.body(), UserDetailsDTO.class);
+    }
+
+    public static List<UserInListDTO> getListUsers(String lastName) throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + userListPath + lastName))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        Type userListType = new TypeToken<List<UserInListDTO>>() {}.getType();
+        List<UserInListDTO> userList = gson.fromJson(response.body(), userListType);
+
+        return userList;
     }
 }

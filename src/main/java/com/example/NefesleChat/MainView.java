@@ -21,12 +21,15 @@ import java.util.List;
 public class MainView {
     private Stage primaryStage;
     private VBox chatArea;
+    private VBox usersArea;
     private TextField messageInput;
+    private TextField searchInput;
     private BorderPane root;
     private ChatView chatView;
+    private UsersView usersView;
     private ScrollPane scrollPane;
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
-    private GridPane workingBox;
+    private GridPane workingBox = new GridPane();
     private Label chatButton;
     private Label usersButton;
     private Label timelineButton;
@@ -46,11 +49,10 @@ public class MainView {
         BorderPane menuPanel = createMenu();
         HBox topPanel = createHeader();
 
-        createMessageBox();
-
         root.setLeft(menuPanel);
         root.setTop(topPanel);
-        root.setCenter(workingBox);
+
+        showChatBox();
 
         Scene scene = new Scene(root, 1280, 768);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
@@ -170,6 +172,7 @@ public class MainView {
     }
 
     public void createMessageBox() {
+        workingBox.getChildren().clear();
         workingBox = new GridPane(2, 0);
 
         workingBox.setVgap(10);
@@ -204,11 +207,69 @@ public class MainView {
 
         HBox bottomPanel = createBottomPanel();
         chatPanel.setBottom(bottomPanel);
+        root.setCenter(workingBox);
+    }
+
+    public void showChatBox() {
+        createMessageBox();
+        selectedChatButton();
+    }
+
+    public void showUsersBox() {
+        createUsersBox();
+        selectedUsersButton();
+    }
+
+    public void createUsersBox() {
+        workingBox.getChildren().clear();
+        workingBox = new GridPane(0, 2);
+
+        workingBox.setVgap(10);
+        workingBox.setHgap(10);
+        workingBox.setAlignment(Pos.CENTER);
+
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(10);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(90);
+        workingBox.getRowConstraints().addAll(row1, row2);
+
+        HBox searchBox = new HBox(10);
+        searchBox.setPadding(new Insets(10));
+
+        searchInput = new TextField();
+        searchInput.setPrefWidth(300);
+        searchInput.setPromptText("Введите фамилию пользователя");
+        HBox.setHgrow(searchInput, Priority.ALWAYS);
+
+        Button searchButton = new Button("Поиск");
+        searchButton.setOnMouseEntered(event -> searchButton.setCursor(Cursor.HAND));
+        searchButton.setOnMouseExited(event -> searchButton.setCursor(Cursor.DEFAULT));
+
+        usersArea = new VBox();
+        usersArea.setPadding(new Insets(10));
+        usersArea.setSpacing(5);
+
+        scrollPane = new ScrollPane(usersArea);
+        scrollPane.getStyleClass().add("scrollpane");
+        scrollPane.setFitToWidth(true);
+        scrollPane.vvalueProperty().bind(usersArea.heightProperty());
+
+        usersView = new UsersView( this);
+        UsersController usersController = new UsersController(usersView);
+
+        searchInput.setOnKeyPressed(usersController::handleEnterKey);
+        searchButton.setOnAction(usersController::searchUsersAction);
+        searchBox.getChildren().addAll(searchInput, searchButton);
+
+        workingBox.add(searchBox, 0, 0);
+        workingBox.add(scrollPane, 0, 1);
+
+        root.setCenter(workingBox);
     }
 
     public void createTimelineBox() {
-        root.setCenter(null);
-        show();
+
     }
 
     // Method to update the ComboBox items
@@ -304,8 +365,16 @@ public class MainView {
         return chatArea;
     }
 
+    public VBox getUsersArea() {
+        return usersArea;
+    }
+
     public TextField getMessageInput() {
         return messageInput;
+    }
+
+    public TextField getSearchUsersInput() {
+        return searchInput;
     }
 
     public BorderPane getRoot() {
