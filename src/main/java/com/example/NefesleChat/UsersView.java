@@ -2,6 +2,7 @@ package com.example.NefesleChat;
 
 import com.example.NefesleChat.entity.UserDetailsDTO;
 import com.example.NefesleChat.entity.UserInListDTO;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,8 @@ public class UsersView {
 
     private VBox createUsersContainer(String searchUsers){
         VBox usersContainer = new VBox();
+        usersContainer.setPadding(new Insets(10));
+        usersContainer.setSpacing(5);
 
         try {
             List<UserInListDTO> result = HttpUtil.getListUsers(searchUsers);
