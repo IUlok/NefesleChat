@@ -38,5 +38,5 @@ public class UserDetailsDTO {
     private Boolean isBlocked;
 
     private String email;
-}
+} 
 
