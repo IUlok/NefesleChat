@@ -29,7 +29,7 @@ public class UserDetailsDTO {
     private String reimbursement;
     // Название группы - есть у роли студента
     private String groupName;
-    // Факультет
+    // Кафедра
     private String department;
     // academicTitle и academicDegree - если преподаватель
     private String academicTitle;
