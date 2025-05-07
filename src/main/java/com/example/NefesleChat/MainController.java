@@ -39,7 +39,12 @@ public class MainController {
 
     public void openSettings(MouseEvent event) {
         SettingsDialog settingsDialog = new SettingsDialog();
-        settingsDialog.showSettings(view.getPrimaryStage());
+        settingsDialog.showSettings(view);
+    }
+
+    public void openLogout(MouseEvent event) {
+        LogoutView logoutView = new LogoutView();
+        logoutView.showLogout(view);
     }
 
     public void logout(MouseEvent event) {

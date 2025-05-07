@@ -31,6 +31,7 @@ public class UserDetailsDTO {
     private String groupName;
     // Кафедра
     private String department;
+    private String faculty;
     // academicTitle и academicDegree - если преподаватель
     private String academicTitle;
     private String academicDegree;

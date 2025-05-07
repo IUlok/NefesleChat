@@ -127,7 +127,7 @@ public class MainView {
         usersButton.setOnMouseClicked(mainController::openUsers);
 
         settingsButton.setOnMouseClicked(mainController::openSettings);
-        logoutButton.setOnMouseClicked(mainController::logout);
+        logoutButton.setOnMouseClicked(mainController::openLogout);
 
         topMenuPanel.getChildren().addAll(chatButton, usersButton, timelineButton, notesButton, tasksButton);
         bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);

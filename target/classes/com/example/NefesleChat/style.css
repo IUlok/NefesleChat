@@ -305,3 +305,70 @@
     -fx-text-fill: #039156;
     -fx-font-family: 'Noto Sans Bold';
 }
+
+.settingsText {
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Noto Sans Bold';
+}
+
+.exit-panel {
+    -fx-background-color: #039156;
+    -fx-border-color: transparent;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+
+.exitText {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 14px;
+}
+
+.exitButtonYes {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.exitButtonNo {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.exitButtonYes:hover {
+    -fx-background-color: #00ac64;
+    -fx-text-fill: #ff0000;
+}
+
+.exitButtonNo:hover {
+    -fx-background-color: #00ac64;
+}
+
+.settingsExitButton {
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #ff0000;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-font-family: 'Noto Sans Bold';
+}
+
+.settingsExitButton:hover {
+    -fx-background-color: #d90000;
+}
+
+.accountBox {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
