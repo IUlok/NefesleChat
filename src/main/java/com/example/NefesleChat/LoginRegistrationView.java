@@ -42,9 +42,11 @@ public class LoginRegistrationView {
         authLogo.setPrefSize(82,82);
         authLogo.getStyleClass().add("authRegLogo");
         Label authText = new Label("Авторизация");
+        authText.getStyleClass().add("authRegTextLogo");
         HBox headerPane = new HBox(2);
         VBox footerPane = new VBox(10);
-        headerPane.setPadding(new Insets(20));
+        headerPane.setPadding(new Insets(22));
+        headerPane.setSpacing(10);
         headerPane.setAlignment(Pos.CENTER);
         headerPane.getChildren().addAll(authLogo, authText);
 
@@ -56,17 +58,21 @@ public class LoginRegistrationView {
         email.getStyleClass().add("authRegTextField");
         email.setPrefSize(350,50);
         email.setMaxSize(350,50);
-        email.setPromptText("\tЭл. почта");
+        email.setPromptText("   Эл. почта");
         passwordField = new PasswordField();
         passwordField.getStyleClass().add("authRegTextField");
         passwordField.setPrefSize(350,50);
         passwordField.setMaxSize(350,50);
-        passwordField.setPromptText("\tПароль");
+        passwordField.setPromptText("   Пароль");
 
         loginButton = new Button("Вход");
+        loginButton.getStyleClass().add("authRegTopButton");
+        loginButton.setPrefSize(200, 50);
         registerButton = new Button("Регистрация");
+        registerButton.getStyleClass().add("authRegBottomButton");
         footerPane.setAlignment(Pos.CENTER);
         footerPane.setPadding(new Insets(20));
+        footerPane.setPadding(new Insets(0,0,50,0));
         footerPane.getChildren().addAll(loginButton, registerButton);
 
         warningsLabel = new Label();
