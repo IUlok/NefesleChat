@@ -249,7 +249,14 @@
     -fx-background-size: cover;
 }
 
-.authForm {
+.regbg {
+    -fx-background-image: url("icons/regbg.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+.authRegForm {
     -fx-background-color: rgba(228, 227, 227, 1.0);
 }
 

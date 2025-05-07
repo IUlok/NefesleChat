@@ -2,6 +2,7 @@ package com.example.NefesleChat;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,7 +37,7 @@ public class LoginRegistrationView {
         stage.setResizable(false);
 
         BorderPane authForm = new BorderPane();
-        authForm.getStyleClass().add("authForm");
+        authForm.getStyleClass().add("authRegForm");
 
         Label authLogo = new Label();
         authLogo.setPrefSize(82,82);
@@ -73,6 +74,10 @@ public class LoginRegistrationView {
         footerPane.setAlignment(Pos.CENTER);
         footerPane.setPadding(new Insets(20));
         footerPane.setPadding(new Insets(0,0,50,0));
+        loginButton.setOnMouseEntered(event -> loginButton.setCursor(Cursor.HAND));
+        loginButton.setOnMouseExited(event -> loginButton.setCursor(Cursor.DEFAULT));
+        registerButton.setOnMouseEntered(event -> registerButton.setCursor(Cursor.HAND));
+        registerButton.setOnMouseExited(event -> registerButton.setCursor(Cursor.DEFAULT));
         footerPane.getChildren().addAll(loginButton, registerButton);
 
         warningsLabel = new Label();
