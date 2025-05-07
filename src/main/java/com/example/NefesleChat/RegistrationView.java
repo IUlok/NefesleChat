@@ -56,7 +56,7 @@ public class RegistrationView {
 
         vbox.getChildren().addAll(tokenField, lastNameField, emailField, passwordField, passwordFieldTest, registerButton, messageLabel, backButton);
 
-        Scene scene = new Scene(vbox, 300, 300);
+        Scene scene = new Scene(vbox, 1200, 600);
         stage.setScene(scene);
     }
 

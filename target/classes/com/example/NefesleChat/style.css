@@ -221,3 +221,24 @@
     -fx-focus-color: #c8c8c8;
     -fx-faint-focus-color: transparent;
 }
+
+.authbg {
+    -fx-background-image: url("icons/authbg.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+.authForm {
+    -fx-background-color: rgba(228, 227, 227, 1.0);
+}
+
+.authRegLogo {
+    -fx-background-image: url("icons/authreglogo.png");
+}
+
+.authRegTextField {
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-color: transparent;
+}
