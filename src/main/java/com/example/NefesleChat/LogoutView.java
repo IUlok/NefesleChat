@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LogoutView {
-    public void showLogout(MainView view) {
+    public void showLogout(MainView view, int b) {
         LogoutController logoutController = new LogoutController(view);
 
         Stage logoutStage = new Stage();
@@ -47,7 +47,10 @@ public class LogoutView {
         logout.add(buttons, 0, 1);
 
         yesButton.setOnMouseClicked(logoutController::logout);
-        noButton.setOnMouseClicked(event -> logoutStage.close());
+        noButton.setOnMouseClicked(event -> {
+            if (b == 0) {view.getPrimaryStage().getScene().getRoot().setEffect(null);}
+            logoutStage.close();
+        });
 
         Scene scene = new Scene(logout, 300, 100);
         scene.setFill(Color.TRANSPARENT);

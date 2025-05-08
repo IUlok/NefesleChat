@@ -42,21 +42,14 @@ public class MainController {
     }
 
     public void openSettings(MouseEvent event) {
-        BoxBlur blur = new BoxBlur(3, 3, 3);
-        ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(-0.1);
-        colorAdjust.setContrast(-0.9);
-        Blend blend = new Blend();
-        blend.setMode(BlendMode.MULTIPLY);
-        blend.setTopInput(colorAdjust);
-        blend.setBottomInput(blur);
-        view.getPrimaryStage().getScene().getRoot().setEffect(blend);
+        view.setEffects();
         SettingsDialog settingsDialog = new SettingsDialog();
         settingsDialog.showSettings(view);
     }
 
-    public void openLogout(MouseEvent event) {
+    public void openLogout(int b) {
+        view.setEffects();
         LogoutView logoutView = new LogoutView();
-        logoutView.showLogout(view);
+        logoutView.showLogout(view, b);
     }
 }

@@ -166,7 +166,7 @@ public class SettingsDialog {
             exitButton.setOnMouseExited(event -> exitButton.setCursor(Cursor.DEFAULT));
             exitButton.getStyleClass().add("settingsExitButton");
             MainController mainController = new MainController(view);
-            exitButton.setOnMouseClicked(mainController::openLogout);
+            exitButton.setOnMouseClicked(event -> mainController.openLogout(1));
             exitPane.getChildren().add(exitButton);
 
             VBox mainBox = new VBox(10);

@@ -130,7 +130,7 @@ public class MainView {
         usersButton.setOnMouseClicked(mainController::openUsers);
 
         settingsButton.setOnMouseClicked(mainController::openSettings);
-        logoutButton.setOnMouseClicked(mainController::openLogout);
+        logoutButton.setOnMouseClicked(event -> mainController.openLogout(0));
 
         topMenuPanel.getChildren().addAll(chatButton, usersButton, timelineButton, notesButton, tasksButton);
         bottomMenuPanel.getChildren().addAll(settingsButton, logoutButton);
@@ -376,6 +376,13 @@ public class MainView {
     }
 
     public void selectedUserBox(int id) {
+        setEffects();
+
+        UserBox userBoxView = new UserBox();
+        userBoxView.showUserBox(this, id);
+    }
+
+    public void setEffects() {
         BoxBlur blur = new BoxBlur(3, 3, 3);
         ColorAdjust colorAdjust = new ColorAdjust();
         colorAdjust.setBrightness(-0.1);
@@ -385,9 +392,6 @@ public class MainView {
         blend.setTopInput(colorAdjust);
         blend.setBottomInput(blur);
         primaryStage.getScene().getRoot().setEffect(blend);
-
-        UserBox userBoxView = new UserBox();
-        userBoxView.showUserBox(this, id);
     }
 
     public Stage getPrimaryStage() {
