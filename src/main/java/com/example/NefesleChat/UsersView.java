@@ -66,7 +66,7 @@ public class UsersView {
                 userContainer.setAlignment(Pos.CENTER_LEFT);
                 Label userIcon = new Label();
                 userIcon.setMinSize(60,60);
-                //userContainer.setAlignment(Pos.CENTER);
+
                 if (user.getRole().equals("Студент")) {
                     name = user.getName();
                     role = user.getRole();
@@ -94,6 +94,7 @@ public class UsersView {
                 userContainer.setMinSize(500, 100);
                 userContainer.setOnMouseEntered(event -> userContainer.setCursor(Cursor.HAND));
                 userContainer.setOnMouseExited(event -> userContainer.setCursor(Cursor.DEFAULT));
+                userContainer.setOnMouseClicked(e -> mainView.selectedUserBox(user.getId()));
 
                 //userContainer.setOnMouseClicked(e -> System.out.println(userContainer));
                 usersContainer.add(userContainer, j, i);

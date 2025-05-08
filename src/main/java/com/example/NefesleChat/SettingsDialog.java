@@ -1,6 +1,7 @@
 package com.example.NefesleChat;
 
 import com.example.NefesleChat.entity.UserDetailsDTO;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -12,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -176,6 +178,14 @@ public class SettingsDialog {
             Scene scene = new Scene(settingsBox, 409, 729);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
             settingsStage.setScene(scene);
+
+            settingsStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    view.getPrimaryStage().getScene().getRoot().setEffect(null);
+                }
+            });
+
             settingsStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();

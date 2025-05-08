@@ -493,6 +493,53 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-background-size: 30px 30px;
+}
+
+.onlineLabel {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-background-color: #039156;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 10px;
+    -fx-text-fill: #ffffff;
+}
+
+.offlineLabel {
+   -fx-background-radius: 5;
+   -fx-border-radius: 5;
+   -fx-background-color: #ff0000;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 10px;
+    -fx-text-fill: #ffffff;
+}
+
+.userCloseButton {
+    -fx-background-image: url("icons/exitButton.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 15px 15px;
+}
+
+.writeUserButton {
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #039156;
+    -fx-border-color: transparent;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
+    -fx-font-family: 'Noto Sans Bold';
 }
+
+.writeUserButton:hover {
+     -fx-background-color: #007645;
+ }
+
+ .userPaneBox {
+     -fx-background-radius: 16;
+     -fx-border-radius: 10;
+     -fx-border-color: #e4e4e4;
+     -fx-border-insets: 5px;
+     -fx-border-width: 3px;
+ }

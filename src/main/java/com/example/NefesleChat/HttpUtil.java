@@ -23,6 +23,7 @@ public class HttpUtil {
     private static final String serverUri = "http://linedown.ru";
     private static final String serverPrefix = "http://linedown.ru:3254/api";
     private static final String myProfilePath = "/my-profile";
+    private static final String userProfilePath = "/user-profile";
     private static final String userListPath = "/users?last-name=";
 
     @Getter
@@ -113,5 +114,16 @@ public class HttpUtil {
         List<UserInListDTO> userList = gson.fromJson(response.body(), userListType);
 
         return userList;
+    }
+
+    public static UserDetailsDTO getOtherUser(int id) throws IOException, URISyntaxException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + userProfilePath + "/" + id))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return new Gson().fromJson(response.body(), UserDetailsDTO.class);
     }
 }

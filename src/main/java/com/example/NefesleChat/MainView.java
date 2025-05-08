@@ -1,6 +1,7 @@
 package com.example.NefesleChat;
 
 // MainView.java
+import javafx.animation.SequentialTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -371,6 +373,21 @@ public class MainView {
         timelineButton.getStyleClass().add("timeline-button");
         notesButton.getStyleClass().add("notes-button");
         tasksButton.getStyleClass().add("tasks-button1");
+    }
+
+    public void selectedUserBox(int id) {
+        BoxBlur blur = new BoxBlur(3, 3, 3);
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.1);
+        colorAdjust.setContrast(-0.9);
+        Blend blend = new Blend();
+        blend.setMode(BlendMode.MULTIPLY);
+        blend.setTopInput(colorAdjust);
+        blend.setBottomInput(blur);
+        primaryStage.getScene().getRoot().setEffect(blend);
+
+        UserBox userBoxView = new UserBox();
+        userBoxView.showUserBox(this, id);
     }
 
     public Stage getPrimaryStage() {

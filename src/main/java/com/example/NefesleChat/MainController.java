@@ -1,5 +1,9 @@
 package com.example.NefesleChat;
 
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.MouseEvent;
 
 import java.io.*;
@@ -38,6 +42,15 @@ public class MainController {
     }
 
     public void openSettings(MouseEvent event) {
+        BoxBlur blur = new BoxBlur(3, 3, 3);
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.1);
+        colorAdjust.setContrast(-0.9);
+        Blend blend = new Blend();
+        blend.setMode(BlendMode.MULTIPLY);
+        blend.setTopInput(colorAdjust);
+        blend.setBottomInput(blur);
+        view.getPrimaryStage().getScene().getRoot().setEffect(blend);
         SettingsDialog settingsDialog = new SettingsDialog();
         settingsDialog.showSettings(view);
     }
@@ -45,22 +58,5 @@ public class MainController {
     public void openLogout(MouseEvent event) {
         LogoutView logoutView = new LogoutView();
         logoutView.showLogout(view);
-    }
-
-    public void logout(MouseEvent event) {
-        URL resourceURL = getClass().getResource("/jwtToken");
-        File jwtTokenFile = new File(resourceURL.getFile());
-        try {
-            FileWriter fileWriter = new FileWriter(jwtTokenFile);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write("");
-            bufferedWriter.close();
-        } catch (IOException e){
-                e.printStackTrace();
-        }
-
-        view.getPrimaryStage().close();
-        LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
-        loginRegistrationView.show();
     }
 }
