@@ -20,4 +20,5 @@ public class UserInListDTO {
     private String department;
 
     private String group;
+
 }

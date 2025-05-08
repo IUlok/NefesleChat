@@ -65,6 +65,9 @@ public class SettingsDialog {
             accountTextBox.setAlignment(Pos.CENTER);
             accountTextBox.getChildren().add(accountText);
 
+            Label userLogo = new Label();
+            userLogo.setMinSize(60,60);
+
             if (result.getRole().equals("Студент")) {
                 facultyDepartment = result.getFaculty();
                 groupDegree = result.getGroupName();
@@ -73,6 +76,7 @@ public class SettingsDialog {
                 secondLabel = new Label("Учебная группа");
                 thirdLabel = new Label("Форма возмещения");
                 accountBox.setStyle("-fx-background-color: #00a7ff");
+                userLogo.getStyleClass().add("userLogoSettings");
             } else {
                 facultyDepartment = result.getDepartment();
                 groupDegree = result.getAcademicDegree();
@@ -81,6 +85,7 @@ public class SettingsDialog {
                 secondLabel = new Label("Ученая степень");
                 thirdLabel = new Label("Ученое звание");
                 accountBox.setStyle("-fx-background-color: #ff8d00");
+                userLogo.getStyleClass().add("teacherLogoSettings");
             }
 
             Label nameLabel = new Label(name);
@@ -98,10 +103,6 @@ public class SettingsDialog {
             Label reimTitleLabel = new Label(reimTitle);
 
             HBox mainInfo = new HBox(2);
-
-            Label userLogo = new Label();
-            userLogo.getStyleClass().add("userLogoSettings");
-            userLogo.setPrefSize(70,70);
 
             VBox mainDetails = new VBox(2);
             mainDetails.getChildren().addAll(nameLabel, roleLabel);
@@ -146,9 +147,14 @@ public class SettingsDialog {
             untilLabel.getStyleClass().add("settingsResultsUntil");
 
             accountBox.setSpacing(5);
-            accountBox.setPadding(new Insets(0,10,10,10));
+            accountBox.setPadding(new Insets(10,10,10,10));
 
-            accountBox.getChildren().addAll(accountTextBox, mainInfo, facultyBox, emailBox, groupBox, titleBox, footerUntil);
+            HBox footerBox = new HBox(2);
+            footerBox.getChildren().addAll(titleBox, footerUntil);
+            if (result.getRole().equals("Студент")) { footerUntil.setPadding(new Insets(10,0,0,90)); }
+            else { footerUntil.setPadding(new Insets(10,0,0,120)); }
+
+            accountBox.getChildren().addAll(accountTextBox, mainInfo, facultyBox, emailBox, groupBox, footerBox);
 
             VBox exitPane = new VBox(1);
             exitPane.setAlignment(Pos.CENTER);

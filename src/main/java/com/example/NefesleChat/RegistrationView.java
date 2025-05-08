@@ -99,7 +99,9 @@ public class RegistrationView {
         warningsLabel = new Label();
         warningsLabel.setMaxWidth(350);
         warningsLabel.setPrefWidth(350);
-        warningsLabel.setTextFill(Color.RED);
+        //warningsLabel.setTextFill(Color.RED);
+        if (warningsLabel.getText().equals("Регистрация прошла успешно!")) { warningsLabel.setTextFill(new Color(3, 145,86,1.0)); }
+        else { warningsLabel.setTextFill(Color.RED); }
         warningsLabel.setAlignment(Pos.CENTER);
 
         RegistrationController controller = new RegistrationController(this);

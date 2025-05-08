@@ -232,9 +232,21 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
+.scroll-pane {
+    -fx-focus-color: #c8c8c8;
+    -fx-faint-focus-color: #c8c8c8;
+    -fx-background-color: rgba(228, 227, 227, 1.0); /* Это может быть необязательно */
+}
+
+.scroll-pane > .viewport { /*  Важно: стилизуем viewport */
+   -fx-background-color: #e4e3e3; /* Или rgba(228, 227, 227, 1.0) */
+}
+
 .scrollpane {
     -fx-focus-color: #c8c8c8;
     -fx-faint-focus-color: #c8c8c8;
+    -fx-background-color: rgba(228, 227, 227, 1.0);
+    -fx-background-color: #e4e3e3;
 }
 
 .scrollpane:focused {
@@ -387,6 +399,14 @@
     -fx-border-color: transparent;
 }
 
+.teacherLogoSettings {
+    -fx-background-image: url("icons/settingsTeacherLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
 .settingsRoleText {
     -fx-font-family: 'Noto Sans Bold';
     -fx-font-size: 12px;
@@ -411,4 +431,68 @@
     -fx-font-size: 14px;
     -fx-underline: true;
     -fx-text-fill: #ffffff;
+}
+
+.users-container {
+    -fx-background-color: rgba(228, 227, 227, 1.0);
+}
+
+.user-container {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-background-color: #00a7ff;
+}
+
+.teacher-container {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-background-color: #ff8d00;
+}
+
+.user-container:hover {
+    -fx-background-color: #008fdb;
+}
+
+.teacher-container:hover {
+    -fx-background-color: #dc7a00;
+}
+
+.userNameContainer {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+.userRoleContainer {
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+.usersSearchBox {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.usersSearchInput {
+    -fx-border-color: transparent;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.usersSearchButton {
+    -fx-background-image: url("icons/loup.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 30px 30px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }

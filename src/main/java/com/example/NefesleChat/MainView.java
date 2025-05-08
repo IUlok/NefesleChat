@@ -45,6 +45,7 @@ public class MainView {
     public void show() {
         primaryStage.setTitle("NefesleChat");
         root = new BorderPane();
+        root.getStyleClass().add("authRegForm");
 
         BorderPane menuPanel = createMenu();
         HBox topPanel = createHeader();
@@ -235,25 +236,34 @@ public class MainView {
         workingBox.getRowConstraints().addAll(row1, row2);
 
         HBox searchBox = new HBox(10);
-        searchBox.setPadding(new Insets(10));
+        searchBox.setMaxSize(600,50);
+        searchBox.setPadding(new Insets(0,10,0,10));
+        searchBox.setAlignment(Pos.CENTER);
+        searchBox.getStyleClass().add("usersSearchBox");
 
         searchInput = new TextField();
-        searchInput.setPrefWidth(300);
+        searchInput.getStyleClass().add("usersSearchInput");
+        searchInput.setMaxSize(350,50);
+        searchInput.setMinSize(500,50);
         searchInput.setPromptText("Введите фамилию пользователя");
         HBox.setHgrow(searchInput, Priority.ALWAYS);
 
-        Button searchButton = new Button("Поиск");
+        Button searchButton = new Button();
+        searchButton.getStyleClass().add("usersSearchButton");
+        searchButton.setMinSize(30,30);
         searchButton.setOnMouseEntered(event -> searchButton.setCursor(Cursor.HAND));
         searchButton.setOnMouseExited(event -> searchButton.setCursor(Cursor.DEFAULT));
 
         usersArea = new VBox();
         usersArea.setPadding(new Insets(10));
+        usersArea.getStyleClass().add("authRegForm");
         usersArea.setSpacing(5);
 
         scrollPane = new ScrollPane(usersArea);
         scrollPane.getStyleClass().add("scrollpane");
         scrollPane.setFitToWidth(true);
         scrollPane.vvalueProperty().bind(usersArea.heightProperty());
+        scrollPane.setMinWidth(1070);
 
         usersView = new UsersView( this);
         UsersController usersController = new UsersController(usersView);
@@ -262,7 +272,13 @@ public class MainView {
         searchButton.setOnAction(usersController::searchUsersAction);
         searchBox.getChildren().addAll(searchInput, searchButton);
 
-        workingBox.add(searchBox, 0, 0);
+        HBox headerPane = new HBox(1);
+        headerPane.setPadding(new Insets(20,0,0,0));
+        headerPane.setAlignment(Pos.CENTER);
+        headerPane.setMinWidth(1070);
+        headerPane.getChildren().add(searchBox);
+
+        workingBox.add(headerPane, 0, 0);
         workingBox.add(scrollPane, 0, 1);
 
         root.setCenter(workingBox);
