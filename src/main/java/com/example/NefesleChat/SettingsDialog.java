@@ -54,21 +54,39 @@ public class SettingsDialog {
             String facultyDepartment;
             String groupDegree;
             String reimTitle;
+            Label firstLabel;
+            Label secondLabel;
+            Label thirdLabel;
+            Label untilText = new Label("Действителен до");
+            Label accountText = new Label("Аккаунт");
+            accountText.getStyleClass().add("settingsBold16");
+
+            HBox accountTextBox = new HBox(1);
+            accountTextBox.setAlignment(Pos.CENTER);
+            accountTextBox.getChildren().add(accountText);
 
             if (result.getRole().equals("Студент")) {
                 facultyDepartment = result.getFaculty();
                 groupDegree = result.getGroupName();
                 reimTitle = result.getReimbursement();
+                firstLabel = new Label("Факультет");
+                secondLabel = new Label("Учебная группа");
+                thirdLabel = new Label("Форма возмещения");
                 accountBox.setStyle("-fx-background-color: #00a7ff");
             } else {
                 facultyDepartment = result.getDepartment();
                 groupDegree = result.getAcademicDegree();
                 reimTitle = result.getAcademicTitle();
+                firstLabel = new Label("Кафедра");
+                secondLabel = new Label("Ученая степень");
+                thirdLabel = new Label("Ученое звание");
                 accountBox.setStyle("-fx-background-color: #ff8d00");
             }
 
             Label nameLabel = new Label(name);
+            nameLabel.getStyleClass().add("settingsBold16");
             Label roleLabel = new Label(role);
+            roleLabel.getStyleClass().add("settingsRoleText");
             Label emailLabel = new Label(email);
 
             SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -79,7 +97,58 @@ public class SettingsDialog {
             Label groupDegreeLabel = new Label(groupDegree);
             Label reimTitleLabel = new Label(reimTitle);
 
-            accountBox.getChildren().addAll(nameLabel, roleLabel, facultyDepartmentLabel, emailLabel, groupDegreeLabel, reimTitleLabel, untilLabel);
+            HBox mainInfo = new HBox(2);
+
+            Label userLogo = new Label();
+            userLogo.getStyleClass().add("userLogoSettings");
+            userLogo.setPrefSize(70,70);
+
+            VBox mainDetails = new VBox(2);
+            mainDetails.getChildren().addAll(nameLabel, roleLabel);
+            mainInfo.getChildren().addAll(userLogo, mainDetails);
+
+            VBox facultyBox = new VBox(2);
+            facultyBox.setSpacing(0);
+            facultyBox.getChildren().addAll(firstLabel, facultyDepartmentLabel);
+
+            VBox emailBox = new VBox(2);
+            emailBox.setSpacing(0);
+            Label emailText = new Label("Почта");
+            emailBox.getChildren().addAll(emailText, emailLabel);
+
+            VBox groupBox = new VBox(2);
+            groupBox.setSpacing(0);
+            groupBox.getChildren().addAll(secondLabel, groupDegreeLabel);
+
+            VBox titleBox = new VBox(2);
+            titleBox.setSpacing(0);
+            titleBox.getChildren().addAll(thirdLabel, reimTitleLabel);
+
+            VBox untilBox = new VBox(2);
+            untilBox.setSpacing(0);
+            untilBox.getChildren().addAll(untilText, untilLabel);
+
+            HBox footerUntil = new HBox(1);
+            footerUntil.setAlignment(Pos.BOTTOM_RIGHT);
+            footerUntil.getChildren().add(untilBox);
+
+            firstLabel.getStyleClass().add("settingsTitles");
+            secondLabel.getStyleClass().add("settingsTitles");
+            thirdLabel.getStyleClass().add("settingsTitles");
+            emailText.getStyleClass().add("settingsTitles");
+            untilText.getStyleClass().add("settingsTitles");
+
+            facultyDepartmentLabel.getStyleClass().add("settingsResults");
+            emailLabel.getStyleClass().add("settingsResults");
+            groupDegreeLabel.getStyleClass().add("settingsResults");
+            reimTitleLabel.getStyleClass().add("settingsResults");
+
+            untilLabel.getStyleClass().add("settingsResultsUntil");
+
+            accountBox.setSpacing(5);
+            accountBox.setPadding(new Insets(0,10,10,10));
+
+            accountBox.getChildren().addAll(accountTextBox, mainInfo, facultyBox, emailBox, groupBox, titleBox, footerUntil);
 
             VBox exitPane = new VBox(1);
             exitPane.setAlignment(Pos.CENTER);

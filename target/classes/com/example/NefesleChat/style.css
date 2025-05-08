@@ -372,3 +372,43 @@
     -fx-background-radius: 20;
     -fx-border-radius: 20;
 }
+
+.settingsBold16 {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+.userLogoSettings {
+    -fx-background-image: url("icons/settingsUserLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.settingsRoleText {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
+
+.settingsTitles {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
+
+.settingsResults {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 12px;
+    -fx-underline: true;
+    -fx-text-fill: #ffffff;
+}
+
+.settingsResultsUntil {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 14px;
+    -fx-underline: true;
+    -fx-text-fill: #ffffff;
+}
