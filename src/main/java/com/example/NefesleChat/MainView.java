@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
@@ -54,6 +55,7 @@ public class MainView {
 
     public void show() {
         primaryStage.setTitle("NefesleChat");
+        primaryStage.getIcons().add(new Image("file:logo.png"));
         root = new BorderPane();
         root.getStyleClass().add("authRegForm");
 

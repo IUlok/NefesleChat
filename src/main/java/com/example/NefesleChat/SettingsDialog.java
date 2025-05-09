@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ public class SettingsDialog {
     public void showSettings(MainView view) {
         try {
             Stage settingsStage = new Stage();
+            settingsStage.getIcons().add(new Image("file:logo.png"));
             settingsStage.setResizable(false);
             settingsStage.setTitle("");
             settingsStage.initModality(Modality.APPLICATION_MODAL);
