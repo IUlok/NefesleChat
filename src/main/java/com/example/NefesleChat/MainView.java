@@ -2,6 +2,7 @@ package com.example.NefesleChat;
 
 // MainView.java
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -29,7 +30,9 @@ public class MainView {
     private BorderPane root;
     private ChatView chatView;
     private UsersView usersView;
-    private ScrollPane scrollPane;
+    private ScrollPane scrollMessages;
+    private ScrollPane scrollChats;
+    private ScrollPane scrollUsers;
     private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
     private GridPane workingBox = new GridPane();
     private Label chatButton;
@@ -37,6 +40,8 @@ public class MainView {
     private Label timelineButton;
     private Label notesButton;
     private Label tasksButton;
+    private Label currentListLabel;
+    private List<VBox> chatList = new ArrayList<>();
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -147,9 +152,14 @@ public class MainView {
         Label logo = new Label();
         logo.setMinSize(40, 40);
         logo.getStyleClass().add("logo");
+        currentListLabel = new Label("Сообщения");
+        currentListLabel.setAlignment(Pos.CENTER);
+        currentListLabel.setPrefHeight(40);
+        currentListLabel.setPadding(new Insets(10));
+        currentListLabel.getStyleClass().add("currentListLabel");
         //MainController mainController = new MainController(this);
 
-        topPanel.getChildren().addAll(logo, userComboBox);
+        topPanel.getChildren().addAll(logo, currentListLabel, userComboBox);
         return topPanel;
     }
 
@@ -175,6 +185,7 @@ public class MainView {
     }
 
     public void createMessageBox() {
+        chatList.clear();
         workingBox.getChildren().clear();
         workingBox = new GridPane(2, 0);
 
@@ -182,12 +193,38 @@ public class MainView {
         workingBox.setHgap(10);
 
         BorderPane chatPanel = new BorderPane();
-        GridPane dialogPanel = new GridPane();
+        chatPanel.setVisible(false);
+
+        BorderPane chatPanelNull = new BorderPane();
+        Label chatPanelNullLabel = new Label("Выберите чат");
+        chatPanelNullLabel.getStyleClass().add("chatPanelNullLabel");
+
+        Label chatImageStart = new Label();
+        chatImageStart.getStyleClass().add("chatImageStart");
+        chatImageStart.setPrefSize(216,180);
+
+        VBox startText = new VBox(2);
+        startText.setAlignment(Pos.CENTER);
+        startText.getChildren().addAll(chatImageStart, chatPanelNullLabel);
+
+        chatPanelNull.setCenter(startText);
+
+        VBox dialogPanel = new VBox();
+        dialogPanel.setStyle("-fx-background-color: #c4c4c4");
+        dialogPanel.setPadding(new Insets(3));
+        dialogPanel.setSpacing(10);
+
+        scrollChats = new ScrollPane(dialogPanel);
+        scrollChats.setFitToWidth(true);
+        scrollChats.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollChats.getStyleClass().add("scrollchat");
 
         GridPane.setHgrow(chatPanel, Priority.ALWAYS);
         GridPane.setVgrow(chatPanel, Priority.ALWAYS);
-        GridPane.setHgrow(dialogPanel, Priority.ALWAYS);
-        GridPane.setVgrow(dialogPanel, Priority.ALWAYS);
+        GridPane.setHgrow(chatPanelNull, Priority.ALWAYS);
+        GridPane.setVgrow(chatPanelNull, Priority.ALWAYS);
+        GridPane.setHgrow(scrollChats, Priority.ALWAYS);
+        GridPane.setVgrow(scrollChats, Priority.ALWAYS);
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(25);
@@ -195,18 +232,65 @@ public class MainView {
         col2.setPercentWidth(75);
         workingBox.getColumnConstraints().addAll(col1, col2);
 
-        workingBox.add(dialogPanel, 0, 0);
+        boolean swap = true;
+        for (int i = 0; i < 5; i++) {
+            VBox chat = new VBox(2);
+            chat.setPadding(new Insets(10));
+            chat.setSpacing(5);
+            chat.getStyleClass().add("chat");
+            chat.setPrefHeight(80);
+            chatList.add(chat);
+            HBox titleChat = new HBox(2);
+            titleChat.setPadding(new Insets(0, 0, 0, 2));
+            Label chatIcon = new Label();
+            chatIcon.setMinSize(30,30);
+            chatIcon.setAlignment(Pos.CENTER);
+
+            if (swap) {
+                chatIcon.getStyleClass().add("chatIconTeacher");
+                swap = false;
+            } else {
+                chatIcon.getStyleClass().add("chatIconUser");
+                swap = true;
+            }
+
+            Label chatName = new Label("Проурзин Олег Владимирович");
+            chatName.getStyleClass().add("chatName");
+            titleChat.getChildren().addAll(chatIcon, chatName);
+
+            Label chatLastText = new Label("Здравствуйте. Давайте встретимся в 14:00 в кабинете 1-216");
+            chatLastText.setAlignment(Pos.CENTER);
+            chatLastText.getStyleClass().add("chatLastText");
+
+            chat.getChildren().addAll(titleChat, chatLastText);
+            chat.setOnMouseEntered(event -> chat.setCursor(Cursor.HAND));
+            chat.setOnMouseExited(event -> chat.setCursor(Cursor.DEFAULT));
+
+            chat.setOnMouseClicked(mouseEvent -> {
+                for (VBox c : chatList) {
+                    c.getStyleClass().removeAll("chatSelected");
+                    chatPanel.setVisible(true);
+                    chatPanelNull.setVisible(false);
+                }
+                chat.getStyleClass().add("chatSelected");
+            });
+
+            dialogPanel.getChildren().add(chat);
+        }
+
+        workingBox.add(scrollChats, 0, 0);
         workingBox.add(chatPanel, 1, 0);
+        workingBox.add(chatPanelNull, 1, 0);
 
         chatArea = new VBox();
         chatArea.setPadding(new Insets(10));
         chatArea.setSpacing(5);
 
-        scrollPane = new ScrollPane(chatArea);
-        scrollPane.getStyleClass().add("scrollpane");
-        scrollPane.setFitToWidth(true);
-        chatPanel.setCenter(scrollPane);
-        scrollPane.vvalueProperty().bind(chatArea.heightProperty());
+        scrollMessages = new ScrollPane(chatArea);
+        scrollMessages.getStyleClass().add("scrollpane");
+        scrollMessages.setFitToWidth(true);
+        chatPanel.setCenter(scrollMessages);
+        scrollMessages.vvalueProperty().bind(chatArea.heightProperty());
 
         HBox bottomPanel = createBottomPanel();
         chatPanel.setBottom(bottomPanel);
@@ -261,11 +345,11 @@ public class MainView {
         usersArea.getStyleClass().add("authRegForm");
         usersArea.setSpacing(5);
 
-        scrollPane = new ScrollPane(usersArea);
-        scrollPane.getStyleClass().add("scrollpane");
-        scrollPane.setFitToWidth(true);
-        scrollPane.vvalueProperty().bind(usersArea.heightProperty());
-        scrollPane.setMinWidth(1070);
+        scrollUsers = new ScrollPane(usersArea);
+        scrollUsers.getStyleClass().add("scrollpane");
+        scrollUsers.setFitToWidth(true);
+        scrollUsers.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollUsers.setMinWidth(1070);
 
         usersView = new UsersView( this);
         UsersController usersController = new UsersController(usersView);
@@ -281,7 +365,7 @@ public class MainView {
         headerPane.getChildren().add(searchBox);
 
         workingBox.add(headerPane, 0, 0);
-        workingBox.add(scrollPane, 0, 1);
+        workingBox.add(scrollUsers, 0, 1);
 
         root.setCenter(workingBox);
     }
@@ -392,6 +476,10 @@ public class MainView {
         blend.setTopInput(colorAdjust);
         blend.setBottomInput(blur);
         primaryStage.getScene().getRoot().setEffect(blend);
+    }
+
+    public void setCurrentListLabel(String text) {
+        currentListLabel.setText(text);
     }
 
     public Stage getPrimaryStage() {

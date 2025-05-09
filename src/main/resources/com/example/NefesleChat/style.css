@@ -233,13 +233,12 @@
 }
 
 .scroll-pane {
-    -fx-focus-color: #c8c8c8;
-    -fx-faint-focus-color: #c8c8c8;
-    -fx-background-color: rgba(228, 227, 227, 1.0); /* Это может быть необязательно */
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
 }
 
-.scroll-pane > .viewport { /*  Важно: стилизуем viewport */
-   -fx-background-color: #e4e3e3; /* Или rgba(228, 227, 227, 1.0) */
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
 }
 
 .scrollpane {
@@ -543,3 +542,72 @@
      -fx-border-insets: 5px;
      -fx-border-width: 3px;
  }
+
+ .currentListLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 16px;
+ }
+
+ .chat {
+    -fx-background-color: rgba(3, 145, 86, 0.4);
+ }
+
+ .chat:hover {
+     -fx-background-color: #039156;
+ }
+
+ .chatIconTeacher {
+    -fx-background-image: url("icons/chatTeacherLogo.png");
+     -fx-background-repeat: no-repeat;
+     -fx-background-position: center;
+     -fx-background-color: transparent;
+     -fx-border-color: transparent;
+     -fx-background-size: 30px 23.68px;
+ }
+
+ .chatIconUser {
+    -fx-background-image: url("icons/chatUserLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 27px 27px;
+ }
+
+ .chatName {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 16px;
+ }
+
+ .chatLastText {
+    -fx-text-fill: #ffffff;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 16px;
+ }
+
+ .scrollchat {
+     -fx-focus-color: #c4c4c4;
+     -fx-faint-focus-color: #c4c4c4;
+     -fx-background-color: #c4c4c4;
+ }
+
+ .chatSelected {
+    -fx-background-color: #039156;
+ }
+
+ .chatPanelNullLabel {
+    -fx-text-fill: #8f8f8f;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 20px;
+ }
+
+.chatImageStart {
+    -fx-background-image: url("icons/chatImageStart.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 216px 180px;
+}

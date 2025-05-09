@@ -17,27 +17,27 @@ public class MainController {
     }
 
     public void openChat(MouseEvent event) {
+        view.setCurrentListLabel("Сообщения");
         view.showChatBox();
     }
 
     public void openTimeline(MouseEvent event) {
-
+        view.setCurrentListLabel("Расписание");
         view.selectedTimelineButton();
     }
 
     public void openNotes(MouseEvent event) {
-
-
+        view.setCurrentListLabel("Заметки");
         view.selectedNotesButton();
     }
 
     public void openTasks(MouseEvent event) {
-
-
+        view.setCurrentListLabel("Задачи");
         view.selectedTasksButton();
     }
 
     public void openUsers(MouseEvent event) {
+        view.setCurrentListLabel("Пользователи");
         view.showUsersBox();
     }
 
