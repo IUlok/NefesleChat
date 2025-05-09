@@ -617,3 +617,38 @@
     -fx-border-color: transparent;
     -fx-background-size: 216px 180px;
 }
+
+.chatSendBox {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.chatSendInput {
+    -fx-border-color: transparent;
+    -fx-font-size: 20px;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+.chatSendButton {
+    -fx-background-image: url("icons/sendButton.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 38px 38px;
+}
+
+.fileButton {
+    -fx-background-image: url("icons/fileButton.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 38px 38px;
+}

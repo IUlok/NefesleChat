@@ -58,7 +58,7 @@ public class MainView {
         root.getStyleClass().add("authRegForm");
 
         BorderPane menuPanel = createMenu();
-        HBox topPanel = createHeader();
+        BorderPane topPanel = createHeader();
 
         root.setLeft(menuPanel);
         root.setTop(topPanel);
@@ -148,10 +148,11 @@ public class MainView {
         return menuPanel;
     }
 
-    private HBox createHeader() {
+    private BorderPane createHeader() {
+        BorderPane topBox = new BorderPane();
         HBox topPanel = new HBox();
         topPanel.setPadding(new Insets(5));
-        topPanel.getStyleClass().add("top-panel");
+        topBox.getStyleClass().add("top-panel");
         Label logo = new Label();
         logo.setMinSize(40, 40);
         logo.getStyleClass().add("logo");
@@ -160,34 +161,64 @@ public class MainView {
         currentListLabel.setPrefHeight(40);
         currentListLabel.setPadding(new Insets(10));
         currentListLabel.getStyleClass().add("currentListLabel");
+        topPanel.getChildren().addAll(logo, currentListLabel, userComboBox);
 
         currentChatBox = new HBox(2);
         currentChatBox.setPrefHeight(40);
-        currentChatBox.setAlignment(Pos.CENTER);
+        currentChatBox.setAlignment(Pos.CENTER_RIGHT);
 
-        topPanel.getChildren().addAll(logo, currentListLabel, currentChatBox, userComboBox);
-        return topPanel;
+        HBox topSecondPanel = new HBox();
+        topSecondPanel.setAlignment(Pos.CENTER_RIGHT);
+        topSecondPanel.setPadding(new Insets(0,20,0,0));
+        topSecondPanel.getChildren().addAll(currentChatBox);
+        topPanel.setSpacing(0);
+        topSecondPanel.setSpacing(0);
+
+        topBox.setLeft(topPanel);
+        topBox.setRight(topSecondPanel);
+        topBox.setMaxHeight(40);
+
+        return topBox;
     }
 
     private HBox createBottomPanel() {
-        HBox bottomPanel = new HBox(10);
-        bottomPanel.setPadding(new Insets(10));
+        HBox bottomPanel = new HBox();
+        bottomPanel.setSpacing(15);
+        bottomPanel.setPadding(new Insets(0,10,0,10));
+        bottomPanel.setAlignment(Pos.CENTER);
+        bottomPanel.getStyleClass().add("chatSendBox");
 
         messageInput = new TextField();
+        messageInput.getStyleClass().add("chatSendInput");
+        messageInput.setMaxSize(350,50);
+        messageInput.setMinSize(500,50);
         messageInput.setPromptText("Введите сообщение");
-        HBox.setHgrow(messageInput, Priority.ALWAYS);
 
-        Button sendButton = new Button("Отправить");
+        Button sendButton = new Button("");
+        sendButton.getStyleClass().add("chatSendButton");
+        sendButton.setMinSize(38,38);
         sendButton.setOnMouseEntered(event -> sendButton.setCursor(Cursor.HAND));
         sendButton.setOnMouseExited(event -> sendButton.setCursor(Cursor.DEFAULT));
+
+        Button fileButton = new Button("");
+        fileButton.getStyleClass().add("fileButton");
+        fileButton.setMinSize(38,38);
+        fileButton.setOnMouseEntered(event -> fileButton.setCursor(Cursor.HAND));
+        fileButton.setOnMouseExited(event -> fileButton.setCursor(Cursor.DEFAULT));
 
         chatView = new ChatView( this);
         ChatController chatController = new ChatController(chatView);
 
         messageInput.setOnKeyPressed(chatController::handleEnterKey);
         sendButton.setOnAction(chatController::sendMessage);
-        bottomPanel.getChildren().addAll(messageInput, sendButton);
-        return bottomPanel;
+        bottomPanel.getChildren().addAll(messageInput, fileButton, sendButton);
+
+        HBox footerPane = new HBox();
+        footerPane.setPadding(new Insets(20,0,20,0));
+        footerPane.setAlignment(Pos.CENTER);
+        footerPane.getChildren().add(bottomPanel);
+
+        return footerPane;
     }
 
     public void createMessageBox() {
@@ -295,10 +326,10 @@ public class MainView {
         chatArea.setSpacing(5);
 
         scrollMessages = new ScrollPane(chatArea);
+        scrollMessages.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollMessages.getStyleClass().add("scrollpane");
         scrollMessages.setFitToWidth(true);
         chatPanel.setCenter(scrollMessages);
-        scrollMessages.vvalueProperty().bind(chatArea.heightProperty());
 
         HBox bottomPanel = createBottomPanel();
         chatPanel.setBottom(bottomPanel);
@@ -340,7 +371,6 @@ public class MainView {
         searchInput.setMaxSize(350,50);
         searchInput.setMinSize(500,50);
         searchInput.setPromptText("Введите фамилию пользователя");
-        HBox.setHgrow(searchInput, Priority.ALWAYS);
 
         Button searchButton = new Button();
         searchButton.getStyleClass().add("usersSearchButton");
@@ -490,6 +520,8 @@ public class MainView {
         chatNameForHeader.getStyleClass().add("chatName");
 
         currentChatBox.getChildren().addAll(chatIconForHeader, chatNameForHeader);
+        currentChatBox.setOnMouseEntered(event -> currentChatBox.setCursor(Cursor.HAND));
+        currentChatBox.setOnMouseExited(event -> currentChatBox.setCursor(Cursor.DEFAULT));
 
     }
 
