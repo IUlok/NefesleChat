@@ -28,7 +28,7 @@ public class ChatController {
         if (message != null && !message.isEmpty()) {
             MainView mainView = view.getMainView();
             String selectedUser = mainView.getSelectedUser(); // Get selected user from ComboBox
-            view.addMessage(selectedUser, message, selectedUser.equals("user1"));
+            view.addMessage(selectedUser, message, selectedUser.equals("Федоров Даниил Юрьевич"));
             view.getMessageInput().clear();
         }
     }

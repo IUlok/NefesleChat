@@ -41,7 +41,10 @@ public class MainView {
     private Label notesButton;
     private Label tasksButton;
     private Label currentListLabel;
+    private HBox currentChatBox;
     private List<VBox> chatList = new ArrayList<>();
+    private Label chatNameForHeader;
+    private Label chatIconForHeader;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -146,7 +149,7 @@ public class MainView {
     }
 
     private HBox createHeader() {
-        HBox topPanel = new HBox(10);
+        HBox topPanel = new HBox();
         topPanel.setPadding(new Insets(5));
         topPanel.getStyleClass().add("top-panel");
         Label logo = new Label();
@@ -157,9 +160,12 @@ public class MainView {
         currentListLabel.setPrefHeight(40);
         currentListLabel.setPadding(new Insets(10));
         currentListLabel.getStyleClass().add("currentListLabel");
-        //MainController mainController = new MainController(this);
 
-        topPanel.getChildren().addAll(logo, currentListLabel, userComboBox);
+        currentChatBox = new HBox(2);
+        currentChatBox.setPrefHeight(40);
+        currentChatBox.setAlignment(Pos.CENTER);
+
+        topPanel.getChildren().addAll(logo, currentListLabel, currentChatBox, userComboBox);
         return topPanel;
     }
 
@@ -188,9 +194,6 @@ public class MainView {
         chatList.clear();
         workingBox.getChildren().clear();
         workingBox = new GridPane(2, 0);
-
-        workingBox.setVgap(10);
-        workingBox.setHgap(10);
 
         BorderPane chatPanel = new BorderPane();
         chatPanel.setVisible(false);
@@ -254,8 +257,12 @@ public class MainView {
                 swap = true;
             }
 
-            Label chatName = new Label("Проурзин Олег Владимирович");
+            String name = "Проурзин Олег Владимирович";
+            boolean isTeacher = !swap;
+            Label chatName = new Label(name);
             chatName.getStyleClass().add("chatName");
+            chatName.setPadding(new Insets(5,0,0,0));
+
             titleChat.getChildren().addAll(chatIcon, chatName);
 
             Label chatLastText = new Label("Здравствуйте. Давайте встретимся в 14:00 в кабинете 1-216");
@@ -273,6 +280,7 @@ public class MainView {
                     chatPanelNull.setVisible(false);
                 }
                 chat.getStyleClass().add("chatSelected");
+                selectedChatHeader(name, isTeacher);
             });
 
             dialogPanel.getChildren().add(chat);
@@ -283,7 +291,7 @@ public class MainView {
         workingBox.add(chatPanelNull, 1, 0);
 
         chatArea = new VBox();
-        chatArea.setPadding(new Insets(10));
+        chatArea.setPadding(new Insets(5));
         chatArea.setSpacing(5);
 
         scrollMessages = new ScrollPane(chatArea);
@@ -377,8 +385,8 @@ public class MainView {
     // Method to update the ComboBox items
     private void updateUserComboBox() {
         List<String> users = new ArrayList<String>();
-        users.add("user1");
-        users.add("user2");
+        users.add("Федоров Даниил Юрьевич");
+        users.add("Проурзин Олег Владимирович");
         ObservableList<String> observableUsers = FXCollections.observableArrayList(users);
         userComboBox.setItems(observableUsers);
 
@@ -464,6 +472,37 @@ public class MainView {
 
         UserBox userBoxView = new UserBox();
         userBoxView.showUserBox(this, id);
+    }
+
+    private void selectedChatHeader(String name, boolean isTeacher) {
+        currentChatBox.getChildren().clear();
+        chatIconForHeader = new Label();
+        chatIconForHeader.setMinSize(30,30);
+        chatIconForHeader.setAlignment(Pos.CENTER);
+
+        if (isTeacher) {
+            chatIconForHeader.getStyleClass().add("chatIconTeacher");
+        } else {
+            chatIconForHeader.getStyleClass().add("chatIconUser");
+        }
+
+        chatNameForHeader = new Label(name);
+        chatNameForHeader.getStyleClass().add("chatName");
+
+        currentChatBox.getChildren().addAll(chatIconForHeader, chatNameForHeader);
+
+    }
+
+    public void setVisibleFalseChat() {
+        currentChatBox.getChildren().clear();
+        currentChatBox.setVisible(false);
+        userComboBox.setVisible(false);
+    }
+
+    public void setVisibleTrueChat() {
+        currentChatBox.getChildren().clear();
+        currentChatBox.setVisible(true);
+        userComboBox.setVisible(true);
     }
 
     public void setEffects() {

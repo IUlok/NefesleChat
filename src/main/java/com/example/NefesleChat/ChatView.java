@@ -1,7 +1,10 @@
 package com.example.NefesleChat;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDateTime;
@@ -42,33 +45,44 @@ public class ChatView {
 
     private VBox createMessageContainer(String sender, String message, boolean isMyMessage) {
         VBox messageContainer = new VBox();
-        messageContainer.getStyleClass().add("message-container");
+        VBox messageBox = new VBox(3);
+        messageBox.setPadding(new Insets(15));
+        messageBox.setSpacing(0);
+        messageBox.setMaxWidth(450);
+        messageBox.getStyleClass().add("message-container");
 
-        // Alignment based on sender
         if (isMyMessage) {
-            messageContainer.setAlignment(Pos.TOP_RIGHT); // Align my messages to the right
+            messageContainer.setAlignment(Pos.TOP_RIGHT);
         } else {
-            messageContainer.setAlignment(Pos.TOP_LEFT); // Align other messages to the left
+            messageContainer.setAlignment(Pos.TOP_LEFT);
         }
 
-        // Sender Label
         Label senderLabel = new Label(sender);
+        senderLabel.setAlignment(Pos.TOP_LEFT);
         senderLabel.getStyleClass().add("message-sender");
+        senderLabel.setOnMouseEntered(event -> senderLabel.setCursor(Cursor.HAND));
+        senderLabel.setOnMouseExited(event -> senderLabel.setCursor(Cursor.DEFAULT));
 
-        // Message Label
         Label messageLabel = new Label(message);
+        messageLabel.setWrapText(true);
+        messageLabel.setAlignment(Pos.CENTER_LEFT);
         messageLabel.setWrapText(true);
         messageLabel.getStyleClass().add("message-text");
 
-        // Time Label
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = now.format(formatter);
 
         Label timeLabel = new Label(formattedTime);
+        timeLabel.setAlignment(Pos.BOTTOM_RIGHT);
         timeLabel.getStyleClass().add("message-time");
 
-        messageContainer.getChildren().addAll(senderLabel, messageLabel, timeLabel);
+        HBox timeBox = new HBox();
+        timeBox.setAlignment(Pos.BOTTOM_RIGHT);
+        timeBox.getChildren().add(timeLabel);
+
+        messageBox.getChildren().addAll(senderLabel, messageLabel, timeBox);
+        messageContainer.getChildren().add(messageBox);
 
         return messageContainer;
     }

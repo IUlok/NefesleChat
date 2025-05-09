@@ -19,26 +19,32 @@
 }
 
 .message-container {
-    -fx-padding: 8px;
-    -fx-border-radius: 10px;
-    -fx-background-color: #DCF8C6;
+    -fx-border-radius: 20px;
+    -fx-background-color: #039156;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
 }
 
 .message-sender {
-    -fx-font-size: 0.8em;
-    -fx-font-weight: bold;
-    -fx-text-fill: #666;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+.message-sender:hover {
+    -fx-underline: true;
 }
 
 .message-text {
-    -fx-font-size: 1em;
-    -fx-text-fill: #333;
-    -fx-wrap-text: true;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
 }
 
 .message-time {
-    -fx-font-size: 0.7em;
-    -fx-text-fill: #888;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 10px;
+    -fx-text-fill: #ffffff;
 }
 
 .top-panel {
