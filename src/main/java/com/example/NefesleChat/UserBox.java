@@ -47,7 +47,7 @@ public class UserBox {
             Label thirdLabel;
             Label onlineLabel;
 
-            if (result.isOnline()) {
+            if (result.getStatus().equals("В сети")) {
                 onlineLabel = new Label("Онлайн");
                 onlineLabel.getStyleClass().add("onlineLabel");
             } else {

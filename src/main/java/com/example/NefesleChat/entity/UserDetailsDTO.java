@@ -39,6 +39,6 @@ public class UserDetailsDTO {
     private Boolean isBlocked;
 
     private String email;
-    private boolean online;
+    private String status;
 } 
 

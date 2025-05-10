@@ -15,6 +15,7 @@ module com.example.NefesleChat {
     requires java.net.http;
     requires java.desktop;
     requires java.logging;
+    requires com.fasterxml.jackson.annotation;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;

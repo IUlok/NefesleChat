@@ -1,9 +1,6 @@
 package com.example.NefesleChat;
 
-import com.example.NefesleChat.entity.AuthForm;
-import com.example.NefesleChat.entity.RegistrationForm;
-import com.example.NefesleChat.entity.UserDetailsDTO;
-import com.example.NefesleChat.entity.UserInListDTO;
+import com.example.NefesleChat.entity.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
@@ -27,7 +24,7 @@ public class HttpUtil {
     private static final String userListPath = "/users?last-name=";
 
     @Getter
-    private String jwtToken;
+    private static String jwtToken;
 
     public HttpResponse<String> regUser(RegistrationForm regForm) {
         try {
@@ -60,6 +57,21 @@ public class HttpUtil {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             jwtToken = retrieveJwtFromCookie();
             return response;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void logOut() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(serverPrefix + "/auth/logout"))
+                    .header("Content-type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .build();
+
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+            jwtToken = "";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -126,4 +138,49 @@ public class HttpUtil {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return new Gson().fromJson(response.body(), UserDetailsDTO.class);
     }
+
+    public static List<ChatDTO> getListChats() throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + "/chats"))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        Type chatListType = new TypeToken<List<ChatDTO>>() {}.getType();
+        List<ChatDTO> chatList = gson.fromJson(response.body(), chatListType);
+
+        return chatList;
+    }
+
+    public static List<MessageDTO> getMessagesInChat(int chatID, int numberList) throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + "/chat/" + chatID + "/messages?page=" + numberList))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        Gson gson = new Gson();
+        Type messageListType = new TypeToken<List<MessageDTO>>() {}.getType();
+        List<MessageDTO> messagesList = gson.fromJson(response.body(), messageListType);
+
+        return messagesList;
+    }
+
+    public static int getMyID() throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI(serverPrefix + "/my-id"))
+                .header("Content-type", "application/json")
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        return Integer.parseInt(response.body());
+    }
+
 }

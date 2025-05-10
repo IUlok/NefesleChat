@@ -1,6 +1,9 @@
 package com.example.NefesleChat;
 
 // MainView.java
+import com.example.NefesleChat.entity.ChatDTO;
+import com.example.NefesleChat.entity.ChatTypeEnum;
+import com.example.NefesleChat.entity.RoleEnum;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,7 +22,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class MainView {
@@ -46,11 +53,19 @@ public class MainView {
     private List<VBox> chatList = new ArrayList<>();
     private Label chatNameForHeader;
     private Label chatIconForHeader;
+    private int numberList;
+    private int myID;
 
     public MainView() {
         this.primaryStage = new Stage();
         userComboBox = new ComboBox<>();  // Создаем ComboBox в конструкторе
         updateUserComboBox();           // Заполняем ComboBox данными в конструкторе
+        try {
+            myID = HttpUtil.getMyID();
+        } catch (IOException | URISyntaxException | InterruptedException e) {
+            myID = 0;
+            e.printStackTrace();
+        }
     }
 
     public void show() {
@@ -267,56 +282,74 @@ public class MainView {
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
         workingBox.getColumnConstraints().addAll(col1, col2);
+        List<ChatDTO> result;
+        try {
+            result = HttpUtil.getListChats();
+        } catch (IOException | URISyntaxException | InterruptedException e) {
+            result = Collections.emptyList();
+            e.printStackTrace();
+        }
 
-        boolean swap = true;
-        for (int i = 0; i < 5; i++) {
-            VBox chat = new VBox(2);
-            chat.setPadding(new Insets(10));
-            chat.setSpacing(5);
-            chat.getStyleClass().add("chat");
-            chat.setPrefHeight(80);
-            chatList.add(chat);
+        for (ChatDTO chat:result) {
+            VBox chatBox = new VBox(2);
+            chatBox.setPadding(new Insets(10));
+            chatBox.setSpacing(5);
+            chatBox.getStyleClass().add("chat");
+            chatBox.setPrefHeight(80);
+            chatList.add(chatBox);
             HBox titleChat = new HBox(2);
             titleChat.setPadding(new Insets(0, 0, 0, 2));
             Label chatIcon = new Label();
             chatIcon.setMinSize(30,30);
             chatIcon.setAlignment(Pos.CENTER);
+            int isTypeChat;
 
-            if (swap) {
+            if (chat.getUserType() == RoleEnum.PROFESSOR) {
                 chatIcon.getStyleClass().add("chatIconTeacher");
-                swap = false;
-            } else {
+                isTypeChat = 0;
+            } else if (chat.getUserType() == RoleEnum.STUDENT) {
                 chatIcon.getStyleClass().add("chatIconUser");
-                swap = true;
+                isTypeChat = 1;
+            } else {
+                chatIcon.getStyleClass().add("chatIconGroup");
+                isTypeChat = 2;
             }
 
-            String name = "Проурзин Олег Владимирович";
-            boolean isTeacher = !swap;
+            String name = chat.getName();
             Label chatName = new Label(name);
             chatName.getStyleClass().add("chatName");
             chatName.setPadding(new Insets(5,0,0,0));
 
             titleChat.getChildren().addAll(chatIcon, chatName);
+            String lastMessage;
 
-            Label chatLastText = new Label("Здравствуйте. Давайте встретимся в 14:00 в кабинете 1-216");
+            if (chat.getLastMessage() == null) {
+                lastMessage = "";
+            } else {
+                lastMessage = chat.getMessageFrom() + " " + chat.getLastMessage().getText();
+            }
+            Label chatLastText = new Label(lastMessage);
             chatLastText.setAlignment(Pos.CENTER);
             chatLastText.getStyleClass().add("chatLastText");
 
-            chat.getChildren().addAll(titleChat, chatLastText);
-            chat.setOnMouseEntered(event -> chat.setCursor(Cursor.HAND));
-            chat.setOnMouseExited(event -> chat.setCursor(Cursor.DEFAULT));
+            chatBox.getChildren().addAll(titleChat, chatLastText);
+            chatBox.setOnMouseEntered(event -> chatBox.setCursor(Cursor.HAND));
+            chatBox.setOnMouseExited(event -> chatBox.setCursor(Cursor.DEFAULT));
 
-            chat.setOnMouseClicked(mouseEvent -> {
+            chatBox.setOnMouseClicked(mouseEvent -> {
                 for (VBox c : chatList) {
                     c.getStyleClass().removeAll("chatSelected");
-                    chatPanel.setVisible(true);
-                    chatPanelNull.setVisible(false);
                 }
-                chat.getStyleClass().add("chatSelected");
-                selectedChatHeader(name, isTeacher);
+                chatBox.getStyleClass().add("chatSelected");
+                chatPanel.setVisible(true);
+                chatPanelNull.setVisible(false);
+                numberList = 0;
+                chatArea.getChildren().clear();
+                loadChat(chat.getId(), numberList);
+                selectedChatHeader(name, isTypeChat);
             });
 
-            dialogPanel.getChildren().add(chat);
+            dialogPanel.getChildren().add(chatBox);
         }
 
         workingBox.add(scrollChats, 0, 0);
@@ -506,16 +539,22 @@ public class MainView {
         userBoxView.showUserBox(this, id);
     }
 
-    private void selectedChatHeader(String name, boolean isTeacher) {
+    public int getMyID() {
+        return myID;
+    }
+
+    private void selectedChatHeader(String name, int isTypeChat) {
         currentChatBox.getChildren().clear();
         chatIconForHeader = new Label();
         chatIconForHeader.setMinSize(30,30);
         chatIconForHeader.setAlignment(Pos.CENTER);
 
-        if (isTeacher) {
+        if (isTypeChat == 0) {
             chatIconForHeader.getStyleClass().add("chatIconTeacher");
-        } else {
+        } else if (isTypeChat == 1) {
             chatIconForHeader.getStyleClass().add("chatIconUser");
+        } else {
+            chatIconForHeader.getStyleClass().add("chatIconGroup");
         }
 
         chatNameForHeader = new Label(name);
@@ -549,6 +588,11 @@ public class MainView {
         blend.setTopInput(colorAdjust);
         blend.setBottomInput(blur);
         primaryStage.getScene().getRoot().setEffect(blend);
+    }
+
+    public void loadChat(int chatID, int listChat) {
+        ChatController chatController = new ChatController(chatView);
+        chatController.loadChat(chatID, listChat);
     }
 
     public void setCurrentListLabel(String text) {

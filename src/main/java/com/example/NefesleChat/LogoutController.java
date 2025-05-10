@@ -28,6 +28,7 @@ public class LogoutController {
             e.printStackTrace();
         }
 
+        HttpUtil.logOut();
         view.getPrimaryStage().close();
         LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
         loginRegistrationView.show();

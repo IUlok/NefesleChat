@@ -1,5 +1,6 @@
 package com.example.NefesleChat;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -7,8 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class ChatView {
 
@@ -38,12 +41,12 @@ public class ChatView {
         return mainView;
     }
 
-    public void addMessage(String sender, String message, boolean isMyMessage) {
-        VBox messageContainer = createMessageContainer(sender, message, isMyMessage);
+    public void addMessage(String sender, String message, int userID, Date cratedDate) {
+        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate);
         chatArea.getChildren().add(messageContainer);
     }
 
-    private VBox createMessageContainer(String sender, String message, boolean isMyMessage) {
+    private VBox createMessageContainer(String sender, String message, int userID, Date createdDate) {
         VBox messageContainer = new VBox();
         VBox messageBox = new VBox(3);
         messageBox.setPadding(new Insets(15));
@@ -51,7 +54,7 @@ public class ChatView {
         messageBox.setMaxWidth(450);
         messageBox.getStyleClass().add("message-container");
 
-        if (isMyMessage) {
+        if (userID == mainView.getMyID()) {
             messageContainer.setAlignment(Pos.TOP_RIGHT);
         } else {
             messageContainer.setAlignment(Pos.TOP_LEFT);
@@ -69,9 +72,8 @@ public class ChatView {
         messageLabel.setWrapText(true);
         messageLabel.getStyleClass().add("message-text");
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedTime = now.format(formatter);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        String formattedTime = timeFormat.format(createdDate);
 
         Label timeLabel = new Label(formattedTime);
         timeLabel.setAlignment(Pos.BOTTOM_RIGHT);

@@ -581,6 +581,15 @@
     -fx-background-size: 27px 27px;
  }
 
+ .chatIconGroup {
+    -fx-background-image: url("icons/chatGroupLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 30px 30px;
+ }
+
  .chatName {
     -fx-text-fill: #ffffff;
     -fx-font-family: 'Noto Sans Bold';
