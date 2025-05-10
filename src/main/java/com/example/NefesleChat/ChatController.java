@@ -1,14 +1,10 @@
 package com.example.NefesleChat;
 
-import com.example.NefesleChat.entity.ChatDTO;
 import com.example.NefesleChat.entity.MessageDTO;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
-
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,9 +29,8 @@ public class ChatController {
     private void sendMessageUse() {
         String message = view.getMessageInput().getText();
         if (message != null && !message.isEmpty()) {
-            MainView mainView = view.getMainView();
-            String selectedUser = mainView.getSelectedUser(); // Get selected user from ComboBox
-            //view.addMessage(selectedUser, message, 1, );
+            // MainView mainView = view.getMainView();
+            // Логика отправки сообщения
             view.getMessageInput().clear();
         }
     }
@@ -49,9 +44,8 @@ public class ChatController {
             e.printStackTrace();
         }
 
-        Collections.reverse(result);
         for (MessageDTO message:result) {
-            view.addMessage(message.getSenderName(), message.getMessage(), message.getSenderId(), message.getCreatedAt());
+            view.addMessage(message.getSenderName(), message.getMessage(), message.getSenderId(), message.getCreatedAt(), message.getType().toString(), message.isSeen());
         }
     }
 }

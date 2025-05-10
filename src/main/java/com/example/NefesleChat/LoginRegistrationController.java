@@ -57,7 +57,5 @@ public class LoginRegistrationController {
     public void handleRegister(ActionEvent event) {
         view.getStage().close();
         view.openRegistrationWindow();
-        //TODO: Внесите запись о пользователе после регистрации
-        // dataModel.addAllUsers(username); //Нужно добавлять после реги
     }
 }

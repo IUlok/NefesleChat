@@ -29,5 +29,8 @@ public class ChatDTO {
 
     @SerializedName("not_read")
     private int notRead; // кол-во непрочитанных сообщений в чате
+
+    @SerializedName("user_id")
+    private int userId;
 }
 

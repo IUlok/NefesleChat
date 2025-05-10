@@ -3,9 +3,6 @@ package com.example.NefesleChat;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyCode;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 public class UsersController {
     private UsersView view;
 

@@ -1,6 +1,5 @@
 package com.example.NefesleChat;
 
-import com.example.NefesleChat.entity.UserDetailsDTO;
 import com.example.NefesleChat.entity.UserInListDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,11 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UsersView {
@@ -33,10 +27,6 @@ public class UsersView {
 
     public javafx.scene.control.TextField getSearchUsersInput() {
         return searchUsersInput;
-    }
-
-    public MainView getMainView() {
-        return mainView;
     }
 
     public void showUsers(String searchUsers){
@@ -96,7 +86,6 @@ public class UsersView {
                 userContainer.setOnMouseExited(event -> userContainer.setCursor(Cursor.DEFAULT));
                 userContainer.setOnMouseClicked(e -> mainView.selectedUserBox(user.getId()));
 
-                //userContainer.setOnMouseClicked(e -> System.out.println(userContainer));
                 usersContainer.add(userContainer, j, i);
                 j++;
             }

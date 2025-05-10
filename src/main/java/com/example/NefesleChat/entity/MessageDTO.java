@@ -22,7 +22,7 @@ public class MessageDTO {
     @SerializedName("chat_id")
     private int chatId; // id чата
 
-    private MessageTypeEnum type; // текст или файл
+    private MessageTypeEnum type; // текст, системное или файл
 
     @SerializedName("created_at")
     private Date createdAt; // дата отправки

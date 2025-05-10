@@ -1,16 +1,12 @@
 package com.example.NefesleChat;
 
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class ChatView {
@@ -29,24 +25,16 @@ public class ChatView {
         messageInput = mainView.getMessageInput();
     }
 
-    public VBox getChatArea() {
-        return chatArea;
-    }
-
     public javafx.scene.control.TextField getMessageInput() {
         return messageInput;
     }
 
-    public MainView getMainView() {
-        return mainView;
+    public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen) {
+        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen);
+        chatArea.getChildren().add(0, messageContainer);
     }
 
-    public void addMessage(String sender, String message, int userID, Date cratedDate) {
-        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate);
-        chatArea.getChildren().add(messageContainer);
-    }
-
-    private VBox createMessageContainer(String sender, String message, int userID, Date createdDate) {
+    private VBox createMessageContainer(String sender, String message, int userID, Date createdDate, String typeMessage, boolean seen) {
         VBox messageContainer = new VBox();
         VBox messageBox = new VBox(3);
         messageBox.setPadding(new Insets(15));
@@ -65,6 +53,9 @@ public class ChatView {
         senderLabel.getStyleClass().add("message-sender");
         senderLabel.setOnMouseEntered(event -> senderLabel.setCursor(Cursor.HAND));
         senderLabel.setOnMouseExited(event -> senderLabel.setCursor(Cursor.DEFAULT));
+        senderLabel.setOnMouseClicked(event -> {
+            mainView.selectedUserBox(userID);
+        });
 
         Label messageLabel = new Label(message);
         messageLabel.setWrapText(true);
@@ -72,7 +63,7 @@ public class ChatView {
         messageLabel.setWrapText(true);
         messageLabel.getStyleClass().add("message-text");
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd:MM:yyyy HH:mm");
         String formattedTime = timeFormat.format(createdDate);
 
         Label timeLabel = new Label(formattedTime);
@@ -80,10 +71,34 @@ public class ChatView {
         timeLabel.getStyleClass().add("message-time");
 
         HBox timeBox = new HBox();
-        timeBox.setAlignment(Pos.BOTTOM_RIGHT);
-        timeBox.getChildren().add(timeLabel);
+        timeBox.setAlignment(Pos.CENTER_RIGHT);
+        timeBox.setSpacing(5);
+
+        Label isViewed = new Label();
+        isViewed.getStyleClass().add("message-isViewed");
+        if (seen) {
+            isViewed.setText("◉");
+        } else {
+            isViewed.setText("○");
+        }
+
+        timeBox.getChildren().addAll(isViewed, timeLabel);
 
         messageBox.getChildren().addAll(senderLabel, messageLabel, timeBox);
+
+        if (typeMessage == "INFO") {
+            messageBox.getChildren().removeAll(senderLabel, messageLabel, timeBox);
+            messageBox.setMinWidth(700);
+            messageBox.getStyleClass().remove("message-container");
+            messageLabel.getStyleClass().remove("message-text");
+            messageLabel.getStyleClass().add("message-informtext");
+            messageBox.getStyleClass().add("message-informcontainer");
+            messageLabel.setAlignment(Pos.CENTER);
+            messageBox.setAlignment(Pos.CENTER);
+            messageBox.getChildren().add(messageLabel);
+            messageContainer.setAlignment(Pos.CENTER);
+        }
+
         messageContainer.getChildren().add(messageBox);
 
         return messageContainer;

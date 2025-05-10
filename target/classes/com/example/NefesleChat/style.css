@@ -661,3 +661,38 @@
     -fx-border-color: transparent;
     -fx-background-size: 38px 38px;
 }
+
+.message-isViewed {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 15px;
+    -fx-text-fill: #ffffff;
+}
+
+.counterOfOnViewedMessages {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 15px;
+    -fx-text-fill: #039156;
+    -fx-background-radius: 20;
+    -fx-background-color: #ffffff;
+}
+
+.message-informcontainer {
+    -fx-background-color: transparent;
+}
+
+.message-informtext {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-font-size: 12px;
+    -fx-text-fill: #979797;
+}
+
+.loadNextListButton {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-border-color:transparent;
+    -fx-background-color: rgba(3, 145, 86, 0.4);
+    -fx-text-fill: #ffffff;
+}
+
+.loadNextListButton:hover {
+    -fx-background-color: #039156;
+}

@@ -27,7 +27,6 @@ public class LoginRegistrationView {
     private Button registerButton;
     private Label warningsLabel;
 
-    //@Getter
     public LoginRegistrationView() {
         this.stage = new Stage();
         initialize();

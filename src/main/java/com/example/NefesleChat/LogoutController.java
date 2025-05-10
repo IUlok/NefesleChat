@@ -1,8 +1,6 @@
 package com.example.NefesleChat;
 
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

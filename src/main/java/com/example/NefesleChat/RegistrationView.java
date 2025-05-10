@@ -136,14 +136,9 @@ public class RegistrationView {
     }
 
     public void show() {
-        stage.showAndWait(); // Используем showAndWait, чтобы дождаться закрытия окна
+        stage.showAndWait();
     }
 
-    public void close() {
-        stage.close();
-    }
-
-    // Геттеры для получения данных из полей
     public String getToken() {
         return tokenField.getText();
     }

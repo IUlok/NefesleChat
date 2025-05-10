@@ -1,13 +1,6 @@
 package com.example.NefesleChat;
 
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.input.MouseEvent;
-
-import java.io.*;
-import java.net.URL;
 
 public class MainController {
     private MainView view;
@@ -26,18 +19,21 @@ public class MainController {
         view.setVisibleFalseChat();
         view.setCurrentListLabel("Расписание");
         view.selectedTimelineButton();
+        view.showTimelineBox();
     }
 
     public void openNotes(MouseEvent event) {
         view.setVisibleFalseChat();
         view.setCurrentListLabel("Заметки");
         view.selectedNotesButton();
+        view.showNotesBox();
     }
 
     public void openTasks(MouseEvent event) {
         view.setVisibleFalseChat();
         view.setCurrentListLabel("Задачи");
         view.selectedTasksButton();
+        view.showTasksBox();
     }
 
     public void openUsers(MouseEvent event) {

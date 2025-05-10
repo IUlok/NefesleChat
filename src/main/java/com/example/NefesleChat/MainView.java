@@ -1,13 +1,7 @@
 package com.example.NefesleChat;
 
-// MainView.java
 import com.example.NefesleChat.entity.ChatDTO;
-import com.example.NefesleChat.entity.ChatTypeEnum;
 import com.example.NefesleChat.entity.RoleEnum;
-import javafx.animation.SequentialTransition;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
@@ -24,10 +18,8 @@ import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class MainView {
     private Stage primaryStage;
@@ -41,7 +33,8 @@ public class MainView {
     private ScrollPane scrollMessages;
     private ScrollPane scrollChats;
     private ScrollPane scrollUsers;
-    private ComboBox<String> userComboBox; // Объявляем ComboBox как поле класса
+    private ScrollPane scrollNotes;
+    private ScrollPane scrollTasks;
     private GridPane workingBox = new GridPane();
     private Label chatButton;
     private Label usersButton;
@@ -55,11 +48,12 @@ public class MainView {
     private Label chatIconForHeader;
     private int numberList;
     private int myID;
+    private int focusChat;
+    private int focusUser;
+    private VBox loadNextList;
 
     public MainView() {
         this.primaryStage = new Stage();
-        userComboBox = new ComboBox<>();  // Создаем ComboBox в конструкторе
-        updateUserComboBox();           // Заполняем ComboBox данными в конструкторе
         try {
             myID = HttpUtil.getMyID();
         } catch (IOException | URISyntaxException | InterruptedException e) {
@@ -178,7 +172,7 @@ public class MainView {
         currentListLabel.setPrefHeight(40);
         currentListLabel.setPadding(new Insets(10));
         currentListLabel.getStyleClass().add("currentListLabel");
-        topPanel.getChildren().addAll(logo, currentListLabel, userComboBox);
+        topPanel.getChildren().addAll(logo, currentListLabel);
 
         currentChatBox = new HBox(2);
         currentChatBox.setPrefHeight(40);
@@ -282,6 +276,21 @@ public class MainView {
         ColumnConstraints col2 = new ColumnConstraints();
         col2.setPercentWidth(75);
         workingBox.getColumnConstraints().addAll(col1, col2);
+
+        loadNextList = new VBox();
+        loadNextList.setPadding(new Insets(10));
+        loadNextList.setAlignment(Pos.CENTER);
+
+        Button loadNextListButton = new Button("Загрузить ещё");
+        loadNextListButton.getStyleClass().add("loadNextListButton");
+        loadNextListButton.setOnMouseEntered(event -> loadNextListButton.setCursor(Cursor.HAND));
+        loadNextListButton.setOnMouseExited(event -> loadNextListButton.setCursor(Cursor.DEFAULT));
+        loadNextListButton.setOnMouseClicked(event -> {
+            numberList+=1;
+            loadChat(focusChat, numberList);
+        });
+        loadNextList.getChildren().add(loadNextListButton);
+
         List<ChatDTO> result;
         try {
             result = HttpUtil.getListChats();
@@ -321,6 +330,7 @@ public class MainView {
             chatName.setPadding(new Insets(5,0,0,0));
 
             titleChat.getChildren().addAll(chatIcon, chatName);
+            titleChat.setMaxWidth(200);
             String lastMessage;
 
             if (chat.getLastMessage() == null) {
@@ -331,8 +341,38 @@ public class MainView {
             Label chatLastText = new Label(lastMessage);
             chatLastText.setAlignment(Pos.CENTER);
             chatLastText.getStyleClass().add("chatLastText");
+            chatLastText.setMaxWidth(250);
 
-            chatBox.getChildren().addAll(titleChat, chatLastText);
+            Date createdDate = chat.getLastMessage().getCreatedAt();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+            String formattedTime = timeFormat.format(createdDate);
+            Label timeSend = new Label(formattedTime);
+            timeSend.getStyleClass().add("message-time");
+
+            Label counterOfOnViewedMessages = new Label(String.valueOf(chat.getNotRead()));
+            counterOfOnViewedMessages.setAlignment(Pos.CENTER);
+            counterOfOnViewedMessages.getStyleClass().add("counterOfOnViewedMessages");
+            counterOfOnViewedMessages.setPrefSize(20,20);
+
+            HBox infoBox = new HBox();
+            infoBox.setAlignment(Pos.CENTER_RIGHT);
+            infoBox.setSpacing(5);
+            infoBox.getChildren().addAll(timeSend);
+
+            BorderPane headerOfChat = new BorderPane();
+            headerOfChat.setLeft(titleChat);
+            headerOfChat.setRight(infoBox);
+
+            BorderPane bodyOfChat = new BorderPane();
+            bodyOfChat.setLeft(chatLastText);
+            bodyOfChat.setRight(counterOfOnViewedMessages);
+            if (chat.getNotRead() == 0) {
+                counterOfOnViewedMessages.setVisible(false);
+            } else {
+                counterOfOnViewedMessages.setVisible(true);
+            }
+
+            chatBox.getChildren().addAll(headerOfChat, bodyOfChat);
             chatBox.setOnMouseEntered(event -> chatBox.setCursor(Cursor.HAND));
             chatBox.setOnMouseExited(event -> chatBox.setCursor(Cursor.DEFAULT));
 
@@ -345,8 +385,10 @@ public class MainView {
                 chatPanelNull.setVisible(false);
                 numberList = 0;
                 chatArea.getChildren().clear();
-                loadChat(chat.getId(), numberList);
-                selectedChatHeader(name, isTypeChat);
+                focusChat = chat.getId();
+                focusUser = chat.getUserId();
+                loadChat(focusChat, numberList);
+                selectedChatHeader(name, isTypeChat, focusUser, chat.getType().toString());
             });
 
             dialogPanel.getChildren().add(chatBox);
@@ -443,23 +485,69 @@ public class MainView {
         root.setCenter(workingBox);
     }
 
-    public void createTimelineBox() {
-
+    public void showTimelineBox() {
+        workingBox.getChildren().clear();
+        Label text = new Label("расписание тут будет");
+        workingBox.getChildren().add(text);
     }
 
-    // Method to update the ComboBox items
-    private void updateUserComboBox() {
-        List<String> users = new ArrayList<String>();
-        users.add("Федоров Даниил Юрьевич");
-        users.add("Проурзин Олег Владимирович");
-        ObservableList<String> observableUsers = FXCollections.observableArrayList(users);
-        userComboBox.setItems(observableUsers);
+    public void showNotesBox() {
+        workingBox.getChildren().clear();
 
-        if (!users.isEmpty()) {
-            userComboBox.setValue(observableUsers.get(0)); // Select the first user by default
-        } else {
-            userComboBox.setValue(null); // Clear selection if no users
+        workingBox = new GridPane(2, 0);
+
+        workingBox.setVgap(10);
+        workingBox.setHgap(10);
+        workingBox.setAlignment(Pos.CENTER);
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setPercentWidth(90);
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(10);
+        workingBox.getColumnConstraints().addAll(col1, col2);
+
+        VBox notesArea = new VBox();
+        notesArea.setPadding(new Insets(10));
+        notesArea.getStyleClass().add("authRegForm");
+        notesArea.setSpacing(5);
+
+        scrollNotes = new ScrollPane(notesArea);
+        scrollNotes.getStyleClass().add("scrollpane");
+        scrollNotes.setFitToWidth(true);
+        scrollNotes.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollNotes.setMinWidth(1070);
+
+        for(int i = 0; i < 10; i++) {
+            // тут заметки как нибудь сделать
         }
+
+
+        BorderPane newNotesPane = new BorderPane();
+        Button newNote = new Button("+");
+        newNotesPane.setBottom(newNote);
+
+//        usersView = new UsersView( this);
+//        UsersController usersController = new UsersController(usersView);
+//
+//        searchInput.setOnKeyPressed(usersController::handleEnterKey);
+//        searchButton.setOnAction(usersController::searchUsersAction);
+//        searchBox.getChildren().addAll(searchInput, searchButton);
+//
+//        HBox headerPane = new HBox(1);
+//        headerPane.setPadding(new Insets(20,0,0,0));
+//        headerPane.setAlignment(Pos.CENTER);
+//        headerPane.setMinWidth(1070);
+//        headerPane.getChildren().add(searchBox);
+
+        workingBox.add(scrollNotes, 0, 0);
+        workingBox.add(newNotesPane, 1, 0);
+        root.setCenter(workingBox);
+    }
+
+    public void showTasksBox() {
+        workingBox.getChildren().clear();
+        Label text = new Label("задачи тут будет");
+        workingBox.getChildren().add(text);
     }
 
     public void selectedChatButton() {
@@ -543,7 +631,7 @@ public class MainView {
         return myID;
     }
 
-    private void selectedChatHeader(String name, int isTypeChat) {
+    private void selectedChatHeader(String name, int isTypeChat, int userID, String typeChat) {
         currentChatBox.getChildren().clear();
         chatIconForHeader = new Label();
         chatIconForHeader.setMinSize(30,30);
@@ -563,19 +651,21 @@ public class MainView {
         currentChatBox.getChildren().addAll(chatIconForHeader, chatNameForHeader);
         currentChatBox.setOnMouseEntered(event -> currentChatBox.setCursor(Cursor.HAND));
         currentChatBox.setOnMouseExited(event -> currentChatBox.setCursor(Cursor.DEFAULT));
+        currentChatBox.setOnMouseClicked(e -> {
+            if (typeChat == "SINGLE") {selectedUserBox(userID);}
+            else {}
+        });
 
     }
 
     public void setVisibleFalseChat() {
         currentChatBox.getChildren().clear();
         currentChatBox.setVisible(false);
-        userComboBox.setVisible(false);
     }
 
     public void setVisibleTrueChat() {
         currentChatBox.getChildren().clear();
         currentChatBox.setVisible(true);
-        userComboBox.setVisible(true);
     }
 
     public void setEffects() {
@@ -591,8 +681,10 @@ public class MainView {
     }
 
     public void loadChat(int chatID, int listChat) {
+        chatArea.getChildren().remove(loadNextList);
         ChatController chatController = new ChatController(chatView);
         chatController.loadChat(chatID, listChat);
+        chatArea.getChildren().add(0, loadNextList);
     }
 
     public void setCurrentListLabel(String text) {
@@ -617,13 +709,5 @@ public class MainView {
 
     public TextField getSearchUsersInput() {
         return searchInput;
-    }
-
-    public BorderPane getRoot() {
-        return root;
-    }
-
-    public String getSelectedUser() {
-        return userComboBox.getValue();
     }
 }

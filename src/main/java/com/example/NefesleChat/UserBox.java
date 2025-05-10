@@ -1,7 +1,6 @@
 package com.example.NefesleChat;
 
 import com.example.NefesleChat.entity.UserDetailsDTO;
-import com.example.NefesleChat.entity.UserInListDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -9,16 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class UserBox {
     public void showUserBox(MainView view, int id) {
@@ -140,6 +135,12 @@ public class UserBox {
             writeButton.setOnMouseEntered(event -> writeButton.setCursor(Cursor.HAND));
             writeButton.setOnMouseExited(event -> writeButton.setCursor(Cursor.DEFAULT));
             writeButton.getStyleClass().add("writeUserButton");
+            if(id == view.getMyID()) {writeButton.setVisible(false);}
+            writeButton.setOnMouseClicked(event -> {
+                userBoxStage.close();
+                view.getPrimaryStage().getScene().getRoot().setEffect(null);
+            });
+
             writePane.getChildren().add(writeButton);
 
             userBox.getChildren().addAll(mainInfo, facultyBox, groupBox, titleBox);
