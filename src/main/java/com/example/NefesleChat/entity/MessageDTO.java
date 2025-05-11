@@ -35,4 +35,7 @@ public class MessageDTO {
     private String senderName; // имя отправителя
 
     private boolean seen; // прочитано или нет
+
+    @SerializedName("seen_by_me")
+    private boolean seenByMe;
 }

@@ -6,6 +6,7 @@ import com.example.NefesleChat.entity.ws.MessagePayload;
 import com.example.NefesleChat.entity.ws.MessageSendDTO;
 import com.example.NefesleChat.entity.ws.WebSocketDTO;
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import org.springframework.messaging.converter.GsonMessageConverter;
 import org.springframework.messaging.simp.stomp.StompFrameHandler;
 import org.springframework.messaging.simp.stomp.StompHeaders;
@@ -26,10 +27,16 @@ public class WebSocketUtil {
 
     private String url = "ws://" + Main.getProperties().getProperty("domain_port") + "/api/messenger";
 
+    private MainView view;
+
     public WebSocketUtil() {
         WebSocketClient wsclient = new StandardWebSocketClient();
         client = new WebSocketStompClient(wsclient);
         client.setMessageConverter(new GsonMessageConverter());
+    }
+
+    public void setMainView(MainView mainView) {
+        this.view = mainView;
     }
 
     public void connect(String jwtToken) {
@@ -66,23 +73,33 @@ public class WebSocketUtil {
 
             @Override
             public void handleFrame(StompHeaders headers, Object payload) {
-                WebSocketDTO wsDto = (WebSocketDTO) payload;
-                Object messagePayloadObj = wsDto.getPayload();
-                if(wsDto.getType().equals("newMessage")) {
-                    MessagePayload messagePayload = new Gson().fromJson(new Gson().toJson(messagePayloadObj), MessagePayload.class);
-                    System.out.printf("%s\n", messagePayload);
-                }
-                if(wsDto.getType().equals("wasRead")) {
-                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
-                    System.out.printf("message was read: %d\n", messageId);
-                }
-                if(wsDto.getType().equals("wasEdited")) {
-                    EditMessagePayload emp = new Gson().fromJson(new Gson().toJson(messagePayloadObj), EditMessagePayload.class);
-                    System.out.printf("message was edited: id:%d  text:%s\n", emp.getMessageId(), emp.getMessage());
-                }
-                if(wsDto.getType().equals("wasDeleted")) {
-                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
-                    System.out.printf("message was deleted: %d\n", messageId);
+                try {
+                    WebSocketDTO wsDto = (WebSocketDTO) payload;
+                    Object messagePayloadObj = wsDto.getPayload();
+                    if (wsDto.getType().equals("newMessage")) {
+                        MessagePayload messagePayload = new Gson().fromJson(new Gson().toJson(messagePayloadObj), MessagePayload.class);
+
+                        Platform.runLater(()->{
+                            ChatView chatView = new ChatView(view);
+                            chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen());
+                        });
+
+                        System.out.printf("%s\n", messagePayload);
+                    }
+                    if (wsDto.getType().equals("wasRead")) {
+                        Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                        System.out.printf("message was read: %d\n", messageId);
+                    }
+                    if (wsDto.getType().equals("wasEdited")) {
+                        EditMessagePayload emp = new Gson().fromJson(new Gson().toJson(messagePayloadObj), EditMessagePayload.class);
+                        System.out.printf("message was edited: id:%d  text:%s\n", emp.getMessageId(), emp.getMessage());
+                    }
+                    if (wsDto.getType().equals("wasDeleted")) {
+                        Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                        System.out.printf("message was deleted: %d\n", messageId);
+                    }
+                }catch(Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -101,6 +118,12 @@ public class WebSocketUtil {
                 Object messagePayloadObj = wsDto.getPayload();
                 if(wsDto.getType().equals("newMessage")) {
                     MessagePayload messagePayload = new Gson().fromJson(new Gson().toJson(messagePayloadObj), MessagePayload.class);
+
+                    Platform.runLater(()->{
+                        ChatView chatView = new ChatView(view);
+                        chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen());
+                    });
+
                     System.out.printf("%s\n", messagePayload);
                 }
                 if(wsDto.getType().equals("wasRead")) {
