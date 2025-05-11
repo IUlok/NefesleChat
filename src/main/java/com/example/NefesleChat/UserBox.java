@@ -137,6 +137,9 @@ public class UserBox {
             writeButton.getStyleClass().add("writeUserButton");
             if(id == view.getMyID()) {writeButton.setVisible(false);}
             writeButton.setOnMouseClicked(event -> {
+                view.setFocusUser(result.getId());
+                view.showChatBox();
+                view.showMessagesDialog(result.getFirstName() + " " + result.getLastName());
                 userBoxStage.close();
                 view.getPrimaryStage().getScene().getRoot().setEffect(null);
             });

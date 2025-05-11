@@ -19,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -63,10 +64,13 @@ public class MainView {
     @Getter
     private int focusChat;
     private boolean isFocusChat;
+    @Setter
     @Getter
     private int focusUser;
     private VBox loadNextList;
     private Button loadNextListButton;
+    BorderPane chatPanel;
+    BorderPane chatPanelNull;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -259,10 +263,10 @@ public class MainView {
         workingBox.getChildren().clear();
         workingBox = new GridPane(2, 0);
 
-        BorderPane chatPanel = new BorderPane();
+        chatPanel = new BorderPane();
         chatPanel.setVisible(false);
 
-        BorderPane chatPanelNull = new BorderPane();
+        chatPanelNull = new BorderPane();
         Label chatPanelNullLabel = new Label("Выберите чат");
         chatPanelNullLabel.getStyleClass().add("chatPanelNullLabel");
 
@@ -677,6 +681,16 @@ public class MainView {
             if (typeChat == "SINGLE") {selectedUserBox(userID);}
         });
 
+    }
+
+    public void showMessagesDialog(String name) {
+        chatPanel.setVisible(true);
+        chatPanelNull.setVisible(false);
+        numberList = 0;
+        chatArea.getChildren().clear();
+        setFocusChat(true);
+        setVisibleTrueChat();
+        selectedChatHeader(name, 1, focusUser, "SINGLE");
     }
 
     public void setVisibleFalseChat() {
