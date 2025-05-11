@@ -16,6 +16,8 @@ module com.example.NefesleChat {
     requires java.desktop;
     requires java.logging;
     requires com.fasterxml.jackson.annotation;
+    requires spring.websocket;
+    requires spring.messaging;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;

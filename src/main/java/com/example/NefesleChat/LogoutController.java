@@ -28,6 +28,7 @@ public class LogoutController {
             e.printStackTrace();
         }
 
+        Main.getWebSocketUtil().disconnect();
         HttpUtil.logOut();
         view.getPrimaryStage().close();
         LoginRegistrationView loginRegistrationView = new LoginRegistrationView();

@@ -60,6 +60,7 @@ public class MainView {
             myID = 0;
             e.printStackTrace();
         }
+        Main.getWebSocketUtil().connect(HttpUtil.getJwtToken());
     }
 
     public void show() {
@@ -79,6 +80,9 @@ public class MainView {
         Scene scene = new Scene(root, 1280, 768);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            Main.getWebSocketUtil().disconnect();
+        });
         primaryStage.show();
     }
 

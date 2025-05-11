@@ -4,16 +4,22 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import lombok.Getter;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.util.Properties;
 
 public class Main extends Application {
 
+    @Getter
+    private static Properties properties = new Properties();
+
+    @Getter
+    private static WebSocketUtil webSocketUtil;
+
     @Override
     public void start(Stage primaryStage) {
+        loadProperties();
+        webSocketUtil = new WebSocketUtil();
         URL resourceURL = getClass().getResource("/jwtToken");
         if (resourceURL != null) {
             try {
@@ -43,5 +49,13 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void loadProperties() {
+        try {
+            properties.load(new FileInputStream(getClass().getResource("/application.properties").getPath()));
+        } catch (Exception e) {
+            System.err.println("Ошибка при загрузке файла с настройками");
+        }
     }
 }
