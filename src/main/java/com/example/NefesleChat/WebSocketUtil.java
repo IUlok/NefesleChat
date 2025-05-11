@@ -135,7 +135,7 @@ public class WebSocketUtil {
 
                         Platform.runLater(()->{
                             ChatView chatView = new ChatView(view);
-                            chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen());
+                            chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen(), messagePayload.getChatId(), messagePayload.getId(), messagePayload.isSeenByMe());
                         });
 
                         System.out.printf("%s\n", messagePayload);
@@ -175,7 +175,7 @@ public class WebSocketUtil {
 
                     Platform.runLater(()->{
                         ChatView chatView = new ChatView(view);
-                        chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen());
+                        chatView.addMessageFromSocket(messagePayload.getSenderName(), messagePayload.getMessage(), messagePayload.getSenderId(), messagePayload.getCreatedAt(), String.valueOf(messagePayload.getType()), messagePayload.isSeen(), messagePayload.getChatId(), messagePayload.getId(), messagePayload.isSeenByMe());
                     });
 
                     System.out.printf("%s\n", messagePayload);

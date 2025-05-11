@@ -34,22 +34,20 @@ public class ChatView {
         else Main.getWebSocketUtil().sendMessageToUser(mainView.getFocusUser(), message);
     }
 
-    public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen, int chatID, int messageID) {
-        Main.getWebSocketUtil().readMessageChat(chatID, messageID);
-        Main.getWebSocketUtil().readMessageUser(userID, messageID);
-        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen);
+    public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen, int chatID, int messageID, boolean isSeenByMe) {
+        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen, chatID, messageID, isSeenByMe);
         chatArea.getChildren().add(0, messageContainer);
     }
 
-    public void addMessageFromSocket(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen) {
-        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen);
+    public void addMessageFromSocket(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen, int chatID, int messageID, boolean isSeenByMe) {
+        VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen, chatID, messageID, isSeenByMe);
         chatArea.getChildren().add(messageContainer);
         chatArea.applyCss();
         chatArea.layout();
         mainView.setScrollMessages(1.0);
     }
 
-    private VBox createMessageContainer(String sender, String message, int userID, Date createdDate, String typeMessage, boolean seen) {
+    private VBox createMessageContainer(String sender, String message, int userID, Date createdDate, String typeMessage, boolean seen, int chatID, int messageID, boolean isSeenByMe) {
         VBox messageContainer = new VBox();
         VBox messageBox = new VBox(3);
         messageBox.setPadding(new Insets(15));
@@ -114,6 +112,13 @@ public class ChatView {
             messageBox.getChildren().add(messageLabel);
             messageContainer.setAlignment(Pos.CENTER);
         }
+
+        messageContainer.setOnMouseEntered(event -> {
+            if (userID != mainView.getMyID() && typeMessage != "INFO" && !seen && !isSeenByMe) {
+                Main.getWebSocketUtil().readMessageChat(chatID, messageID);
+                Main.getWebSocketUtil().readMessageUser(userID, messageID);
+            }
+        });
 
         messageContainer.getChildren().add(messageBox);
 

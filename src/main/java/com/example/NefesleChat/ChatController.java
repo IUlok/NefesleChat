@@ -44,7 +44,7 @@ public class ChatController {
         }
 
         for (MessageDTO message:result) {
-            view.addMessage(message.getSenderName(), message.getMessage(), message.getSenderId(), message.getCreatedAt(), message.getType().toString(), message.isSeen(), message.getChatId(), message.getId());
+            view.addMessage(message.getSenderName(), message.getMessage(), message.getSenderId(), message.getCreatedAt(), message.getType().toString(), message.isSeen(), message.getChatId(), message.getId(), message.isSeenByMe());
         }
     }
 }
