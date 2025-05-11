@@ -1,6 +1,7 @@
 package com.example.NefesleChat;
 
 import com.example.NefesleChat.entity.ChatDTO;
+import com.example.NefesleChat.entity.ChatTypeEnum;
 import com.example.NefesleChat.entity.RoleEnum;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +18,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,9 +29,13 @@ import java.util.Date;
 import java.util.List;
 
 public class MainView {
+    @Getter
     private Stage primaryStage;
+    @Getter
     private VBox chatArea;
+    @Getter
     private VBox usersArea;
+    @Getter
     private TextField messageInput;
     private TextField searchInput;
     private BorderPane root;
@@ -52,10 +58,15 @@ public class MainView {
     private Label chatNameForHeader;
     private Label chatIconForHeader;
     private int numberList;
+    @Getter
     private int myID;
+    @Getter
     private int focusChat;
+    private boolean isFocusChat;
+    @Getter
     private int focusUser;
     private VBox loadNextList;
+    private Button loadNextListButton;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -67,6 +78,7 @@ public class MainView {
         }
         Main.getWebSocketUtil().connect(HttpUtil.getJwtToken());
         Main.getWebSocketUtil().subscribeToYourself(myID);
+        Main.getWebSocketUtil().setMainView(this);
     }
 
     public void show() {
@@ -291,7 +303,7 @@ public class MainView {
         loadNextList.setPadding(new Insets(10));
         loadNextList.setAlignment(Pos.CENTER);
 
-        Button loadNextListButton = new Button("Загрузить ещё");
+        loadNextListButton = new Button("Загрузить ещё");
         loadNextListButton.getStyleClass().add("loadNextListButton");
         loadNextListButton.setOnMouseEntered(event -> loadNextListButton.setCursor(Cursor.HAND));
         loadNextListButton.setOnMouseExited(event -> loadNextListButton.setCursor(Cursor.DEFAULT));
@@ -386,6 +398,8 @@ public class MainView {
             chatBox.setOnMouseEntered(event -> chatBox.setCursor(Cursor.HAND));
             chatBox.setOnMouseExited(event -> chatBox.setCursor(Cursor.DEFAULT));
 
+            if(chat.getType() != ChatTypeEnum.SINGLE) Main.getWebSocketUtil().subscribeToChat(chat.getId());
+
             chatBox.setOnMouseClicked(mouseEvent -> {
                 for (VBox c : chatList) {
                     c.getStyleClass().removeAll("chatSelected");
@@ -398,6 +412,8 @@ public class MainView {
                 focusChat = chat.getId();
                 focusUser = chat.getUserId();
                 loadChat(focusChat, numberList);
+                if (chat.getType() == ChatTypeEnum.SINGLE) setFocusChat(false);
+                else setFocusChat(true);
                 selectedChatHeader(name, isTypeChat, focusUser, chat.getType().toString());
             });
 
@@ -637,10 +653,6 @@ public class MainView {
         userBoxView.showUserBox(this, id);
     }
 
-    public int getMyID() {
-        return myID;
-    }
-
     private void selectedChatHeader(String name, int isTypeChat, int userID, String typeChat) {
         currentChatBox.getChildren().clear();
         chatIconForHeader = new Label();
@@ -663,7 +675,6 @@ public class MainView {
         currentChatBox.setOnMouseExited(event -> currentChatBox.setCursor(Cursor.DEFAULT));
         currentChatBox.setOnMouseClicked(e -> {
             if (typeChat == "SINGLE") {selectedUserBox(userID);}
-            else {}
         });
 
     }
@@ -671,6 +682,14 @@ public class MainView {
     public void setVisibleFalseChat() {
         currentChatBox.getChildren().clear();
         currentChatBox.setVisible(false);
+    }
+
+    public void setFocusChat(boolean focus) {
+        isFocusChat = focus;
+    }
+
+    public boolean getFocusedChat() {
+        return isFocusChat;
     }
 
     public void setVisibleTrueChat() {
@@ -701,21 +720,7 @@ public class MainView {
         currentListLabel.setText(text);
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
-
-    public VBox getChatArea() {
-        return chatArea;
-    }
-
-    public VBox getUsersArea() {
-        return usersArea;
-    }
-
-    public TextField getMessageInput() {
-        return messageInput;
-    }
+    public void setScrollMessages(double i) {scrollMessages.setVvalue(i);};
 
     public TextField getSearchUsersInput() {
         return searchInput;

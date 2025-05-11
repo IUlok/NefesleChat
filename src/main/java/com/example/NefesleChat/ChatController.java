@@ -26,11 +26,10 @@ public class ChatController {
         }
     }
 
-    private void sendMessageUse() {
+    public void sendMessageUse() {
         String message = view.getMessageInput().getText();
         if (message != null && !message.isEmpty()) {
-            // MainView mainView = view.getMainView();
-            // Логика отправки сообщения
+            view.sendMessage(message);
             view.getMessageInput().clear();
         }
     }
