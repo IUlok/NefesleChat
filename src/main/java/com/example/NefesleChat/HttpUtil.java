@@ -14,11 +14,12 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class HttpUtil {
-    private static HttpClient client = HttpClient.newBuilder()
+    private static final HttpClient client = HttpClient.newBuilder()
             .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
             .build();
     private static final String serverUri = "http://linedown.ru";
     private static final String serverPrefix = "http://linedown.ru:3254/api";
+    private static final String domain = "linedown.ru";
     private static final String myProfilePath = "/my-profile";
     private static final String userProfilePath = "/user-profile";
     private static final String userListPath = "/users?last-name=";
@@ -26,7 +27,7 @@ public class HttpUtil {
     @Getter
     private static String jwtToken;
 
-    public HttpResponse<String> regUser(RegistrationForm regForm) {
+    public static HttpResponse<String> regUser(RegistrationForm regForm) {
         try {
             String regJson = new Gson().toJson(regForm);
 
@@ -44,7 +45,7 @@ public class HttpUtil {
         }
     }
 
-    public HttpResponse<String> authUser(AuthForm authForm) {
+    public static HttpResponse<String> authUser(AuthForm authForm) {
         try {
             String authJson = new Gson().toJson(authForm);
 
@@ -77,12 +78,12 @@ public class HttpUtil {
         }
     }
 
-    public void restartSession(String jwtToken) {
-        this.jwtToken = jwtToken;
+    public static void restartSession(String jwtToken) {
+        HttpUtil.jwtToken = jwtToken;
         putJwtInCookie(jwtToken);
     }
 
-    private String retrieveJwtFromCookie() {
+    private static String retrieveJwtFromCookie() {
         CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
         for(HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
             if(cookie.getName().equals("JWT"))
@@ -91,14 +92,16 @@ public class HttpUtil {
         return null;
     }
 
-    private void putJwtInCookie(String jwtToken) {
+    private static void putJwtInCookie(String jwtToken) {
         CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
-        for(HttpCookie cookie : cookieManager.getCookieStore().getCookies())
+        for(HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
             if(cookie.getName().equals("JWT"))
                 return;
-        HttpCookie httpCookie = new HttpCookie("JWT", jwtToken);
-        httpCookie.setPath("/");
-        cookieManager.getCookieStore().add(URI.create(serverUri), httpCookie);
+        }
+        HttpCookie jwtTokenCookie = new HttpCookie("JWT", jwtToken);
+        jwtTokenCookie.setPath("/");
+        jwtTokenCookie.setDomain(domain);
+        cookieManager.getCookieStore().add(URI.create(serverUri), jwtTokenCookie);
     }
 
     public static UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {

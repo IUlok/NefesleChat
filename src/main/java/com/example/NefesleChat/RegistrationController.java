@@ -8,7 +8,6 @@ import java.net.http.HttpResponse;
 public class RegistrationController {
 
     private RegistrationView view;
-    private HttpUtil httpUtil = Main.getHttpUtil();
 
     public RegistrationController(RegistrationView view) {
         this.view = view;
@@ -25,7 +24,7 @@ public class RegistrationController {
         && !passwordTest.isEmpty()) {
             if (password.equals(passwordTest)) {
                 RegistrationForm registrationForm = new RegistrationForm(token, lastName, password, email);
-                HttpResponse<String> objectServerResponse = httpUtil.regUser(registrationForm);
+                HttpResponse<String> objectServerResponse = HttpUtil.regUser(registrationForm);
                 if(objectServerResponse.statusCode() == 200) {
                     view.setMessage("Регистрация прошла успешно!");
                     //view.getStage().close();

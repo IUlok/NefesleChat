@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Main extends Application {
-    @Getter
-    private static HttpUtil httpUtil = new HttpUtil();
 
     @Override
     public void start(Stage primaryStage) {
@@ -25,7 +23,7 @@ public class Main extends Application {
                 String token = bufferedReader.readLine();
                 bufferedReader.close();
                 if (token != null && !token.trim().isEmpty()) {
-                    httpUtil.restartSession(token);
+                    HttpUtil.restartSession(token);
                     MainView mainView = new MainView();
                     mainView.show();
                 }

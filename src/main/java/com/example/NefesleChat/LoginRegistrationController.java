@@ -12,8 +12,7 @@ import java.net.http.HttpResponse;
 
 public class LoginRegistrationController {
 
-    private LoginRegistrationView view;
-    private HttpUtil httpUtil = Main.getHttpUtil();
+    private final LoginRegistrationView view;
 
     public LoginRegistrationController(LoginRegistrationView view) {
         this.view = view;
@@ -25,7 +24,7 @@ public class LoginRegistrationController {
 
         if (email != null && !email.isEmpty() && password != null && !password.isEmpty()) {
             AuthForm authForm = new AuthForm(email, password);
-            HttpResponse<String> objectServerResponse  = httpUtil.authUser(authForm);
+            HttpResponse<String> objectServerResponse  = HttpUtil.authUser(authForm);
             if (objectServerResponse.statusCode() == 200) {
                 try {
                     URL resourceURL = getClass().getResource("/jwtToken");
@@ -35,7 +34,7 @@ public class LoginRegistrationController {
                     File jwtTokenFile = new File(resourceURL.getFile());
                     FileWriter fileWriter = new FileWriter(jwtTokenFile);
                     BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                    bufferedWriter.write(httpUtil.getJwtToken());
+                    bufferedWriter.write(HttpUtil.getJwtToken());
                     bufferedWriter.flush();
                     bufferedWriter.close();
                 } catch (IOException e){
