@@ -93,6 +93,7 @@ public class ChatView {
             isViewed.setText("◉");
         } else {
             isViewed.setText("○");
+            isViewed.setStyle("-fx-font-size: 10px;");
         }
 
         timeBox.getChildren().addAll(isViewed, timeLabel);
