@@ -3,23 +3,28 @@ package com.example.NefesleChat;
 import com.example.NefesleChat.entity.ChatDTO;
 import com.example.NefesleChat.entity.RoleEnum;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.*;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.geometry.Pos;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class MainView {
     private Stage primaryStage;
@@ -61,6 +66,7 @@ public class MainView {
             e.printStackTrace();
         }
         Main.getWebSocketUtil().connect(HttpUtil.getJwtToken());
+        Main.getWebSocketUtil().subscribeToYourself(myID);
     }
 
     public void show() {

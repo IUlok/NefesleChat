@@ -1,13 +1,22 @@
 package com.example.NefesleChat;
 
+import com.example.NefesleChat.entity.MessageTypeEnum;
+import com.example.NefesleChat.entity.ws.EditMessagePayload;
+import com.example.NefesleChat.entity.ws.MessagePayload;
+import com.example.NefesleChat.entity.ws.MessageSendDTO;
+import com.example.NefesleChat.entity.ws.WebSocketDTO;
+import com.google.gson.Gson;
 import org.springframework.messaging.converter.GsonMessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
 import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandler;
 import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+
+import java.lang.reflect.Type;
 
 public class WebSocketUtil {
 
@@ -30,8 +39,88 @@ public class WebSocketUtil {
         }).join();
     }
 
+    public void sendMessageToUser(int userId, String message) {
+        if(session != null && session.isConnected()) {
+            WebSocketDTO wsDto = new WebSocketDTO();
+            wsDto.setType("sendMessage");
+            wsDto.setPayload(new MessageSendDTO(MessageTypeEnum.TEXT, message));
+            session.send("/app/user/" + userId, wsDto);
+        }
+    }
+
+    public void sendMessageToChat(int chatId, String message) {
+        if(session != null && session.isConnected()) {
+            WebSocketDTO wsDto = new WebSocketDTO();
+            wsDto.setType("sendMessage");
+            wsDto.setPayload(new MessageSendDTO(MessageTypeEnum.TEXT, message));
+            session.send("/app/chat/" + chatId, wsDto);
+        }
+    }
+
+    public void subscribeToYourself(int myId) {
+        session.subscribe("/topic/user/" + myId, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return WebSocketDTO.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                WebSocketDTO wsDto = (WebSocketDTO) payload;
+                Object messagePayloadObj = wsDto.getPayload();
+                if(wsDto.getType().equals("newMessage")) {
+                    MessagePayload messagePayload = new Gson().fromJson(new Gson().toJson(messagePayloadObj), MessagePayload.class);
+                    System.out.printf("%s\n", messagePayload);
+                }
+                if(wsDto.getType().equals("wasRead")) {
+                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                    System.out.printf("message was read: %d\n", messageId);
+                }
+                if(wsDto.getType().equals("wasEdited")) {
+                    EditMessagePayload emp = new Gson().fromJson(new Gson().toJson(messagePayloadObj), EditMessagePayload.class);
+                    System.out.printf("message was edited: id:%d  text:%s\n", emp.getMessageId(), emp.getMessage());
+                }
+                if(wsDto.getType().equals("wasDeleted")) {
+                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                    System.out.printf("message was deleted: %d\n", messageId);
+                }
+            }
+        });
+    }
+
+    public void subscribeToChat(int chatId) {
+        session.subscribe("/topic/chat/" + chatId, new StompFrameHandler() {
+            @Override
+            public Type getPayloadType(StompHeaders headers) {
+                return WebSocketDTO.class;
+            }
+
+            @Override
+            public void handleFrame(StompHeaders headers, Object payload) {
+                WebSocketDTO wsDto = (WebSocketDTO) payload;
+                Object messagePayloadObj = wsDto.getPayload();
+                if(wsDto.getType().equals("newMessage")) {
+                    MessagePayload messagePayload = new Gson().fromJson(new Gson().toJson(messagePayloadObj), MessagePayload.class);
+                    System.out.printf("%s\n", messagePayload);
+                }
+                if(wsDto.getType().equals("wasRead")) {
+                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                    System.out.printf("message was read: %d\n", messageId);
+                }
+                if(wsDto.getType().equals("wasEdited")) {
+                    EditMessagePayload emp = new Gson().fromJson(new Gson().toJson(messagePayloadObj), EditMessagePayload.class);
+                    System.out.printf("message was edited: id:%d  text:%s\n", emp.getMessageId(), emp.getMessage());
+                }
+                if(wsDto.getType().equals("wasDeleted")) {
+                    Integer messageId = new Gson().fromJson(new Gson().toJson(messagePayloadObj), Integer.class);
+                    System.out.printf("message was deleted: %d\n", messageId);
+                }
+            }
+        });
+    }
+
     public void disconnect() {
-        if(session != null)
+        if(session != null && session.isConnected())
             session.disconnect();
     }
 }

@@ -18,8 +18,11 @@ module com.example.NefesleChat {
     requires com.fasterxml.jackson.annotation;
     requires spring.websocket;
     requires spring.messaging;
+    requires com.fasterxml.jackson.databind;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;
+    exports com.example.NefesleChat.entity.ws to com.google.gson;
+    opens com.example.NefesleChat.entity.ws to com.google.gson;
     opens com.example.NefesleChat.entity to com.google.gson;
 }
