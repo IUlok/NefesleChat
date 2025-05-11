@@ -34,7 +34,9 @@ public class ChatView {
         else Main.getWebSocketUtil().sendMessageToUser(mainView.getFocusUser(), message);
     }
 
-    public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen) {
+    public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen, int chatID, int messageID) {
+        Main.getWebSocketUtil().readMessageChat(chatID, messageID);
+        Main.getWebSocketUtil().readMessageUser(userID, messageID);
         VBox messageContainer = createMessageContainer(sender, message, userID, cratedDate, typeMessage, seen);
         chatArea.getChildren().add(0, messageContainer);
     }
