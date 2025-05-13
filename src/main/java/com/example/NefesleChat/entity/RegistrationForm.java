@@ -1,7 +1,7 @@
 package com.example.NefesleChat.entity;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
-
+ 
 @NoArgsConstructor
 @Getter
 @Setter
