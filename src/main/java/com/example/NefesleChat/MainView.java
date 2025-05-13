@@ -75,12 +75,12 @@ public class MainView {
     public MainView() {
         this.primaryStage = new Stage();
         try {
-            myID = HttpUtil.getMyID();
+            myID = Main.getHttpUtil().getMyID();
         } catch (IOException | URISyntaxException | InterruptedException e) {
             myID = 0;
             e.printStackTrace();
         }
-        Main.getWebSocketUtil().connect(HttpUtil.getJwtToken());
+        Main.getWebSocketUtil().connect(Main.getHttpUtil().getJwtToken());
         Main.getWebSocketUtil().subscribeToYourself(myID);
         Main.getWebSocketUtil().setMainView(this);
     }
@@ -319,7 +319,7 @@ public class MainView {
 
         List<ChatDTO> result;
         try {
-            result = HttpUtil.getListChats();
+            result = Main.getHttpUtil().getListChats();
         } catch (IOException | URISyntaxException | InterruptedException e) {
             result = Collections.emptyList();
             e.printStackTrace();

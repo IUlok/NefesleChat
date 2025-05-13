@@ -43,7 +43,7 @@ public class UsersView {
         usersContainer.setHgap(35);
 
         try {
-            List<UserInListDTO> result = HttpUtil.getListUsers(searchUsers);
+            List<UserInListDTO> result = Main.getHttpUtil().getListUsers(searchUsers);
             int i = 0;
             int j = 0;
 

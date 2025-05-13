@@ -37,7 +37,7 @@ public class ChatController {
     public void loadChat(int ChatID, int listMessages) {
         List<MessageDTO> result;
         try {
-            result = HttpUtil.getMessagesInChat(ChatID, listMessages);
+            result = Main.getHttpUtil().getMessagesInChat(ChatID, listMessages);
         } catch (IOException | URISyntaxException | InterruptedException e) {
             result = Collections.emptyList();
             e.printStackTrace();

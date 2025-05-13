@@ -1,13 +1,12 @@
 package com.example.NefesleChat;
 
 import javafx.scene.input.MouseEvent;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class LogoutController {
     private MainView view;
@@ -29,7 +28,7 @@ public class LogoutController {
         }
 
         Main.getWebSocketUtil().disconnect();
-        HttpUtil.logOut();
+        Main.getHttpUtil().logOut();
         view.getPrimaryStage().close();
         LoginRegistrationView loginRegistrationView = new LoginRegistrationView();
         loginRegistrationView.show();

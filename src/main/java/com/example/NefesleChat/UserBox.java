@@ -29,7 +29,7 @@ public class UserBox {
             VBox userBox = new VBox(10);
             userMain.getStyleClass().add("userPaneBox");
 
-            UserDetailsDTO result = HttpUtil.getOtherUser(id);
+            UserDetailsDTO result = Main.getHttpUtil().getOtherUser(id);
 
             String name = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
             String role = result.getRole();

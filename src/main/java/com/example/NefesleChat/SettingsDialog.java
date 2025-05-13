@@ -49,7 +49,7 @@ public class SettingsDialog {
             VBox otherBox = new VBox(10);
             otherBox.setMinSize(340,300);
 
-            UserDetailsDTO result = HttpUtil.getCurrentUser();
+            UserDetailsDTO result = Main.getHttpUtil().getCurrentUser();
             String name = result.getLastName() + " " + result.getFirstName() + " " + result.getPatronymic();
             String role = result.getRole();
             String email = result.getEmail();

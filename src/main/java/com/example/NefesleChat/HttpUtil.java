@@ -14,20 +14,24 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class HttpUtil {
-    private static final HttpClient client = HttpClient.newBuilder()
-            .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
-            .build();
-    private static final String serverUri = "http://linedown.ru";
-    private static final String serverPrefix = "http://linedown.ru:3254/api";
-    private static final String domain = "linedown.ru";
-    private static final String myProfilePath = "/my-profile";
-    private static final String userProfilePath = "/user-profile";
-    private static final String userListPath = "/users?last-name=";
+    private final HttpClient client;
+    private final String serverUri;
+    private final String serverPrefix;
+    private final String domain;
 
     @Getter
-    private static String jwtToken;
+    private String jwtToken;
 
-    public static HttpResponse<String> regUser(RegistrationForm regForm) {
+    public HttpUtil() {
+        client = HttpClient.newBuilder()
+                .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL))
+                .build();
+        serverUri = Main.getProperties().getProperty("server_uri");
+        serverPrefix = Main.getProperties().getProperty("server_prefix");
+        domain = Main.getProperties().getProperty("domain");
+    }
+
+    public HttpResponse<String> regUser(RegistrationForm regForm) {
         try {
             String regJson = new Gson().toJson(regForm);
 
@@ -45,7 +49,7 @@ public class HttpUtil {
         }
     }
 
-    public static HttpResponse<String> authUser(AuthForm authForm) {
+    public HttpResponse<String> authUser(AuthForm authForm) {
         try {
             String authJson = new Gson().toJson(authForm);
 
@@ -63,7 +67,7 @@ public class HttpUtil {
         }
     }
 
-    public static void logOut() {
+    public void logOut() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(new URI(serverPrefix + "/auth/logout"))
@@ -78,12 +82,12 @@ public class HttpUtil {
         }
     }
 
-    public static void restartSession(String jwtToken) {
-        HttpUtil.jwtToken = jwtToken;
+    public void restartSession(String jwtToken) {
+        this.jwtToken = jwtToken;
         putJwtInCookie(jwtToken);
     }
 
-    private static String retrieveJwtFromCookie() {
+    private String retrieveJwtFromCookie() {
         CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
         for(HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
             if(cookie.getName().equals("JWT"))
@@ -92,7 +96,7 @@ public class HttpUtil {
         return null;
     }
 
-    private static void putJwtInCookie(String jwtToken) {
+    private void putJwtInCookie(String jwtToken) {
         CookieManager cookieManager = (CookieManager) client.cookieHandler().get();
         for(HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {
             if(cookie.getName().equals("JWT"))
@@ -104,9 +108,9 @@ public class HttpUtil {
         cookieManager.getCookieStore().add(URI.create(serverUri), jwtTokenCookie);
     }
 
-    public static UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {
+    public UserDetailsDTO getCurrentUser() throws URISyntaxException, InterruptedException, IOException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(serverPrefix + myProfilePath))
+                .uri(new URI(serverPrefix + "/my-profile"))
                 .header("Content-type", "application/json")
                 .GET()
                 .build();
@@ -115,9 +119,9 @@ public class HttpUtil {
         return new Gson().fromJson(response.body(), UserDetailsDTO.class);
     }
 
-    public static List<UserInListDTO> getListUsers(String lastName) throws URISyntaxException, IOException, InterruptedException {
+    public List<UserInListDTO> getListUsers(String lastName) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(serverPrefix + userListPath + lastName))
+                .uri(new URI(serverPrefix + "/users?last-name=" + lastName))
                 .header("Content-type", "application/json")
                 .GET()
                 .build();
@@ -131,9 +135,9 @@ public class HttpUtil {
         return userList;
     }
 
-    public static UserDetailsDTO getOtherUser(int id) throws IOException, URISyntaxException, InterruptedException {
+    public UserDetailsDTO getOtherUser(int id) throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI(serverPrefix + userProfilePath + "/" + id))
+                .uri(new URI(serverPrefix + "/user-profile" + "/" + id))
                 .header("Content-type", "application/json")
                 .GET()
                 .build();
@@ -142,7 +146,7 @@ public class HttpUtil {
         return new Gson().fromJson(response.body(), UserDetailsDTO.class);
     }
 
-    public static List<ChatDTO> getListChats() throws URISyntaxException, IOException, InterruptedException {
+    public List<ChatDTO> getListChats() throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(serverPrefix + "/chats"))
                 .header("Content-type", "application/json")
@@ -158,7 +162,7 @@ public class HttpUtil {
         return chatList;
     }
 
-    public static List<MessageDTO> getMessagesInChat(int chatID, int numberList) throws URISyntaxException, IOException, InterruptedException {
+    public List<MessageDTO> getMessagesInChat(int chatID, int numberList) throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(serverPrefix + "/chat/" + chatID + "/messages?page=" + numberList))
                 .header("Content-type", "application/json")
@@ -174,7 +178,7 @@ public class HttpUtil {
         return messagesList;
     }
 
-    public static int getMyID() throws URISyntaxException, IOException, InterruptedException {
+    public int getMyID() throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI(serverPrefix + "/my-id"))
                 .header("Content-type", "application/json")

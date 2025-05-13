@@ -31,6 +31,12 @@
     -fx-text-fill: #ffffff;
 }
 
+.message-sender1 {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
 .message-sender:hover {
     -fx-underline: true;
 }
@@ -695,4 +701,25 @@
 
 .loadNextListButton:hover {
     -fx-background-color: #039156;
+}
+
+.delete-panel {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+
+.contextMenu {
+    -fx-background-color: #039156;
+}
+
+.contextItems {
+    -fx-background-color: #039156;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-text-fill: #ffffff;
+}
+
+.contextItems:hover {
+    -fx-background-color: rgba(3, 145, 86, 0.4);
 }
