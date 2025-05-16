@@ -41,8 +41,8 @@ public class ChatView {
     }
 
     public void sendMessage(String message) {
-        if (mainView.getFocusedChat()) Main.getWebSocketUtil().sendMessageToChat(mainView.getFocusChat(), message);
-        else Main.getWebSocketUtil().sendMessageToUser(mainView.getFocusUser(), message);
+        //if (mainView.getFocusedChat()) Main.getWebSocketUtil().sendMessageToChat(mainView.getFocusChat(), message);
+        //else Main.getWebSocketUtil().sendMessageToUser(mainView.getFocusUser(), message);
     }
 
     public void addMessage(String sender, String message, int userID, Date cratedDate, String typeMessage, boolean seen, int chatID, int messageID, boolean isSeenByMe) {
@@ -178,8 +178,8 @@ public class ChatView {
 
         messageContainer.setOnMouseEntered(event -> {
             if (userID != mainView.getMyID() && typeMessage != "INFO" && !seen && !isSeenByMe) {
-                Main.getWebSocketUtil().readMessageChat(chatID, messageID);
-                Main.getWebSocketUtil().readMessageUser(userID, messageID);
+                //Main.getWebSocketUtil().readMessageChat(chatID, messageID);
+                //Main.getWebSocketUtil().readMessageUser(userID, messageID);
                 isViewed.setText("◉");
                 isViewed.setStyle("-fx-font-size: 15px;");
                 isViewed1.setText("◉");

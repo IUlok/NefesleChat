@@ -13,8 +13,8 @@ public class Main extends Application {
     @Getter
     private static Properties properties = new Properties();
 
-    @Getter
-    private static WebSocketUtil webSocketUtil;
+//    @Getter
+//    private static WebSocketUtil webSocketUtil;
 
     @Getter
     private static HttpUtil httpUtil;
@@ -22,8 +22,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         loadProperties();
-        httpUtil = new HttpUtil();
-        webSocketUtil = new WebSocketUtil();
+        //httpUtil = new HttpUtil();
+        //webSocketUtil = new WebSocketUtil();
         URL resourceURL = getClass().getResource("/jwtToken");
         if (resourceURL != null) {
             try {
@@ -33,7 +33,7 @@ public class Main extends Application {
                 String token = bufferedReader.readLine();
                 bufferedReader.close();
                 if (token != null && !token.trim().isEmpty()) {
-                    httpUtil.restartSession(token);
+                    //httpUtil.restartSession(token);
                     MainView mainView = new MainView();
                     mainView.show();
                 }

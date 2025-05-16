@@ -69,20 +69,20 @@ public class MainView {
     private int focusUser;
     private VBox loadNextList;
     private Button loadNextListButton;
-    BorderPane chatPanel;
-    BorderPane chatPanelNull;
+    private BorderPane chatPanel;
+    private BorderPane chatPanelNull;
 
     public MainView() {
         this.primaryStage = new Stage();
-        try {
-            myID = Main.getHttpUtil().getMyID();
-        } catch (IOException | URISyntaxException | InterruptedException e) {
-            myID = 0;
-            e.printStackTrace();
-        }
-        Main.getWebSocketUtil().connect(Main.getHttpUtil().getJwtToken());
-        Main.getWebSocketUtil().subscribeToYourself(myID);
-        Main.getWebSocketUtil().setMainView(this);
+//        try {
+//            myID = Main.getHttpUtil().getMyID();
+//        } catch (IOException | URISyntaxException | InterruptedException e) {
+//            myID = 0;
+//            e.printStackTrace();
+//        }
+        //Main.getWebSocketUtil().connect(Main.getHttpUtil().getJwtToken());
+        //Main.getWebSocketUtil().subscribeToYourself(myID);
+        //Main.getWebSocketUtil().setMainView(this);
     }
 
     public void show() {
@@ -103,7 +103,7 @@ public class MainView {
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(windowEvent -> {
-            Main.getWebSocketUtil().disconnect();
+            //Main.getWebSocketUtil().disconnect();
         });
         primaryStage.show();
     }
@@ -317,13 +317,13 @@ public class MainView {
         });
         loadNextList.getChildren().add(loadNextListButton);
 
-        List<ChatDTO> result;
-        try {
-            result = Main.getHttpUtil().getListChats();
-        } catch (IOException | URISyntaxException | InterruptedException e) {
-            result = Collections.emptyList();
-            e.printStackTrace();
-        }
+        List<ChatDTO> result = new ArrayList<>();
+//        try {
+//            result = Main.getHttpUtil().getListChats();
+//        } catch (IOException | URISyntaxException | InterruptedException e) {
+//            result = Collections.emptyList();
+//            e.printStackTrace();
+//        }
 
         for (ChatDTO chat:result) {
             VBox chatBox = new VBox(2);
@@ -402,7 +402,7 @@ public class MainView {
             chatBox.setOnMouseEntered(event -> chatBox.setCursor(Cursor.HAND));
             chatBox.setOnMouseExited(event -> chatBox.setCursor(Cursor.DEFAULT));
 
-            if(chat.getType() != ChatTypeEnum.SINGLE) Main.getWebSocketUtil().subscribeToChat(chat.getId());
+            //if(chat.getType() != ChatTypeEnum.SINGLE) Main.getWebSocketUtil().subscribeToChat(chat.getId());
 
             chatBox.setOnMouseClicked(mouseEvent -> {
                 for (VBox c : chatList) {
