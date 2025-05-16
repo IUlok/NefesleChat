@@ -25,7 +25,7 @@ public class WebSocketUtil {
 
     private StompSession session;
 
-    private String url = "wss://" + Main.getProperties().getProperty("domain_port") + "/api/messenger";
+    private String url = "ws://" + Main.getProperties().getProperty("domain_port") + "/api/messenger";
 
     private MainView view;
 
