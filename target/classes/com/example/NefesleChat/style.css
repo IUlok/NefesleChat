@@ -723,3 +723,165 @@
 .contextItems:hover {
     -fx-background-color: rgba(3, 145, 86, 0.4);
 }
+
+.noteBox {
+    -fx-background-radius: 20;
+    -fx-background-color: rgba(3, 145, 86, 0.8);
+}
+
+.noteBox1 {
+    -fx-background-radius: 20;
+    -fx-background-color: rgba(3, 145, 86, 1.0);
+}
+
+.noteBox:hover {
+    -fx-background-color: rgba(3, 145, 86, 1.0);
+}
+
+.noteText {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+}
+
+.noteTextArea {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.noteTime {
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 10px;
+    -fx-text-fill: #ffffff;
+}
+
+.text-area {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.newNoteButton {
+    -fx-background-color: rgba(3, 145, 86, 0.8);
+    -fx-background-radius: 100;
+    -fx-border-size: 0;
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 50px;
+    -fx-text-fill: #ffffff;
+}
+
+.newNoteButton:hover {
+    -fx-background-color: rgba(3, 145, 86, 1.0);
+}
+
+.newTaskBox {
+    -fx-background-color: transparent;
+}
+
+.createTaskInput {
+    -fx-border-color: transparent;
+    -fx-font-size: 24px;
+    -fx-font-family: 'Noto Sans Light';
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-text-box-border: transparent;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.newTaskButton {
+    -fx-background-color: rgba(3, 145, 86, 0.8);
+    -fx-background-radius: 5;
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+}
+
+.newTaskButton:hover {
+    -fx-background-color: rgba(3, 145, 86, 1.0);
+}
+
+.tasksText {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-text-fill: #828282;
+    -fx-font-size: 24px;
+}
+
+.tasksLine {
+    -fx-background-image: url("icons/line.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 1080px 1px;
+}
+
+.tasksSwitchUp {
+    -fx-background-image: url("icons/lineUp.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 43px 22px;
+}
+
+.tasksSwitchDown {
+    -fx-background-image: url("icons/lineDown.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-size: 43px 22px;
+}
+
+.taskBox {
+    -fx-background-color: rgba(3, 145, 86, 0.5);
+}
+
+.taskBox:hover {
+    -fx-background-color: rgba(3, 145, 86, 1.0);
+}
+
+.taskCompletedFlag {
+    -fx-background-color: rgba(3, 145, 86, 0.5);
+    -fx-border-color: #e4e3e3;
+    -fx-border-radius: 5;
+    -fx-border-width: 5px;
+    -fx-background-radius: 10;
+}
+
+.taskCompletedFlag:hover {
+    -fx-background-color: #e4e3e3;
+}
+
+.taskUncompletedFlag {
+    -fx-background-color: #e4e3e3;
+    -fx-border-color: #e4e3e3;
+    -fx-border-radius: 5;
+    -fx-border-width: 5px;
+    -fx-background-radius: 10;
+}
+
+.taskUncompletedFlag:hover {
+    -fx-background-color: #039156;
+}
+
+.taskText {
+    -fx-font-family: 'Noto Sans Medium';
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 36px;
+}

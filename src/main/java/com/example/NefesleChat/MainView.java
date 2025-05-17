@@ -15,6 +15,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,6 +37,8 @@ public class MainView {
     private VBox chatArea;
     @Getter
     private VBox usersArea;
+    @Getter
+    private VBox tasksArea;
     @Getter
     private TextField messageInput;
     private TextField searchInput;
@@ -760,8 +763,168 @@ public class MainView {
 
     public void showTasksBox() {
         workingBox.getChildren().clear();
-        Label text = new Label("задачи тут будет");
-        workingBox.getChildren().add(text);
+        workingBox = new GridPane(0, 2);
+
+        workingBox.setVgap(10);
+        workingBox.setHgap(10);
+        workingBox.setAlignment(Pos.CENTER);
+
+        RowConstraints row1 = new RowConstraints();
+        row1.setPercentHeight(10);
+        RowConstraints row2 = new RowConstraints();
+        row2.setPercentHeight(90);
+        workingBox.getRowConstraints().addAll(row1, row2);
+
+        HBox newTaskBox = new HBox(10);
+        newTaskBox.setMaxSize(600,50);
+        newTaskBox.setPadding(new Insets(0,10,0,10));
+        newTaskBox.setAlignment(Pos.CENTER);
+        newTaskBox.getStyleClass().add("newTaskBox");
+
+        searchInput = new TextField();
+        searchInput.getStyleClass().add("createTaskInput");
+        searchInput.setMaxSize(500,50);
+        searchInput.setMinSize(500,50);
+        searchInput.setPromptText("Новая задача");
+
+        Button searchButton = new Button("✓");
+        searchButton.getStyleClass().add("newTaskButton");
+        searchButton.setMaxSize(50,47);
+        searchButton.setOnMouseEntered(event -> searchButton.setCursor(Cursor.HAND));
+        searchButton.setOnMouseExited(event -> searchButton.setCursor(Cursor.DEFAULT));
+
+        searchButton.setOnMouseClicked(e -> {
+            // Обработка создания задачи
+        });
+
+        tasksArea = new VBox();
+        tasksArea.setPadding(new Insets(10));
+        tasksArea.getStyleClass().add("authRegForm");
+        tasksArea.setSpacing(5);
+
+        scrollTasks = new ScrollPane(tasksArea);
+        scrollTasks.getStyleClass().add("scrollpane");
+        scrollTasks.setFitToWidth(true);
+        scrollTasks.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollTasks.setMinWidth(1070);
+
+        newTaskBox.getChildren().addAll(searchInput, searchButton);
+
+        HBox headerPane = new HBox(1);
+        headerPane.setPadding(new Insets(20,0,0,0));
+        headerPane.setAlignment(Pos.CENTER);
+        headerPane.setMinWidth(1070);
+        headerPane.getChildren().addAll(newTaskBox);
+
+        VBox activeTasksBox = new VBox();
+        activeTasksBox.setPadding(new Insets(5));
+        activeTasksBox.setSpacing(10);
+
+        BorderPane activeTasksHeader = new BorderPane();
+        Label activeTasksText = new Label("Активные задачи");
+        Label activeTasksSwitch = new Label();
+        activeTasksSwitch.setPrefSize(50,22);
+        activeTasksSwitch.setAlignment(Pos.CENTER);
+        Label activeTasksLine = new Label();
+        activeTasksLine.setPrefSize(1080,1);
+        activeTasksLine.getStyleClass().add("tasksLine");
+        activeTasksSwitch.getStyleClass().add("tasksSwitchUp");
+        activeTasksText.getStyleClass().add("tasksText");
+        activeTasksHeader.setLeft(activeTasksText);
+        activeTasksHeader.setRight(activeTasksSwitch);
+        activeTasksHeader.setBottom(activeTasksLine);
+        tasksArea.getChildren().add(activeTasksHeader);
+        tasksArea.getChildren().add(activeTasksBox);
+        activeTasksHeader.setOnMouseEntered(event -> activeTasksHeader.setCursor(Cursor.HAND));
+        activeTasksHeader.setOnMouseExited(event -> activeTasksHeader.setCursor(Cursor.DEFAULT));
+
+        VBox completedTasksBox = new VBox();
+        activeTasksBox.setPadding(new Insets(5));
+        completedTasksBox.setSpacing(10);
+
+        BorderPane completedTasksHeader = new BorderPane();
+        Label completedTasksText = new Label("Завершенные задачи");
+        Label completedTasksSwitch = new Label();
+        completedTasksSwitch.setPrefSize(50,22);
+        completedTasksSwitch.setAlignment(Pos.CENTER);
+        Label completedTasksLine = new Label();
+        completedTasksLine.setPrefSize(1080,1);
+        completedTasksLine.getStyleClass().add("tasksLine");
+        completedTasksSwitch.getStyleClass().add("tasksSwitchDown");
+        completedTasksText.getStyleClass().add("tasksText");
+        completedTasksHeader.setLeft(completedTasksText);
+        completedTasksHeader.setRight(completedTasksSwitch);
+        completedTasksHeader.setBottom(completedTasksLine);
+        tasksArea.getChildren().add(completedTasksHeader);
+        tasksArea.getChildren().add(completedTasksBox);
+        completedTasksHeader.setOnMouseEntered(event -> completedTasksHeader.setCursor(Cursor.HAND));
+        completedTasksHeader.setOnMouseExited(event -> completedTasksHeader.setCursor(Cursor.DEFAULT));
+
+
+        for (int i = 0; i < 10; i++) { // Заполнить правильно
+            boolean flag; if(i%2==0)flag=true;else flag=false;
+            Label taskText = new Label("grjhegbrhggregjekgb");
+            taskText.setAlignment(Pos.CENTER);
+            taskText.getStyleClass().add("taskText");
+
+            BorderPane task = new BorderPane();
+            task.setPadding(new Insets(10));
+            task.getStyleClass().add("taskBox");
+            task.setPrefHeight(70);
+
+            Label taskCompletedFlag = new Label();
+            taskCompletedFlag.setAlignment(Pos.CENTER);
+            taskCompletedFlag.setPrefSize(30,30);
+            taskCompletedFlag.setOnMouseEntered(event -> taskCompletedFlag.setCursor(Cursor.HAND));
+            taskCompletedFlag.setOnMouseExited(event -> taskCompletedFlag.setCursor(Cursor.DEFAULT));
+            task.setLeft(taskText);
+            task.setRight(taskCompletedFlag);
+
+            if (flag) {
+                taskCompletedFlag.getStyleClass().add("taskCompletedFlag");
+                completedTasksBox.getChildren().add(task);
+            } else {
+                taskCompletedFlag.getStyleClass().add("taskUncompletedFlag");
+                activeTasksBox.getChildren().add(task);
+            }
+
+            taskCompletedFlag.setOnMouseClicked(e -> {
+                // Обработка изменения состояния флага задачи
+            });
+        }
+
+        completedTasksBox.setVisible(false);
+        completedTasksBox.setManaged(false);
+
+        activeTasksHeader.setOnMouseClicked(e -> {
+            boolean isVisible = !activeTasksBox.isVisible();
+            activeTasksBox.setVisible(isVisible);
+            activeTasksBox.setManaged(isVisible);
+            if(isVisible) {
+                activeTasksSwitch.getStyleClass().remove("tasksSwitchDown");
+                activeTasksSwitch.getStyleClass().add("tasksSwitchUp");
+            } else {
+                activeTasksSwitch.getStyleClass().remove("tasksSwitchUp");
+                activeTasksSwitch.getStyleClass().add("tasksSwitchDown");
+            }
+        });
+
+        completedTasksHeader.setOnMouseClicked(e -> {
+            boolean isVisible = !completedTasksBox.isVisible();
+            completedTasksBox.setVisible(isVisible);
+            completedTasksBox.setManaged(isVisible);
+            if(isVisible) {
+                completedTasksSwitch.getStyleClass().remove("tasksSwitchDown");
+                completedTasksSwitch.getStyleClass().add("tasksSwitchUp");
+            } else {
+                completedTasksSwitch.getStyleClass().remove("tasksSwitchUp");
+                completedTasksSwitch.getStyleClass().add("tasksSwitchDown");
+            }
+        });
+
+        workingBox.add(headerPane, 0, 0);
+        workingBox.add(scrollTasks, 0, 1);
+        root.setCenter(workingBox);
     }
 
     public void selectedChatButton() {
