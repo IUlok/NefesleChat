@@ -520,8 +520,65 @@ public class MainView {
 
     public void showTimelineBox() {
         workingBox.getChildren().clear();
-        Label text = new Label("расписание тут будет");
-        workingBox.getChildren().add(text);
+        workingBox = new GridPane(3,2);
+        workingBox.setVgap(20);
+        workingBox.setHgap(15);
+        workingBox.setAlignment(Pos.CENTER);
+        int i = 0, j = 0;
+        while (i < 2) {
+            VBox dayOfWeek = new VBox();
+            dayOfWeek.setPadding(new Insets(5));
+            dayOfWeek.setSpacing(10);
+            dayOfWeek.getStyleClass().add("dayOfWeek");
+            dayOfWeek.setMinSize(350,300);
+            dayOfWeek.setMaxSize(350,300);
+
+            VBox headerOfDay = new VBox();
+            headerOfDay.setAlignment(Pos.CENTER);
+            Label headerOfDayLabel = new Label("Понедельник 12.05");
+            headerOfDayLabel.getStyleClass().add("dayHeader");
+            headerOfDay.getChildren().add(headerOfDayLabel);
+            dayOfWeek.getChildren().add(headerOfDay);
+
+            for (int k = 0; k < 3; k++) {
+                HBox pareOfDay = new HBox();
+                pareOfDay.setSpacing(20);
+                pareOfDay.setAlignment(Pos.TOP_LEFT);
+
+                Label timeOfPare = new Label("13:15" + " - " + "14:45");
+                timeOfPare.getStyleClass().add("raspBold");
+
+                Label cabOfPare = new Label("1-217");
+                cabOfPare.getStyleClass().add("raspBold");
+
+                VBox leftColOfPare = new VBox();
+                leftColOfPare.setAlignment(Pos.TOP_LEFT);
+                leftColOfPare.getChildren().addAll(timeOfPare, cabOfPare);
+
+                Label nameOfPare = new Label("Системное программное обеспечение");
+                nameOfPare.getStyleClass().add("raspBold");
+
+                Label typeOfPare = new Label("Лекция");
+                typeOfPare.getStyleClass().add("raspLight");
+
+                Label teacherOfPare = new Label("Полищук М.В.");
+                teacherOfPare.getStyleClass().add("raspLight");
+
+                VBox rightColOfPare = new VBox();
+                rightColOfPare.setAlignment(Pos.TOP_LEFT);
+                rightColOfPare.getChildren().addAll(nameOfPare, typeOfPare, teacherOfPare);
+
+                pareOfDay.getChildren().addAll(leftColOfPare, rightColOfPare);
+                dayOfWeek.getChildren().add(pareOfDay);
+            }
+
+            workingBox.add(dayOfWeek, j, i);
+            j++;
+            if (j == 3) {
+                i++; j = 0;
+            }
+        }
+        root.setCenter(workingBox);
     }
 
     public void showNotesBox() {

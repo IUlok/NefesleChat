@@ -885,3 +885,25 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 36px;
 }
+
+.dayOfWeek {
+    -fx-background-color: rgba(3, 145, 86, 0.5);
+}
+
+.dayHeader {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+}
+
+.raspBold {
+    -fx-font-family: 'Noto Sans Bold';
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
+
+.raspLight {
+    -fx-font-family: 'Noto Sans Light';
+    -fx-font-size: 12px;
+    -fx-text-fill: #ffffff;
+}
