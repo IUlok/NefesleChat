@@ -7,17 +7,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -524,53 +524,237 @@ public class MainView {
     public void showNotesBox() {
         workingBox.getChildren().clear();
 
-        workingBox = new GridPane(2, 0);
+        workingBox = new GridPane();
 
         workingBox.setVgap(10);
         workingBox.setHgap(10);
         workingBox.setAlignment(Pos.CENTER);
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(90);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(10);
-        workingBox.getColumnConstraints().addAll(col1, col2);
-
         VBox notesArea = new VBox();
+        notesArea.setAlignment(Pos.CENTER);
         notesArea.setPadding(new Insets(10));
         notesArea.getStyleClass().add("authRegForm");
-        notesArea.setSpacing(5);
+        notesArea.setSpacing(25);
 
         scrollNotes = new ScrollPane(notesArea);
         scrollNotes.getStyleClass().add("scrollpane");
         scrollNotes.setFitToWidth(true);
         scrollNotes.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollNotes.setMinWidth(1070);
 
-        for(int i = 0; i < 10; i++) {
-            // тут заметки как нибудь сделать
+        for(int i = 0; i < 5; i++) {
+            HBox rawNotes = new HBox();
+            rawNotes.setSpacing(60);
+            for (int j = 0; j < 3; j++) {
+                BorderPane noteBox = new BorderPane();
+                BorderPane noteBox1 = new BorderPane();
+
+                noteBox.setMinSize(250,300);
+                noteBox.setMaxSize(250,300);
+                noteBox.setPadding(new Insets(15));
+                noteBox1.setMinSize(250,300);
+                noteBox1.setMaxSize(250,300);
+                noteBox1.setPadding(new Insets(15));
+
+                Label noteText = new Label("gtjhrghjtrbhgjthtrhtrhtrlhnjtjrklhntjrklhntrjklhntjrkhlrtjklhhtjrkhntrjklhtnrjkhtkrbhgjtkbr");
+                Label noteText1 = new Label("gtjhrghjtrbhgjthtrhtrhtrlhnjtjrklhntjrklhntrjklhntjrkhlrtjklhhtjrkhntrjklhtnrjkhtkrbhgjtkbr");
+
+                noteText.setWrapText(true);
+                noteText1.setWrapText(true);
+
+                Label timeLabel = new Label("12:03:2025 13:09");
+                Label timeLabel1 = new Label("12:03:2025 13:09");
+
+                timeLabel.setAlignment(Pos.CENTER_RIGHT);
+                timeLabel1.setAlignment(Pos.CENTER_RIGHT);
+                noteBox.getStyleClass().add("noteBox");
+                noteText.getStyleClass().add("noteText");
+                timeLabel.getStyleClass().add("noteTime");
+                noteBox1.getStyleClass().add("noteBox1");
+                noteText1.getStyleClass().add("noteText");
+                timeLabel1.getStyleClass().add("noteTime");
+                HBox timeBox = new HBox();
+                HBox timeBox1 = new HBox();
+                timeBox.setAlignment(Pos.CENTER_RIGHT);
+                timeBox.getChildren().add(timeLabel);
+                timeBox1.setAlignment(Pos.CENTER_RIGHT);
+                timeBox1.getChildren().add(timeLabel1);
+
+                noteBox.setCenter(noteText);
+                noteBox.setBottom(timeBox);
+                noteBox.setOnMouseEntered(event -> noteBox.setCursor(Cursor.HAND));
+                noteBox.setOnMouseExited(event -> noteBox.setCursor(Cursor.DEFAULT));
+
+                noteBox.setOnMouseClicked(event -> {
+                    noteBox1.getChildren().clear();
+                    noteBox1.setCenter(noteText1);
+                    noteBox1.setBottom(timeBox1);
+                    setEffects();
+                    Stage noteStage = new Stage();
+                    noteStage.initStyle(StageStyle.TRANSPARENT);
+                    noteStage.setResizable(false);
+                    noteStage.setTitle("");
+                    noteStage.initModality(Modality.APPLICATION_MODAL);
+                    noteStage.initOwner(getPrimaryStage());
+                    GridPane notePane = new GridPane();
+                    notePane.setAlignment(Pos.CENTER);
+                    notePane.getStyleClass().add("delete-panel");
+
+                    Button editButton = new Button("Редактировать");
+                    editButton.setOnMouseEntered(e -> editButton.setCursor(Cursor.HAND));
+                    editButton.setOnMouseExited(e -> editButton.setCursor(Cursor.DEFAULT));
+                    editButton.getStyleClass().add("exitButtonNo");
+                    Button deleteButton = new Button("Удалить");
+                    deleteButton.setOnMouseEntered(e -> deleteButton.setCursor(Cursor.HAND));
+                    deleteButton.setOnMouseExited(e -> deleteButton.setCursor(Cursor.DEFAULT));
+                    deleteButton.getStyleClass().add("exitButtonYes");
+                    Button backButton = new Button("Назад");
+                    backButton.setOnMouseEntered(e -> backButton.setCursor(Cursor.HAND));
+                    backButton.setOnMouseExited(e -> backButton.setCursor(Cursor.DEFAULT));
+                    backButton.getStyleClass().add("exitButtonNo");
+                    VBox buttons = new VBox(3);
+                    buttons.setAlignment(Pos.CENTER);
+                    buttons.setPadding(new Insets(20,0,0,0));
+                    buttons.getChildren().addAll(editButton, deleteButton, backButton);
+
+                    notePane.add(noteBox1, 0, 0);
+                    notePane.add(buttons, 0, 1);
+
+                    editButton.setOnMouseClicked(e -> {
+                        buttons.setVisible(false);
+                        TextArea editedText = new TextArea();
+                        editedText.setWrapText(true);
+                        editedText.getStyleClass().add("noteTextArea");
+                        editedText.setText(noteText1.getText());
+
+                        HBox buttonsEdit = new HBox();
+                        buttonsEdit.setSpacing(5);
+                        buttonsEdit.setAlignment(Pos.CENTER);
+                        Button saveNoteButton = new Button("Сохранить");
+                        saveNoteButton.getStyleClass().add("exitButtonNo");
+                        Button backNoteButton = new Button("Отмена");
+                        backNoteButton.getStyleClass().add("exitButtonNo");
+                        buttonsEdit.getChildren().addAll(saveNoteButton, backNoteButton);
+
+                        noteBox1.getChildren().clear();
+                        noteBox1.setCenter(editedText);
+                        noteBox1.setBottom(buttonsEdit);
+
+                        saveNoteButton.setOnMouseClicked(event1 -> {
+                            noteText.setText(editedText.getText());
+                            noteText1.setText(editedText.getText());
+                            getPrimaryStage().getScene().getRoot().setEffect(null);
+                            noteStage.close();
+                        });
+
+                        backNoteButton.setOnMouseClicked(event1 -> {
+                            noteBox1.getChildren().clear();
+                            noteBox1.setCenter(noteText1);
+                            noteBox1.setBottom(timeBox1);
+                            buttons.setVisible(true);
+                        });
+                    });
+
+                    deleteButton.setOnMouseClicked(e -> {
+                        // лоигка удаления
+                        noteBox.getChildren().clear();
+
+                        getPrimaryStage().getScene().getRoot().setEffect(null);
+                        noteStage.close();
+                    });
+
+                    backButton.setOnMouseClicked(e -> {
+                        getPrimaryStage().getScene().getRoot().setEffect(null);
+                        noteStage.close();
+                    });
+
+                    Scene scene = new Scene(notePane, 700, 500);
+                    scene.setFill(Color.TRANSPARENT);
+                    scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                    noteStage.setScene(scene);
+                    noteStage.showAndWait();
+                });
+
+                rawNotes.getChildren().add(noteBox);
+            }
+            notesArea.getChildren().add(rawNotes);
         }
 
 
-        BorderPane newNotesPane = new BorderPane();
-        Button newNote = new Button("+");
-        newNotesPane.setBottom(newNote);
+        BorderPane newNotePane = new BorderPane();
+        newNotePane.setPadding(new Insets(0,0,10,10));
+        Label newNote = new Label("+");
+        newNote.setOnMouseEntered(e -> newNote.setCursor(Cursor.HAND));
+        newNote.setOnMouseExited(e -> newNote.setCursor(Cursor.DEFAULT));
+        newNote.setAlignment(Pos.CENTER);
+        newNote.setMinWidth(70);
+        newNote.getStyleClass().add("newNoteButton");
+        newNotePane.setBottom(newNote);
 
-//        usersView = new UsersView( this);
-//        UsersController usersController = new UsersController(usersView);
-//
-//        searchInput.setOnKeyPressed(usersController::handleEnterKey);
-//        searchButton.setOnAction(usersController::searchUsersAction);
-//        searchBox.getChildren().addAll(searchInput, searchButton);
-//
-//        HBox headerPane = new HBox(1);
-//        headerPane.setPadding(new Insets(20,0,0,0));
-//        headerPane.setAlignment(Pos.CENTER);
-//        headerPane.setMinWidth(1070);
-//        headerPane.getChildren().add(searchBox);
+        newNote.setOnMouseClicked(e -> {
+            setEffects();
+            Stage noteStage = new Stage();
+            noteStage.initStyle(StageStyle.TRANSPARENT);
+            noteStage.setResizable(false);
+            noteStage.setTitle("");
+            noteStage.initModality(Modality.APPLICATION_MODAL);
+            noteStage.initOwner(getPrimaryStage());
+            GridPane createNotePane = new GridPane();
+            createNotePane.setAlignment(Pos.CENTER);
+            createNotePane.getStyleClass().add("delete-panel");
+
+            Button createButton = new Button("Создать");
+            createButton.setOnMouseEntered(e1 -> createButton.setCursor(Cursor.HAND));
+            createButton.setOnMouseExited(e1 -> createButton.setCursor(Cursor.DEFAULT));
+            createButton.getStyleClass().add("exitButtonNo");
+
+            Button backButton = new Button("Назад");
+            backButton.setOnMouseEntered(e1 -> backButton.setCursor(Cursor.HAND));
+            backButton.setOnMouseExited(e1 -> backButton.setCursor(Cursor.DEFAULT));
+            backButton.getStyleClass().add("exitButtonNo");
+
+            VBox buttons = new VBox(2);
+            buttons.setAlignment(Pos.CENTER);
+            buttons.setPadding(new Insets(20,0,0,0));
+            buttons.getChildren().addAll(createButton, backButton);
+
+            BorderPane createBox = new BorderPane();
+
+            createBox.setMinSize(250,300);
+            createBox.setMaxSize(250,300);
+            createBox.setPadding(new Insets(15));
+
+            createBox.getStyleClass().add("noteBox1");
+
+            TextArea createdText = new TextArea();
+            createdText.setWrapText(true);
+            createdText.getStyleClass().add("noteTextArea");
+
+            createBox.setCenter(createdText);
+
+            createNotePane.add(createBox, 0, 0);
+            createNotePane.add(buttons, 0, 1);
+
+            backButton.setOnMouseClicked(e1 -> {
+                getPrimaryStage().getScene().getRoot().setEffect(null);
+                noteStage.close();
+            });
+
+            createButton.setOnMouseClicked(e1 -> {
+                // чисто через создание сообщения
+                getPrimaryStage().getScene().getRoot().setEffect(null);
+                noteStage.close();
+            });
+
+            Scene scene = new Scene(createNotePane, 700, 500);
+            scene.setFill(Color.TRANSPARENT);
+            scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            noteStage.setScene(scene);
+            noteStage.showAndWait();
+
+        });
 
         workingBox.add(scrollNotes, 0, 0);
-        workingBox.add(newNotesPane, 1, 0);
+        workingBox.add(newNotePane, 1, 0);
         root.setCenter(workingBox);
     }
 
