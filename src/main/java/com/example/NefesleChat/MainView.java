@@ -77,6 +77,7 @@ public class MainView {
     private BorderPane chatPanel;
     private BorderPane chatPanelNull;
     List<RaspParser.DaySchedule> schedule;
+    String type = "teacher"; String name = "гофман";
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -90,7 +91,7 @@ public class MainView {
         //Main.getWebSocketUtil().subscribeToYourself(myID);
         //Main.getWebSocketUtil().setMainView(this);
         try {
-            schedule = parseSchedulePage("group", "ивб-211");
+            schedule = parseSchedulePage(type, name);
         } catch (IOException e) {
             e.printStackTrace();
             schedule = Collections.emptyList();
@@ -553,7 +554,12 @@ public class MainView {
                 pareOfDay.setSpacing(20);
                 pareOfDay.setAlignment(Pos.TOP_LEFT);
 
-                Label timeOfPare = new Label(formatDateToHHMM(lesson.getStartTime()) + " - " + formatDateToHHMM(lesson.getEndTime()));
+                Label timeOfPare;
+                if(type.equals("group")) {
+                    timeOfPare = new Label(formatDateToHHMM(lesson.getStartTime()) + " - " + formatDateToHHMM(lesson.getEndTime()));
+                } else {
+                    timeOfPare = new Label(lesson.getParaNumber() + " пара");
+                }
                 timeOfPare.getStyleClass().add("raspBold");
 
                 Label cabOfPare = new Label(lesson.getRoom());
@@ -571,7 +577,9 @@ public class MainView {
                 Label typeOfPare = new Label(lesson.getLessonType());
                 typeOfPare.getStyleClass().add("raspLight");
 
-                Label teacherOfPare = new Label(lesson.getTeacher());
+                Label teacherOfPare;
+                if (type.equals("group")) {teacherOfPare = new Label(lesson.getTeacher());}
+                else { teacherOfPare = new Label(lesson.getGroups().getFirst()); }
                 teacherOfPare.setWrapText(true);
                 teacherOfPare.getStyleClass().add("raspLight");
 

@@ -1,3 +1,4 @@
+
 package com.example.NefesleChat;
 
 import org.jsoup.Jsoup;
@@ -31,16 +32,16 @@ public class RaspParser {
 
         try {
             Document searchDoc = Jsoup.connect(SEARCH_URL).get();
-            Elements groupLinks = searchDoc.select("#kt_content > div.kt-container.kt-grid__item.kt-grid__item--fluid > div:nth-child(2) > div.kt-portlet__body > div > div > div > a");
+            Elements links = searchDoc.select("#kt_content > div.kt-container.kt-grid__item.kt-grid__item--fluid > div:nth-child(2) > div.kt-portlet__body > div > div > div > a");
 
-            if (groupLinks.isEmpty()) {
-                System.err.println("Не найдена ссылка на группу.");
+            if (links.isEmpty()) {
+                System.err.println("Не найдена ссылка на группу/преподавателя.");
                 return null;
             }
 
-            String relativeScheduleUrl = groupLinks.first().attr("href");
-            String groupId = relativeScheduleUrl.substring(relativeScheduleUrl.lastIndexOf("/") + 1);
-            String scheduleUrl = BASE_URL + groupId + "?odd=" + (isOddWeek ? "1" : "0");
+            String relativeScheduleUrl = links.first().attr("href");
+            String id = relativeScheduleUrl.substring(relativeScheduleUrl.lastIndexOf("/") + 1);
+            String scheduleUrl = BASE_URL + id + "?odd=" + (isOddWeek ? "1" : "0");
 
             Document doc = Jsoup.connect(scheduleUrl).get();
             Elements dayTables = doc.select("div.kt-portlet__body > table.table.m-table.mb-5");
@@ -71,6 +72,7 @@ public class RaspParser {
                         lesson.setParaNumber(paraNumberCell.first().text().replace("пара", "").trim());
                     }
 
+                    // Extracting time
                     Elements timeCell = lessonRow.select("td[width='15%'] div span");
                     if (!timeCell.isEmpty()) {
                         String timeString = timeCell.first().text();
@@ -105,7 +107,7 @@ public class RaspParser {
                                 lesson.setEndTime(null);
                             }
                         } else {
-                            System.err.println("Неправильный формат времени: " + timeString);
+                            //System.err.println("Неправильный формат времени: " + timeString);
                             lesson.setStartTime(null);
                             lesson.setEndTime(null);
                         }
@@ -130,15 +132,12 @@ public class RaspParser {
                     String teacherName = null;
                     Elements teacherLink = lessonRow.select("td.align-middle div:not(.mb-2) a");
                     if (!teacherLink.isEmpty()) {
-                        // Teacher's name is in the <a> tag
                         teacherName = teacherLink.first().text();
                     } else {
-                        // Teacher's name is directly in the <td> tag or in a <div> inside it
                         Elements teacherDiv = lessonRow.select("td.align-middle");
                         if (!teacherDiv.isEmpty()) {
                             teacherName = teacherDiv.first().ownText();
                             if (teacherName == null || teacherName.trim().isEmpty()) {
-                                // If still empty, try to get the text from a <div> inside the <td>
                                 Elements innerDiv = teacherDiv.select("div:not(.mb-2)");
                                 if (!innerDiv.isEmpty()) {
                                     teacherName = innerDiv.first().text();
@@ -148,6 +147,16 @@ public class RaspParser {
                     }
                     lesson.setTeacher(teacherName);
 
+
+                    // Extracting group information for teacher's schedule
+                    if (type.equals("teacher")) {
+                        Elements groupLinks = lessonRow.select("div.mt-1.mt-md-3 a.btn.btn-sm.btn-elevate.btn-secondary.btn-pill.mr-1.mb-2.py-1.px-2");
+                        List<String> groups = new ArrayList<>();
+                        for (Element groupLink : groupLinks) {
+                            groups.add(groupLink.text());
+                        }
+                        lesson.setGroups(groups);
+                    }
                     daySchedule.addLesson(lesson);
                 }
 
@@ -203,6 +212,11 @@ public class RaspParser {
         private String subject;
         private String teacher;
         private String lessonType;
+        private List<String> groups; // Добавляем список групп
+
+        public Lesson() {
+            this.groups = new ArrayList<>();
+        }
 
         public String getParaNumber() {
             return paraNumber;
@@ -260,6 +274,14 @@ public class RaspParser {
             this.lessonType = lessonType;
         }
 
+        public List<String> getGroups() {
+            return groups;
+        }
+
+        public void setGroups(List<String> groups) {
+            this.groups = groups;
+        }
+
         @Override
         public String toString() {
             return "Lesson{" +
@@ -270,6 +292,7 @@ public class RaspParser {
                     ", subject='" + subject + '\'' +
                     ", teacher='" + teacher + '\'' +
                     ", lessonType='" + lessonType + '\'' +
+                    ", groups=" + groups +
                     '}';
         }
     }
