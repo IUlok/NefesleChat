@@ -25,10 +25,8 @@ import lombok.Setter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 import static com.example.NefesleChat.RaspParser.parseSchedulePage;
 
@@ -77,7 +75,7 @@ public class MainView {
     private BorderPane chatPanel;
     private BorderPane chatPanelNull;
     List<RaspParser.DaySchedule> schedule;
-    String type = "teacher"; String name = "гофман";
+    String type = "group"; String name = "ивб-111";
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -545,6 +543,10 @@ public class MainView {
             VBox headerOfDay = new VBox();
             headerOfDay.setAlignment(Pos.CENTER);
             Label headerOfDayLabel = new Label(day.getDayOfWeek() + " (" + formatDateToDDMM(day.getDate()) + ")");
+            java.sql.Date sqlDate = day.getDate();
+            LocalDate localDate = sqlDate.toLocalDate();
+            LocalDate today = LocalDate.now();
+            if (localDate.equals(today)) dayOfWeek.setStyle("-fx-background-color: #039156;");
             headerOfDayLabel.getStyleClass().add("dayHeader");
             headerOfDay.getChildren().add(headerOfDayLabel);
             dayOfWeek.getChildren().add(headerOfDay);
