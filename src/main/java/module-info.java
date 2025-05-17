@@ -14,11 +14,12 @@ module com.example.NefesleChat {
     requires com.google.gson;
     requires java.net.http;
     requires java.desktop;
-    requires java.logging;
     requires com.fasterxml.jackson.annotation;
     requires spring.websocket;
     requires spring.messaging;
     requires com.fasterxml.jackson.databind;
+    requires org.jsoup;
+    requires java.sql;
 
     opens com.example.NefesleChat to javafx.fxml;
     exports com.example.NefesleChat;

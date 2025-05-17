@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.NefesleChat.RaspParser.parseSchedulePage;
+
 public class MainView {
     @Getter
     private Stage primaryStage;
@@ -74,6 +76,7 @@ public class MainView {
     private Button loadNextListButton;
     private BorderPane chatPanel;
     private BorderPane chatPanelNull;
+    List<RaspParser.DaySchedule> schedule;
 
     public MainView() {
         this.primaryStage = new Stage();
@@ -86,6 +89,12 @@ public class MainView {
         //Main.getWebSocketUtil().connect(Main.getHttpUtil().getJwtToken());
         //Main.getWebSocketUtil().subscribeToYourself(myID);
         //Main.getWebSocketUtil().setMainView(this);
+        try {
+            schedule = parseSchedulePage("group", "ивб-211");
+        } catch (IOException e) {
+            e.printStackTrace();
+            schedule = Collections.emptyList();
+        }
     }
 
     public void show() {
@@ -525,43 +534,45 @@ public class MainView {
         workingBox.setHgap(15);
         workingBox.setAlignment(Pos.CENTER);
         int i = 0, j = 0;
-        while (i < 2) {
+        for (RaspParser.DaySchedule day:schedule) {
             VBox dayOfWeek = new VBox();
             dayOfWeek.setPadding(new Insets(5));
             dayOfWeek.setSpacing(10);
             dayOfWeek.getStyleClass().add("dayOfWeek");
             dayOfWeek.setMinSize(350,300);
-            dayOfWeek.setMaxSize(350,300);
 
             VBox headerOfDay = new VBox();
             headerOfDay.setAlignment(Pos.CENTER);
-            Label headerOfDayLabel = new Label("Понедельник 12.05");
+            Label headerOfDayLabel = new Label(day.getDayOfWeek() + " (" + formatDateToDDMM(day.getDate()) + ")");
             headerOfDayLabel.getStyleClass().add("dayHeader");
             headerOfDay.getChildren().add(headerOfDayLabel);
             dayOfWeek.getChildren().add(headerOfDay);
 
-            for (int k = 0; k < 3; k++) {
+            for (RaspParser.Lesson lesson:day.getLessons()) {
                 HBox pareOfDay = new HBox();
                 pareOfDay.setSpacing(20);
                 pareOfDay.setAlignment(Pos.TOP_LEFT);
 
-                Label timeOfPare = new Label("13:15" + " - " + "14:45");
+                Label timeOfPare = new Label(formatDateToHHMM(lesson.getStartTime()) + " - " + formatDateToHHMM(lesson.getEndTime()));
                 timeOfPare.getStyleClass().add("raspBold");
 
-                Label cabOfPare = new Label("1-217");
+                Label cabOfPare = new Label(lesson.getRoom());
                 cabOfPare.getStyleClass().add("raspBold");
 
                 VBox leftColOfPare = new VBox();
+                leftColOfPare.setMinWidth(80);
                 leftColOfPare.setAlignment(Pos.TOP_LEFT);
                 leftColOfPare.getChildren().addAll(timeOfPare, cabOfPare);
 
-                Label nameOfPare = new Label("Системное программное обеспечение");
+                Label nameOfPare = new Label(lesson.getSubject());
+                nameOfPare.setWrapText(true);
                 nameOfPare.getStyleClass().add("raspBold");
 
-                Label typeOfPare = new Label("Лекция");
+                Label typeOfPare = new Label(lesson.getLessonType());
                 typeOfPare.getStyleClass().add("raspLight");
 
-                Label teacherOfPare = new Label("Полищук М.В.");
+                Label teacherOfPare = new Label(lesson.getTeacher());
+                teacherOfPare.setWrapText(true);
                 teacherOfPare.getStyleClass().add("raspLight");
 
                 VBox rightColOfPare = new VBox();
@@ -571,8 +582,15 @@ public class MainView {
                 pareOfDay.getChildren().addAll(leftColOfPare, rightColOfPare);
                 dayOfWeek.getChildren().add(pareOfDay);
             }
+            ScrollPane scrollDay = new ScrollPane(dayOfWeek);
+            scrollDay.getStyleClass().add("scrollpane");
+            scrollDay.setFitToWidth(true);
+            scrollDay.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollDay.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollDay.setMinSize(350,300);
+            scrollDay.setMaxSize(350,300);
 
-            workingBox.add(dayOfWeek, j, i);
+            workingBox.add(scrollDay, j, i);
             j++;
             if (j == 3) {
                 i++; j = 0;
@@ -1113,6 +1131,16 @@ public class MainView {
     public void setVisibleTrueChat() {
         currentChatBox.getChildren().clear();
         currentChatBox.setVisible(true);
+    }
+
+    public String formatDateToDDMM(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM");
+        return formatter.format(date);
+    }
+
+    public String formatDateToHHMM(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+        return formatter.format(date);
     }
 
     public void setEffects() {
